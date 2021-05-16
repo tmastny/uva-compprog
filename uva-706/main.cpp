@@ -78,30 +78,36 @@ string digit_inner_row(string c, int row, int rows) {
   return "-";
 }
 
-void print_digit(int s, string c) {
+void print_digit(int s, string number) {
 
   int cols = s + 2 - 1;
   int rows = 2 * s + 3 - 1;
 
   for (int r = 0; r <= rows; r++) {
-    bool top = r < rows / 2;
+      bool top = r < rows / 2;
+    for (int i = 0; i < number.length(); i++) {
+      string c = string{number[i]};
 
-    string outerr = digit_outer_column(c, top, false);
-    string outerl = digit_outer_column(c, top, true);
-    string inner = " ";
+      string outerr = digit_outer_column(c, top, false);
+      string outerl = digit_outer_column(c, top, true);
+      string inner = " ";
 
-    if (r % (rows / 2) == 0) {
-      outerr = outerl = " ";
-      inner = digit_inner_row(c, r, rows);
+      if (r % (rows / 2) == 0) {
+        outerr = outerl = " ";
+        inner = digit_inner_row(c, r, rows);
+      }
+
+      cout << outerl;
+      for (int c = 1; c < cols; c++) {
+        cout << inner;
+      }
+      cout << outerr;
+
+      if (i + 1 < number.length()) cout << " ";
     }
-
-    cout << outerl;
-    for (int c = 1; c < cols; c++) {
-      cout << inner;
-    }
-
-    cout << outerr << "\n";
+    cout << "\n";
   }
+  cout << "\n";
 }
 
 int main() {
