@@ -15,7 +15,7 @@ auto rng = default_random_engine {};
 
 queue<int> make_deck() {
   vector<int> deck;
-  for (int s = 1; s <= 4; s++) {
+  for (int s = 1; s <= 2; s++) {
     for (int i = 2; i <= 14; i++) {
       deck.push_back(i);
     }
@@ -35,8 +35,8 @@ int war(queue<int> &d1, queue<int> &d2) {
   // without shuffling ties, they expected value may be infinite:
   // https://boardgames.stackexchange.com/questions/44275/what-is-the-expected-duration-of-a-game-of-war/44292
   // so I will use a vector instead of a stack
-  // stack<int> ties;
-  vector<int> ties;
+  stack<int> ties;
+  //vector<int> ties;
 
   while (!d1.empty() && !d2.empty()) {
     moves++;
@@ -62,8 +62,8 @@ int war(queue<int> &d1, queue<int> &d2) {
 
       if (d1.empty() || d2.empty()) break;
 
-      ties.push_back(d1.front());
-      ties.push_back(d2.front());
+      ties.push(d1.front());
+      ties.push(d2.front());
       d1.pop();
       d2.pop();
 
@@ -74,7 +74,7 @@ int war(queue<int> &d1, queue<int> &d2) {
     winner->push(c2);
 
     int c;
-    while (!ties.size() != 0) {
+    while (!ties.empty()) {
       c = ties.top();
       ties.pop();
       winner->push(c);
