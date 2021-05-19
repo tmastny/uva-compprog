@@ -3,6 +3,11 @@
     "vector": "cpp",
     "iosfwd": "cpp",
     "string": "cpp",
-    "map": "cpp"
+    "map": "cpp",
+    "tuple": "cpp",
+    "algorithm": "cpp",
+    "random": "cpp",
+    "utility": "cpp",
+    "iterator": "cpp"
   }
 }

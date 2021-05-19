@@ -10,18 +10,6 @@
 
 using namespace std;
 
-map<string, map<string, int>> hands_rank {
-  {"straight flush", {{"rank", 9}, {"value", 0}}},
-  {"four", {{"rank", 8}, {"value", 0}}},
-  {"full house", {{"rank", 7}, {"value", 0}}},
-  {"flush", {{"rank", 6}, {"value", 0}}},
-  {"straight", {{"rank", 5}, {"value", 0}}},
-  {"three", {{"rank", 4}, {"value", 0}}},
-  {"two-pairs", {{"rank", 3}, {"value", 0}}},
-  {"pair", {{"rank", 2}, {"value", 0}}},
-  {"high", {{"rank", 1}, {"value", 0}}},
-};
-
 int value_to_int(const char & value) {
   string values = "23456789TJQKA";
 
@@ -32,7 +20,7 @@ int value_to_int(const char & value) {
   return -1;
 }
 
-vector<int> is_straight(map<int, int> values) {
+double straight_rank(map<int, int> & values) {
   vector<int> values_in_order;
   for (auto x : values) {
     values_in_order.push_back(x.first);
@@ -40,101 +28,52 @@ vector<int> is_straight(map<int, int> values) {
   sort(values_in_order.begin(), values_in_order.end());
 
   for (int i = 0; i < values_in_order.size() - 1; i++) {
-    if (values_in_order[i + 1] - values_in_order[i] != 1) {
-      return false;
+    if (abs(values_in_order[i + 1] - values_in_order[i]) > 1) {
+      return 10.0;
     }
   }
-  return vector<int> {hands["straight"], values_in_order[values_in_order.size() - 1]};
+  return 2.75;
 }
 
-bool is_flush(map<int, int> suits) {
-  return vector<int> {hands["flush"], values_in_order[values_in_order.size() - 1]};
+double flush_rank(map<string, int> & suits) {
+  return suits.size() == 1 ? 2.5 : 10.0;
 }
 
+double hand_rank(tuple<map<int, int>, map<string, int>> & hand) {
+  auto values = get<0>(hand);
+  auto suits = get<1>(hand);
 
-tuple<string, int>  combo(map<int, int> values) {
+  cout << values.size() << " " << straight_rank(values) << " " << flush_rank(suits) << endl;
 
-  vector<int> hand;
-  vector<vector<int>> hands;
+  return 6 - min({1.0 * values.size(), straight_rank(values), flush_rank(suits)});
+}
 
-  map<string, int> hands;
+tuple<double, vector<pair<int, int>>> hand_comparator(tuple<map<int, int>, map<string, int>> & hand) {
 
-  for (auto x : values) {
-
-    if (x.second == 4) {
-      hands_rank["four"]["value"] = x.first;
-
-    } else if (x.second == 3) {
-      hands_rank["three"]["value"] = x.first;
-
-    } else if (x.second == 2) {
-
-      if (hands_rank["pair"]["value"] != 0) {
-        hands_rank["two-pair"]["value"] = max(hands_rank["pair"]["value"], x.first);
-      }
-      hands_rank["pair"]["value"] = x.first;
-
-    } else {
-
-      hands_rank["high"]["value"] = max(hands_rank["high"]["value"], x.first);
-    }
+  vector<pair<int, int>> count_value;
+  for (auto x : get<0>(hand)) {
+    count_value.push_back({x.second, x.first});
   }
+  sort(count_value.rbegin(), count_value.rend());
 
 
 
+  // cout << "\n" << hand_rank(hand) << endl;
+  // for (auto v : count_value) {
+  //   cout << get<0>(v) << "-" << get<1>(v) << endl;
+  // }
 
 
 
-  return make_tuple(max_value, max_freq);
+  return {hand_rank(hand), count_value};
 }
 
-
-
-
-tuple<int, int> best_value(map<int, int> values) {
-  int max_freq = 1;
-  int max_value = 1;
-  for (auto x : values) {
-    if (x.second > max_freq) {
-       max_freq = x.second;
-       max_value = x.first;
-    }
-  }
-
-  if
-
-
-  return make_tuple(max_value, max_freq);
-}
-
-
-
-string high_card(map<int, int> black, map<int, int> white) {
-
-}
-
-int main() {
-  string line;
-  string card;
-
-  while (getline(cin, line)) {b v\
-    stringstream ss(line);
-
-    vector<string> black;
-    for (int i = 0; i < 5; i++) {
-      ss >> card;
-      black.push_back(card);
-    }
-
-    vector<string> white;
-    for (int i = 0; i < 5; i++) {
-      ss >> card;
-      white.push_back(card);
-    }
+tuple<map<int, int>, map<string, int>> hand(vector<string> & cards) {
 
     map<int, int> values;
     map<string, int> suits;
-    for (auto c : black) {
+
+    for (auto c : cards) {
       int value = value_to_int(c[0]);
       string suit = string{c[1]};
 
@@ -146,28 +85,82 @@ int main() {
         suits[suit] = 0;
       suits[suit] += 1;
     }
+    return {values, suits};
+}
+
+template <typename T>
+bool black_vs_white(T black, T white) {
+
+  cout << "black d: " << black << ". white d: " << white << endl;
+  if (black > white) {
+    cout << "Black wins.\n";
+    return true;
+  }
+
+  if (black < white) {
+    cout << "White wins.\n";
+    return true;
+  }
+
+  return false;
+}
+
+void decide_winner(tuple<double, vector<pair<int, int>>> black, tuple<double, vector<pair<int, int>>> white) {
+
+  if (black_vs_white(get<0>(black), get<0>(white))) {
+    return;
+  }
+  // if () {
+  //   cout << "Black wins.\n";
+  //   return;
+  // }
+
+  // if (get<0>(black) < get<0>(white)) {
+  //   cout << "White wins.\n";
+  //   return;
+  // }
+
+  // auto black_count = get<1>(black);
+  // auto white_count = get<1>(white);
 
 
 
 
 
 
+  cout << "Tie.\n";
+}
+
+int main() {
+  string line;
+  string card;
+
+  while (getline(cin, line)) {
+    stringstream ss(line);
+
+    vector<string> black_cards;
+    for (int i = 0; i < 5; i++) {
+      ss >> card;
+      black_cards.push_back(card);
+    }
+
+    vector<string> white_cards;
+    for (int i = 0; i < 5; i++) {
+      ss >> card;
+      white_cards.push_back(card);
+    }
+
+    auto black = hand(black_cards);
+    auto white = hand(white_cards);
+
+    auto blk_comp = hand_comparator(black);
+    auto wht_comp = hand_comparator(white);
 
 
-    cout << "black: \n";
-    for (auto const & x : values) cout << x.first << "-" << x.second << endl;
+
+    decide_winner(blk_comp, wht_comp);
 
 
 
-
-
-
-
-    // cout << "black: ";
-    // for (auto i : black) cout << i << " ";
-
-    // cout << "| white: ";
-    // for (auto i : white) cout << i << " ";
-    // cout << endl;
   }
 }
