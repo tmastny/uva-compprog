@@ -43,7 +43,7 @@ double hand_rank(tuple<map<int, int>, map<string, int>> & hand) {
   auto values = get<0>(hand);
   auto suits = get<1>(hand);
 
-  cout << values.size() << " " << straight_rank(values) << " " << flush_rank(suits) << endl;
+  // cout << values.size() << " " << straight_rank(values) << " " << flush_rank(suits) << endl;
 
   return 6 - min({1.0 * values.size(), straight_rank(values), flush_rank(suits)});
 }
@@ -91,7 +91,7 @@ tuple<map<int, int>, map<string, int>> hand(vector<string> & cards) {
 template <typename T>
 bool black_vs_white(T black, T white) {
 
-  cout << "black d: " << black << ". white d: " << white << endl;
+  //cout << "black d: " << black << ". white d: " << white << endl;
   if (black > white) {
     cout << "Black wins.\n";
     return true;
@@ -110,18 +110,24 @@ void decide_winner(tuple<double, vector<pair<int, int>>> black, tuple<double, ve
   if (black_vs_white(get<0>(black), get<0>(white))) {
     return;
   }
-  // if () {
-  //   cout << "Black wins.\n";
-  //   return;
-  // }
 
-  // if (get<0>(black) < get<0>(white)) {
-  //   cout << "White wins.\n";
-  //   return;
-  // }
+  auto black_count_value = get<1>(black);
+  auto white_count_value = get<1>(white);
 
-  // auto black_count = get<1>(black);
-  // auto white_count = get<1>(white);
+  int max_size = max(black_count_value.size(), white_count_value.size());
+
+  // 0 == count, 1 == value
+  for (int i = 0; i < max_size; i++) {
+    if (black_vs_white(get<0>(black_count_value[i]), get<0>(white_count_value[i]))) {
+      return;
+    }
+  }
+
+  for (int i = 0; i < max_size; i++) {
+    if (black_vs_white(get<1>(black_count_value[i]), get<1>(white_count_value[i]))) {
+      return;
+    }
+  }
 
 
 
