@@ -8,6 +8,8 @@
     "algorithm": "cpp",
     "random": "cpp",
     "utility": "cpp",
-    "iterator": "cpp"
+    "iterator": "cpp",
+    "iostream": "cpp",
+    "set": "cpp"
   }
 }
