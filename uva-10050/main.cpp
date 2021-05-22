@@ -71,43 +71,28 @@ int main() {
       }
     }
     cout << "before weekend: " << total << endl;
-    set<int> on_friday;
-    int on_saturday = 0;
+    set<int> on_weekend;
     for (auto h : hartals) {
-      total -= days / lcm(h, 7);
+
+      for (int i = 7; i <= days; i = i + 7) {
+
+        if (lcm(h, i) == i)
+          on_weekend.insert(i);
+      }
 
 
       for (int i = 6; i <= days; i = i + 7) {
 
         if (lcm(h, i) == i)
-          on_friday.insert(i);
+          on_weekend.insert(i);
       }
 
     }
-    total -= on_friday.size();
+    total -= on_weekend.size();
 
     cout << total << endl;
 
 
 
   }
-  for (int i = 1; i <= 28; i++) {
-    printf("%02.0d ", i);
-  }
-  cout << endl;
-
-  for (int i = 1; i <= 28; i++) {
-
-    int o = 0;
-    if (i % 2 == 0) o = 1;
-    printf("%02.0d ", o);
-  }
-  cout << endl;
-
-  for (int i = 1; i <= 28; i++) {
-    int o = 0;
-    if (i % 4 == 0) o = 1;
-    printf("%02.0d ", o);
-  }
-  cout << endl;
 }
