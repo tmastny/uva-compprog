@@ -43,29 +43,51 @@ void rotate_sq(vector<vector<char>> sq) {
 int nested_sqs(vector<vector<char>> & big, vector<vector<char>> & lil) {
   int sqs = 0;
 
-  for (int big_row = 0; big_row <= big.size() - lil.size(); big_row++) {
-    bool is_match = true;
+  for (int big_col = 0; big_col <= big.size() - lil.size(); big_col++) {
+    for (int big_row = 0; big_row <= big.size() - lil.size(); big_row++) {
 
-    for (int lil_row = 0; lil_row < lil.size(); lil_row++) {
-      for (int lil_col = 0; lil_col < lil.size(); lil_col++) {
+      bool is_match = true;
 
-        // cout << "row: " << lil_row << " " << lil_col << endl;
+      for (int lil_row = 0; lil_row < lil.size(); lil_row++) {
+        for (int lil_col = 0; lil_col < lil.size(); lil_col++) {
 
-        // cout << lil[lil_row][lil_col] << endl;
-        // cout << big[big_row][lil_col] << endl;
+          // cout << "row: " << lil_row << " " << lil_col << endl;
 
-        is_match &= lil[lil_row][lil_col] == big[big_row][lil_col];
+          // cout << lil[lil_row][lil_col] << endl;
+          // cout << big[big_row][lil_col] << endl;
 
+          // cout << big[big_row + lil_row][big_col + lil_col] << " ";
+
+          is_match &= lil[lil_row][lil_col] == big[big_row + lil_row][big_col + lil_col];
+
+        }
+
+        // cout << endl;
       }
-    }
+      // cout << endl;
 
-    if (is_match) {
-      sqs++;
-      return sqs;
+      if (is_match) sqs++;
     }
   }
 
   return sqs;
+}
+
+vector<vector<char>> rotate(vector<vector<char>> & sq) {
+
+  vector<vector<char>> temp_sq;
+  vector<char> temp_row;
+  for (int c = 0; c < sq.size(); c++) {
+
+    vector<char> temp_row;
+    for (int r = sq.size() - 1; r >= 0; r--) {
+
+      temp_row.push_back(sq[r][c]);
+    }
+    temp_sq.push_back(temp_row);
+  }
+
+  return temp_sq;
 }
 
 // Clockwise rotation
@@ -78,14 +100,20 @@ int main() {
   while(cin >> big_sq_size >> lil_sq_size) {
     if (big_sq_size == 0) break;
 
-    cout << big_sq_size << endl;
     auto big_sq = make_square(big_sq_size);
     auto lil_sq = make_square(lil_sq_size);
 
-    cout << nested_sqs(big_sq, lil_sq) << endl;;
 
-    break;
+    for (int i = 0; i < 4; i++) {
+      cout << nested_sqs(big_sq, lil_sq) << " ";
 
+      lil_sq = rotate(lil_sq);
+    }
+    cout << endl;
+
+
+    // int sqs = nested_sqs(big_sq, lil_sq);
+    // cout << "nested sqs: " << sqs << endl;
   }
 
 }
