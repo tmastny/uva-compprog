@@ -29,7 +29,6 @@ int main() {
   while(cin >> size >> pos) {
     if (size == 0 && pos == 0) break;
 
-    cout << "size " << size << " pos " << pos << endl;
 
     int inner_ring = 1;
     int outer_ring = 1;
@@ -38,10 +37,8 @@ int main() {
     while (pos > outer_ring * outer_ring) {
       ring_num++;
       inner_ring = outer_ring;
-      outer_ring = outer_ring * 2 + 1;
+      outer_ring = outer_ring + 2;
     }
-
-    cout << "o: " << outer_ring << " " << "i: " << inner_ring << endl;
 
     // (i - 1)^2 < pos <= i^2
     // ex: 9 < pos <= 25
@@ -61,33 +58,31 @@ int main() {
     int lower_right = corner(outer_ring * outer_ring, lower_left);
     int upper_right = outer_ring * outer_ring;
 
-    cout << upper_left << " " << lower_left << " " << lower_right << endl;
 
-    int lrow = (size + 1) / 2 - ring_num;
-    int lcol = (size + 1) / 2 - ring_num;
-    int urow = (size + 1) / 2 + ring_num;
-    int ucol = (size + 1) / 2 + ring_num;
+    int lower_corner_index = (size + 1) / 2 - ring_num;
+    int upper_corner_index = (size + 1) / 2 + ring_num;
+
 
     int row, col;
     if (pos <= upper_left) {
 
-      row = urow;
-      col = lcol + (upper_left - pos);
+      row = upper_corner_index;
+      col = lower_corner_index + (upper_left - pos);
 
     } else if (pos <= lower_left) {
 
-      row = lrow + (lower_left - pos);
-      col = lcol;
+      row = lower_corner_index + (lower_left - pos);
+      col = lower_corner_index;
 
     } else if (pos <= lower_right) {
 
-      row = lrow;
-      col = ucol - (lower_right - pos);
+      row = lower_corner_index;
+      col = upper_corner_index - (lower_right - pos);
 
     } else {
 
-      row =  urow - (upper_right - pos);
-      col = ucol;
+      row =  upper_corner_index - (upper_right - pos);
+      col = upper_corner_index;
 
     }
 
