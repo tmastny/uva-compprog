@@ -29,14 +29,15 @@ class Contestant {
 };
 
 bool operator<(const Contestant &c1, const Contestant &c2) {
+
   if (c1.correct < c2.correct) return true;
   if (c1.correct > c2.correct) return false;
 
-  if (c1.penalty < c1.penalty) return true;
-  if (c1.penalty > c1.penalty) return false;
+  if (c1.penalty < c2.penalty) return false;
+  if (c1.penalty > c2.penalty) return true;
 
-  if (c1.id < c1.id) return true;
-  if (c1.id > c1.id) return false;
+  if (c1.id < c2.id) return false;
+  if (c1.id > c2.id) return true;
 
   return false;
 }
@@ -47,7 +48,7 @@ void Contestant::update(int problem, int time, string outcome) {
   attempted = true;
 
   if (outcome == "I") {
-    problem_penalty[problem] = 20;
+    problem_penalty[problem] += 20;
     return;
   }
 
@@ -78,9 +79,9 @@ int main() {
     string outcome;
 
 
-    map<int, Contestant*> scores;
-    for (int i = 1; i <= 100; i++) {
-      scores[i] = new Contestant(i);
+    vector<Contestant*> scores;
+    for (int i = 0; i <= 100; i++) {
+      scores.push_back(new Contestant(i));
     }
 
 
@@ -95,17 +96,13 @@ int main() {
       getline(cin, line);
     }
 
-    vector<Contestant*> rank;
-    for (auto x : scores) {
-      if (x.second->attempted) {
-        rank.push_back(x.second);
-      }
-    }
+    sort(scores.rbegin(), scores.rend(),
+      [](Contestant* c1, Contestant* c2) { return *c1 < *c2; }
+    );
 
-    sort(rank.begin(), rank.end());
-
-    for (auto c : rank) {
-      cout << c->id << " " << c->correct << " " << c->penalty << endl;
+    for (auto c : scores) {
+      if (c->attempted)
+        cout << c->id << " " << c->correct << " " << c->penalty << endl;
     }
 
 
