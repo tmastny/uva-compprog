@@ -13,8 +13,17 @@
 
 using namespace std;
 
+// p(7) = 242 + 120 + 82 = 444
+// p(0) = 73 + 49 + 58 = 180
+// total               = 624
+// --wrong--
+
 int mod(int i, int bits) {
   return i & (bits - 1);
+}
+
+bool is_odd(int i) {
+  return i % 2 == 1;
 }
 
 int main() {
@@ -36,8 +45,10 @@ int main() {
 
       int neighbor = i;
       int potency = 0;
+
+      int sign = is_odd(i) ? -1 : 1;
       for (int j = 1; j <= corners / 2; j <<= 1) {
-        neighbor = mod(neighbor + j, corners);
+        neighbor = mod(neighbor + sign * j, corners);
         potency += weights[neighbor];
         // cout << "i: " << i << endl;
         // cout << "j: " << j << endl;
@@ -51,15 +62,37 @@ int main() {
       cout << i << ": " << potencies[i] << endl;
     }
 
+    int max_cube_sum = 0;
     for (int i = 0; i < corners; i++) {
-      for (int j = 0; j < corners; j++) {
-        if (i == j) continue;
-        if (potencies[i] + potencies[j] == 619)
-          cout << i << " " << j << endl;
+
+      int max_neighbor_sum = 0;
+      int neighbor = i;
+
+      int sign = is_odd(i) ? -1 : 1;
+      for (int j = 1; j <= corners / 2; j <<= 1) {
+        neighbor = mod(neighbor + sign * j, corners);
+
+        int neighbor_sum = potencies[i] + potencies[neighbor];
+        if (neighbor_sum > max_neighbor_sum) {
+          max_neighbor_sum = neighbor_sum;
+
+          //cout << i << " " << neighbor << " " << max_neighbor_sum << endl;
+        }
+      }
+
+      if (max_neighbor_sum > max_cube_sum) {
+        max_cube_sum = max_neighbor_sum;
       }
     }
 
-    break;
+    cout << max_cube_sum << endl;
+    // for (int i = 0; i < corners; i++) {
+    //   for (int j = 0; j < corners; j++) {
+    //     if (i == j) continue;
+    //     if (potencies[i] + potencies[j] == 619)
+    //       cout << i << " " << j << endl;
+    //   }
+    // }
   }
 
 }
