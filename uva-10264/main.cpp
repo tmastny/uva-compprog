@@ -43,12 +43,9 @@ int main() {
     vector<int> potencies;
     for (int i = 0; i < corners; i++) {
 
-      int neighbor = i;
       int potency = 0;
-
-      int sign = is_odd(i) ? -1 : 1;
       for (int j = 1; j <= corners / 2; j <<= 1) {
-        neighbor = mod(neighbor + sign * j, corners);
+        int neighbor = i ^ j;
         potency += weights[neighbor];
         // cout << "i: " << i << endl;
         // cout << "j: " << j << endl;
@@ -58,19 +55,16 @@ int main() {
       potencies.push_back(potency);
     }
 
-    for (int i = 0; i < corners; i++) {
-      cout << i << ": " << potencies[i] << endl;
-    }
+    // for (int i = 0; i < corners; i++) {
+    //   cout << i << ": " << potencies[i] << endl;
+    // }
 
     int max_cube_sum = 0;
     for (int i = 0; i < corners; i++) {
 
       int max_neighbor_sum = 0;
-      int neighbor = i;
-
-      int sign = is_odd(i) ? -1 : 1;
       for (int j = 1; j <= corners / 2; j <<= 1) {
-        neighbor = mod(neighbor + sign * j, corners);
+        int neighbor = i ^ j;
 
         int neighbor_sum = potencies[i] + potencies[neighbor];
         if (neighbor_sum > max_neighbor_sum) {
