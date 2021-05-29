@@ -14,6 +14,7 @@
 #include <list>
 #include <stack>
 #include <queue>
+#include <deque>
 
 using namespace std;
 
@@ -35,9 +36,20 @@ class Stack {
     }
 };
 
+bool in_queue(deque<char> q, char c) {
+  return find(q.begin(), q.end(), c) != q.end();
+}
+
 void check_anagram(
-  vector<string> & sequences, Stack s, queue<char> source, queue<char> target
+  vector<string> & sequences, Stack s, deque<char> source, queue<char> target,
+  bool is_recurse
 ) {
+
+  if (is_recurse) {
+    s.push(source.front());
+    source.pop_front();
+  }
+
 
   bool is_anagram = true;
   while (!target.empty()) {
@@ -47,16 +59,18 @@ void check_anagram(
       if (source.empty()) break;
 
       s.push(source.front());
-      source.pop();
-
-      // if (source.front() == t) {
-
-      // }
+      source.pop_front();
     }
 
     if (s.stack.top() != t) {
       is_anagram = false;
       break;
+    }
+
+    // deque source;
+    // if (in_queue(source, t))
+    if (source.front() == t) {
+      check_anagram(sequences, s, source, target, true);
     }
 
     s.pop();
@@ -72,15 +86,15 @@ void check_anagram(
 int main() {
 
   string source, target;
-
+  int i = 1;
   while (getline(cin, source)) {
     getline(cin, target);
 
 
 
-    queue<char> qsource;
+    deque<char> qsource;
     for (auto s : source)
-      qsource.push(s);
+      qsource.push_back(s);
 
     queue<char> qtarget;
     for (auto t : target)
@@ -89,7 +103,7 @@ int main() {
 
     vector<string> sequences;
     Stack s;
-    check_anagram(sequences, s, qsource, qtarget);
+    check_anagram(sequences, s, qsource, qtarget, false);
 
     sort(sequences.begin(), sequences.end());
 
@@ -100,8 +114,9 @@ int main() {
       cout << endl;
     }
 
-
-    break;
+    i++;
+    if (i > 2)
+      break;
   }
 
 }

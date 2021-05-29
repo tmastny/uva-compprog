@@ -24,6 +24,7 @@
     "list": "cpp",
     "string_view": "cpp",
     "unordered_map": "cpp",
-    "queue": "cpp"
+    "queue": "cpp",
+    "ostream": "cpp"
   }
 }
