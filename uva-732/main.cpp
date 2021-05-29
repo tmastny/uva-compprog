@@ -19,8 +19,9 @@ using namespace std;
 
 class Stack {
   public:
-    vector<char> sequence;
+    string sequence;
     stack<char> stack;
+
     void push(char c) {
       stack.push(c);
       sequence.push_back('i');
@@ -31,12 +32,6 @@ class Stack {
     };
     Stack() {
       stack.push('!');
-    }
-    void print() {
-      for (auto s : sequence) {
-        cout << s << " ";
-      }
-      cout << endl;
     }
 };
 
@@ -54,8 +49,9 @@ int main() {
     for (auto s : source)
       qsource.push(s);
 
-    Stack s;
 
+    vector<string> sequences;
+    Stack s;
     bool is_anagram = true;
     for (auto t : target) {
 
@@ -75,8 +71,19 @@ int main() {
     }
 
     if (is_anagram)
-      s.print();
+      sequences.push_back(s.sequence);
 
+
+
+
+    sort(sequences.begin(), sequences.end());
+
+    for (auto s : sequences) {
+      for (auto c : s) {
+        cout << c << " ";
+      }
+      cout << endl;
+    }
 
 
     break;
