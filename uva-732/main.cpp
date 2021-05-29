@@ -13,65 +13,73 @@
 #include <bitset>
 #include <list>
 #include <stack>
+#include <queue>
 
 using namespace std;
 
-void move(stack<int> & atrain, stack<int> & station) {
-  station.push(atrain.top());
-  atrain.pop();
-}
+class Stack {
+  public:
+    vector<char> sequence;
+    stack<char> stack;
+    void push(char c) {
+      stack.push(c);
+      sequence.push_back('i');
+    };
+    void pop() {
+      stack.pop();
+      sequence.push_back('o');
+    };
+    Stack() {
+      stack.push('!');
+    }
+    void print() {
+      for (auto s : sequence) {
+        cout << s << " ";
+      }
+      cout << endl;
+    }
+};
+
 
 int main() {
 
-  int coaches;
-  while (cin >> coaches) {
-    if (coaches == 0) {
-      continue;
+  string source, target;
+
+  while (getline(cin, source)) {
+    getline(cin, target);
+
+
+
+    queue<char> qsource;
+    for (auto s : source)
+      qsource.push(s);
+
+    Stack s;
+
+    bool is_anagram = true;
+    for (auto t : target) {
+
+      while (s.stack.top() != t) {
+        if (qsource.empty()) break;
+
+        s.push(qsource.front());
+        qsource.pop();
+      }
+
+      if (s.stack.top() != t) {
+        is_anagram = false;
+        break;
+      }
+
+      s.pop();
     }
 
-    string line;
-    getline(cin, line);
-    getline(cin, line);
+    if (is_anagram)
+      s.print();
 
-    while (line != "0") {
 
-      vector<int> order;
-      int car;
-      istringstream iss(line);
-      for (int i = 0; i < coaches; i++) {
-        iss >> car;
-        order.push_back(car);
-      }
 
-      stack<int> atrain;
-      for (int i = coaches; i >= 1; i--) {
-        atrain.push(i);
-      }
-
-      string output = "Yes";
-      stack<int> station;
-      station.push(0);
-
-      for (auto car : order) {
-
-        while (station.top() != car) {
-          if (atrain.empty()) break;
-
-          move(atrain, station);
-        }
-
-        if (station.top() != car) {
-          output = "No";
-          break;
-        }
-
-        station.pop();
-      }
-
-      cout << output << endl;
-      getline(cin, line);
-      if (line == "0") cout << endl;
-    }
+    break;
   }
 
 }
