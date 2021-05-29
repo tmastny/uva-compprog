@@ -22,54 +22,49 @@ using namespace std;
 
 // b << n <==> b * 2^n
 
-bool has_conflict(bitset<1000001> & bits, int start, int end) {
-  for (int i = start; i < end; i++) {
-    if (bits[i]) return true;
-    bits.set(i);
-  }
-
-  return false;
-}
-
 int main() {
-
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
 
   bitset<1000001> availability;
   int onetime, repeating;
 
-  while (cin >> onetime >> repeating, onetime || repeating) {
+  while (cin >> onetime >> repeating) {
+    if (onetime == 0 && repeating == 0) break;
     availability.reset();
 
-
-    string output = "NO CONFLICT";
+    vector<pair<int, int>> times;
     for (int i = 0; i < onetime; i++) {
       int start, end;
       cin >> start >> end;
 
-
-      if (has_conflict(availability, start, end)) {
-        output = "CONFLICT";
-        break;
-      }
+      times.push_back({start, end});
     }
 
-    for (int i = 0; i < repeating; i++) {
-      if (output == "CONFLICT") break;
-
+   for (int i = 0; i < repeating; i++) {
       int start, end, interval;
       cin >> start >> end >> interval;
 
       while (end <= 1000000) {
-        if (has_conflict(availability, start, end)) {
-          output = "CONFLICT";
-          break;
-        }
-
+        times.push_back({start, end});
         start += interval;
         end += interval;
       }
+    }
+
+    // sort(times.begin(), times.end());
+
+    string output = "NO CONFLICT";
+    for (auto t : times) {
+
+      for (int i = t.first + 1; i <= t.second; i++) {
+        if (availability[i]) {
+          output = "CONFLICT";
+          break;
+        }
+        availability.set(i);
+      }
+
+      if (output == "CONFLICT") break;
+
     }
 
     cout << output << endl;

@@ -10,6 +10,9 @@
     "utility": "cpp",
     "iterator": "cpp",
     "iostream": "cpp",
-    "set": "cpp"
+    "set": "cpp",
+    "bitset": "cpp",
+    "ios": "cpp",
+    "stack": "cpp"
   }
 }
