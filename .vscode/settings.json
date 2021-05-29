@@ -23,6 +23,7 @@
     "initializer_list": "cpp",
     "list": "cpp",
     "string_view": "cpp",
-    "unordered_map": "cpp"
+    "unordered_map": "cpp",
+    "queue": "cpp"
   }
 }

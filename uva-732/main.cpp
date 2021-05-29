@@ -35,6 +35,39 @@ class Stack {
     }
 };
 
+void check_anagram(
+  vector<string> & sequences, Stack s, queue<char> source, queue<char> target
+) {
+
+  bool is_anagram = true;
+  while (!target.empty()) {
+
+    auto t = target.front();
+    while (s.stack.top() != t) {
+      if (source.empty()) break;
+
+      s.push(source.front());
+      source.pop();
+
+      // if (source.front() == t) {
+
+      // }
+    }
+
+    if (s.stack.top() != t) {
+      is_anagram = false;
+      break;
+    }
+
+    s.pop();
+    target.pop();
+  }
+
+  if (is_anagram)
+    sequences.push_back(s.sequence);
+
+}
+
 
 int main() {
 
@@ -49,32 +82,14 @@ int main() {
     for (auto s : source)
       qsource.push(s);
 
+    queue<char> qtarget;
+    for (auto t : target)
+      qtarget.push(t);
+
 
     vector<string> sequences;
     Stack s;
-    bool is_anagram = true;
-    for (auto t : target) {
-
-      while (s.stack.top() != t) {
-        if (qsource.empty()) break;
-
-        s.push(qsource.front());
-        qsource.pop();
-      }
-
-      if (s.stack.top() != t) {
-        is_anagram = false;
-        break;
-      }
-
-      s.pop();
-    }
-
-    if (is_anagram)
-      sequences.push_back(s.sequence);
-
-
-
+    check_anagram(sequences, s, qsource, qtarget);
 
     sort(sequences.begin(), sequences.end());
 
