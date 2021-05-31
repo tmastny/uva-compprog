@@ -18,21 +18,36 @@
 
 using namespace std;
 
+// depth first search:
+// - go as far as possible in the branch before backtracking
+//
+// That is the approach I used in this problem. I may recruse deeper,
+// but I always return to the last recursion point before continuing
+// down other branches.
+
+
+
+
+// Optimization: https://www.redgreencode.com/implementing-a-fast-solution-to-uva-732/
+// - pruning via recursion found to be best
+// - I did vaguely consider brute forcing it, but recrusion felt right
+//   because there was forced sequences, and potential branches.
+
 class Stack {
   public:
     string sequence;
-    stack<char> stack;
+    stack<char> stk;
 
     void push(char c) {
-      stack.push(c);
+      stk.push(c);
       sequence.push_back('i');
     };
     void pop() {
-      stack.pop();
+      stk.pop();
       sequence.push_back('o');
     };
     Stack() {
-      stack.push('!');
+      stk.push('!');
     }
 };
 
@@ -55,21 +70,19 @@ void check_anagram(
   while (!target.empty()) {
 
     auto t = target.front();
-    while (s.stack.top() != t) {
+    while (s.stk.top() != t) {
       if (source.empty()) break;
 
       s.push(source.front());
       source.pop_front();
     }
 
-    if (s.stack.top() != t) {
+    if (s.stk.top() != t) {
       is_anagram = false;
       break;
     }
 
-    // deque source;
-    // if (in_queue(source, t))
-    if (source.front() == t) {
+    if (in_queue(source, t)) {
       check_anagram(sequences, s, source, target, true);
     }
 
@@ -107,16 +120,15 @@ int main() {
 
     sort(sequences.begin(), sequences.end());
 
+    cout << "[" << endl;
     for (auto s : sequences) {
       for (auto c : s) {
         cout << c << " ";
       }
       cout << endl;
     }
-
     i++;
-    if (i > 2)
-      break;
+    cout << "]" << endl;
   }
 
 }
