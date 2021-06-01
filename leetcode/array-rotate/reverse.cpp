@@ -5,8 +5,32 @@ using namespace std;
 
 class Solution {
 public:
-    int maxProfit(vector<int>& prices) {
-      return prices[0];
+    void swap(vector<int> & n, int i, int j) {
+        int temp = n[i];
+        n[i] = n[j];
+        n[j] = temp;
+    }
+
+    void reverse(vector<int> & n, int start, int end) {
+
+        while (start < end) {
+            swap(n, start, end);
+            start++;
+            end--;
+        }
+
+    }
+
+    void rotate(vector<int>& nums, int k) {
+
+        int size = nums.size();
+        if (size <= 1) return;
+
+        k = k % size;
+
+        reverse(nums, 0, size - 1);
+        reverse(nums, 0, (k - 1) % size);
+        reverse(nums, k % size, size - 1);
     }
 };
 

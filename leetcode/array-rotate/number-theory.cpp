@@ -3,6 +3,10 @@
 
 using namespace std;
 
+// https://en.wikipedia.org/wiki/Quotient_group#Example:_Addition_modulo_6
+// https://en.wikipedia.org/wiki/Coset
+// Cosets: partition groups into equal-sized, non-overlapping sets
+
 class Solution {
 public:
     void swap(vector<int> & n, int i, int j) {
