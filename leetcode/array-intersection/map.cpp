@@ -4,6 +4,17 @@
 
 using namespace std;
 
+// better solution: https://medium.com/@punitkmr/intersection-of-two-arrays-ii-ffb26f04dfd1
+// Building the `map` for the second array is not needed
+// and only adds to execution time. Beacuse the values
+// must be in both arrays, you only need to create a `map`
+// for one array. Then you can iterate through the second array
+// adding occurrences to the map (being sure not to overadd).
+
+// Minor optimization: make a `map` of the smallest array.
+
+
+
 class Solution {
 public:
     map<int, int> freq(vector<int> & n) {
