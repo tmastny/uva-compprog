@@ -36,7 +36,8 @@ public:
         }
 
         return -1;
-\ bbvn];
+    }
+};
 
 int main() {
 
