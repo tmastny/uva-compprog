@@ -4,41 +4,32 @@
 
 using namespace std;
 
-//  Naive solution:
-//      For each element of haystack, check if
-//      the next `n` elements of haystack form
-//      the needle string.
-
-//      Complexity: O(h * n)
-
-//  Optimal solution: Knuth-Morris-Pratt (KMP) Algorithm
-//      Complexity: O(h + n)
-
-
-
 class Solution {
 public:
-    int strStr(string haystack, string needle) {
-        if (needle == "") return 0;
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        if (root == nullptr) return vector<vector<int>>{};
 
-        for (int h = 0; h < haystack.size(); h++) {
+        vector<vector<int>> log;
+        deque<TreeNode*> q;
 
-            int n = 0;
-            while (n < needle.size() && h + n < haystack.size()) {
+        q.push_back(root);
+        while (!q.empty()) {
 
-                if (needle[n] != haystack[h + n]) break;
-                n++;
+            vector<int> vals;
+            int n = q.size();
+            for (int i = 0; i < n; i++) {
+                TreeNode* node = q.front();
+                q.pop_front();
+
+                vals.push_back(node->val);
+                if (node->left != nullptr) q.push_back(node->left);
+                if (node->right != nullptr) q.push_back(node->right);
             }
 
-            if (n == needle.size()) {
-                return h;
-            }
+            log.push_back(vals);
         }
 
-        return -1;
+
+        return log;
     }
 };
-
-int main() {
-
-}
