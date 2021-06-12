@@ -39,10 +39,6 @@ public:
             if (cumsum > maxsum) {
                 maxsum = cumsum;
             }
-
-            if (nums[i] > maxsum) {
-                maxsum = cumsum = nums[i];
-            }
         }
 
         return maxsum;
