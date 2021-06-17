@@ -111,6 +111,39 @@ private:
 
         return triplets;
     }
+
+    vector<vector<int>> threeSumFast(vector<int>& nums) {
+        vector<vector<int>> threes;
+
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size(); i++) {
+            if (i != 0 && nums[i] == nums[i - 1]) continue;
+
+            int lo = i + 1;
+            int hi = nums.size() - 1;
+            while (lo < hi && lo < nums.size()) {
+
+                if (nums[i] + nums[lo] + nums[hi] == 0) {
+                    threes.push_back(vector<int> {nums[i], nums[lo], nums[hi]});
+
+                    hi--;
+                    while (lo < hi && nums[hi] == nums[hi + 1]) hi--;
+
+                    lo++;
+                    while (lo < hi && nums[lo] == nums[lo - 1]) lo++;
+
+                } else if (nums[i] + nums[lo] + nums[hi] < 0) {
+                    lo++;
+
+                } else {
+                    hi--;
+                }
+            }
+
+        }
+
+        return threes;
+    }
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
         return threeSumOn2(nums);
