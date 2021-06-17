@@ -75,6 +75,8 @@ private:
         set<vector<int>> threes;
 
         sort(nums.begin(), nums.end());
+        // cheating the edge case?
+        if (nums[0] == 0 && nums[nums.size() - 1] == 0) return vector<vector<int>> {{0, 0, 0}};
 
         int neg = 0;
         while (neg < nums.size() && nums[neg] <= 0) {
