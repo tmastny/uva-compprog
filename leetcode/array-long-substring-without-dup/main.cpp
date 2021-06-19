@@ -6,6 +6,8 @@ using namespace std;
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
+        if (s == "") return 0;
+
         set<char> next_substr;
         set<char> best_substr;
         best_substr.insert(s[0]);
@@ -16,6 +18,7 @@ public:
         bool has_seen_dup = false;
 
         for (int i = 1; i < s.size(); i++) {
+
             if (!has_seen_dup) {
                 if (best_substr.find(s[i]) == best_substr.end()) {
                     hi++;
@@ -23,8 +26,8 @@ public:
 
                 } else {
                     has_seen_dup = true;
-                    while (s[index_after_dup] != s[i]) index_after_dup += 1;
-			        index_after_dup += 1;
+                    index_after_dup = i;
+                    while (s[index_after_dup - 1] != s[i]) index_after_dup -= 1;
 
                     for (int j = index_after_dup; j <= i; j++) {
                         next_substr.insert(s[j]);
@@ -34,7 +37,6 @@ public:
 
             } else {
                 if (next_substr.find(s[i]) == next_substr.end()) {
-                    cout << s[i] << endl;
                     next_substr.insert(s[i]);
 
                     if (next_substr.size() > best_substr.size()) {
@@ -42,18 +44,33 @@ public:
                         hi = i + 1;
                         best_substr = next_substr;
                         next_substr.clear();
+                        has_seen_dup = false;
                     }
                 } else {
+                    // 0123456
+                    // loddktd
+                    next_substr.clear();
                     index_after_dup = i;
+                    while (s[index_after_dup - 1] != s[i]) index_after_dup -= 1;
+
+                    for (int j = index_after_dup; j <= i; j++) {
+                        next_substr.insert(s[j]);
+                    }
                 }
             }
+
+//             cout << i << endl;
+//             cout << "best: ";
+//             for (auto b : best_substr) cout << b;
+//             cout << endl;
+
+//             cout << "next: ";
+//             for (auto b : next_substr) cout << b;
+//             cout << endl << endl;
         }
 
-        for (auto b : next_substr) cout << b;
-        cout << endl;
 
-        for (auto b : best_substr) cout << b;
-        cout << endl;
+
         return best_substr.size();
     }
 };
