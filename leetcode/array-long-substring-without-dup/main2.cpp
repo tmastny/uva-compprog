@@ -50,9 +50,4 @@ int main() {
   vector<int> t3 {7, 6, 4, 3, 1};
 
   Solution s;
-
-  cout << s.maxProfit(t1) << endl;
-  cout << s.maxProfit(t2) << endl;
-  cout << s.maxProfit(t3) << endl;
-
 }
