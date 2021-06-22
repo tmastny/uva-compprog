@@ -18,6 +18,8 @@ def longestPalindrome(s):
             curr_hi += 1
             curr_lo = min(pali_chars[s[i]])
 
+            # this line shows that' it's not linear performance.
+            # it has to loop through all previous indices of the value
             for x in pali_chars[s[i]]:
                 if x - 1 >= 0:
                     updated_chars[s[x - 1]].add(x - 1)
