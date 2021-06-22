@@ -18,9 +18,9 @@ def longestPalindrome(s):
             curr_hi += 1
             curr_lo = min(pali_chars[s[i]])
 
-            # this is not quite right. The index could be mapped
-            # to a different letter, i.e. x-1 -> a when s[i] == b
-            updated_chars = defaultdict(set, {s[i]: {x - 1 for x in pali_chars[s[i]] if x - 1 >= 0}})
+            for x in pali_chars[s[i]]:
+                if x - 1 >= 0:
+                    updated_chars[s[x - 1]].add(x - 1)
         else:
             curr_hi = i + 1
             curr_lo = i
@@ -38,12 +38,13 @@ def longestPalindrome(s):
         if pali_index >= 0:
             pali_chars[s[pali_index]].add(pali_index)
 
-    print(f'{s: <{width}} {curr_lo}          {curr_hi}')
+    print(f'{s[0:i]: <{width}} {curr_lo}          {curr_hi}       {dict(pali_chars)}')
     return s[best_lo:best_hi]
 
 
 strings = [
-    "abababa"
+    #012345
+    "aaaaa"
 ]
 
 for s in strings:
