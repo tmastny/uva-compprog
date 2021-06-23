@@ -4,7 +4,7 @@ import random
 class Solution:
     def _max_array_cache(self, nums):
         """
-        Build cache of subset maximums in O(n).
+        Build cache of upcoming subarray maximums in O(n).
         """
         imax = [nums[-1]]
         for n in reversed(nums):
@@ -29,7 +29,7 @@ class Solution:
         for i in range(1, len(nums) - 1):
             imin = min(imin, nums[i - 1])
 
-            if imin < nums[i] < imax[i]:
+            if imin < nums[i] < imax[i + 1]:
                 return True
 
         return False
@@ -59,17 +59,6 @@ class Solution:
 
         return False
 
-    def _sequential_difference(self, nums):
-        n_increases = 0
-        max = nums[0]
-
-        for i in range(len(nums)):
-            if nums[i] > max:
-                n_increases += 1
-                max = nums[i]
-
-        return n_increases >= 2
-
     def increasingTriplet(self, nums: List[int]) -> bool:
         return self._faster_cache(nums)
 
@@ -81,7 +70,8 @@ if __name__ == "__main__":
         [1,2,3,4,5],
         [5,4,3,2,1],
         [2,1,5,0,4,6],
-        [1,1,5,0,3,4]
+        [1,1,5,0,3,4],
+        [0,5,0,0,0]
     ]
 
     print('\nFunction   Truth')
@@ -89,12 +79,9 @@ if __name__ == "__main__":
     for case in test_cases:
         print(f'{str(s.increasingTriplet(case)):<5}      {str(s._brute_force(case)):<5}')
 
-    for case in test_cases:
-        print(s._revcummax(case))
-
-    for i in range(10):
-        length = random.randint(10, 100)
-        seq = [random.randint(-100, 100) for i in range(length)]
-        if s._brute_force(seq) != s._faster_cache(seq):
+    for i in range(100):
+        length = random.randint(10, 1000)
+        seq = [random.randint(-1000, 1000) for i in range(length)]
+        if s._brute_force(seq) != s.increasingTriplet(seq):
             print("Error")
             break
