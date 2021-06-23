@@ -1,3 +1,13 @@
+// "RSA keys are typically 2048 to 4096 bits long"
+// https://en.wikipedia.org/wiki/RSA_(cryptosystem)#Integer_factorization_and_RSA_problem
+
+// Faulty key generation:
+//  - Fermat factorization can work if `p` and `q` are close together
+//  - p - 1 and q - 1 can also be factored if they have only small prime factors
+//  - if q < p < 2q, then d > n^.25 / 3
+//  - primes p,q must be generated with a strong random number generator
+// https://crypto.stanford.edu/~dabo/pubs/papers/RSA-survey.pdf
+
 struct Euclid {
     x: i32,
     y: i32,
