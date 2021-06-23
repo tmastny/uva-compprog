@@ -13,10 +13,19 @@ class Solution:
 
         return False
 
+    def _sequential_difference(self, nums):
+        n_increases = 0
+        max = nums[0]
 
+        for i in range(len(nums)):
+            if nums[i] > max:
+                n_increases += 1
+                max = nums[i]
+
+        return n_increases >= 2
 
     def increasingTriplet(self, nums: List[int]) -> bool:
-        return self._brute_force(nums)
+        return self._sequential_difference(nums)
 
 
 if __name__ == "__main__":
