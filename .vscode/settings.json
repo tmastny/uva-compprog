@@ -26,5 +26,6 @@
     "unordered_map": "cpp",
     "queue": "cpp",
     "ostream": "cpp"
-  }
+  },
+  "python.pythonPath": "/Users/Tim/anaconda/envs/comp-prog/bin/python"
 }

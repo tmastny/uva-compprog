@@ -1,0 +1,5 @@
+name: comp-prog
+channels:
+  - defaults
+dependencies:
+  - python=3.9.5
