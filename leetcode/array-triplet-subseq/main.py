@@ -1,6 +1,7 @@
 from typing import List
 import random
 
+
 class Solution:
     def _max_array_cache(self, nums):
         """
@@ -21,7 +22,8 @@ class Solution:
         """
         O(n) solution. O(n^2) solution with O(n) memory.
         """
-        if len(nums) < 3: return False
+        if len(nums) < 3:
+            return False
 
         imin = nums[0]
         imax = self._max_array_cache(nums)
@@ -41,7 +43,7 @@ class Solution:
         """
         for i in range(1, len(nums) - 1):
             mmin = min(nums[0:i])
-            mmax = max(nums[i + 1:len(nums)])
+            mmax = max(nums[i + 1 : len(nums)])
             if mmin < nums[i] < mmax:
                 return True
 
@@ -67,17 +69,19 @@ if __name__ == "__main__":
     s = Solution()
 
     test_cases = [
-        [1,2,3,4,5],
-        [5,4,3,2,1],
-        [2,1,5,0,4,6],
-        [1,1,5,0,3,4],
-        [0,5,0,0,0]
+        [1, 2, 3, 4, 5],
+        [5, 4, 3, 2, 1],
+        [2, 1, 5, 0, 4, 6],
+        [1, 1, 5, 0, 3, 4],
+        [0, 5, 0, 0, 0],
     ]
 
-    print('\nFunction   Truth')
-    print('----------------------')
+    print("\nFunction   Truth")
+    print("----------------------")
     for case in test_cases:
-        print(f'{str(s.increasingTriplet(case)):<5}      {str(s._brute_force(case)):<5}')
+        print(
+            f"{str(s.increasingTriplet(case)):<5}      {str(s._brute_force(case)):<5}"
+        )
 
     for i in range(100):
         length = random.randint(10, 1000)
