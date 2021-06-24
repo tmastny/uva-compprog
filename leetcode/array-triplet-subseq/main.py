@@ -3,6 +3,50 @@ import random
 
 
 class Solution:
+    def _fastest(self, nums):
+
+    def _fast_no_cache(self, nums):
+        """
+        O(n) time and O(1) memory, from the internet.
+        Find a pair lo, mid. Then see if next number is hi,
+        completing the triplet.
+
+        During iteration, keep track of min. Then for any
+        element after the new min such that `min < nums[i]`
+        update lo = min and mid = nums[i]
+        """
+        next_lo = None
+        lo = nums[0]
+        mid = None
+        # [1, 5, 0, 4, 1, 3]
+        for i in range(1, len(nums)):
+            if mid is None:
+                if nums[i] > lo:
+                    mid = nums[i]
+                else:
+                    lo = nums[i]
+                continue
+
+            if nums[i] > mid:
+                return True
+
+            if lo < nums[i] < mid:
+                mid = nums[i]
+
+            if next_lo is None and nums[i] < lo:
+                next_lo = nums[i]
+
+            if next_lo is not None:
+                if nums[i] < next_lo:
+                    next_lo = nums[i]
+
+                elif nums[i] > next_lo:
+                    mid = nums[i]
+                    lo = next_lo
+                    next_lo = None
+
+        return False
+
     def _max_array_cache(self, nums):
         """
         Build cache of upcoming subarray maximums in O(n).
@@ -20,7 +64,11 @@ class Solution:
 
     def _faster_cache(self, nums):
         """
-        O(n) solution. O(n^2) solution with O(n) memory.
+        O(n) solution. Same strategy as O(n^2), but saves a loop by using O(n) memory.
+        The challenge of a solution with O(n) memory is that the algorithm subtracts
+        elements from the upcoming subarray (compared to adding elements to the previous
+        subarray). This means if we removed the max, we we would need to search the
+        upcoming subarray to find it.
         """
         if len(nums) < 3:
             return False
@@ -62,7 +110,7 @@ class Solution:
         return False
 
     def increasingTriplet(self, nums: List[int]) -> bool:
-        return self._faster_cache(nums)
+        return self._fast_no_cache(nums)
 
 
 if __name__ == "__main__":
@@ -74,6 +122,8 @@ if __name__ == "__main__":
         [2, 1, 5, 0, 4, 6],
         [1, 1, 5, 0, 3, 4],
         [0, 5, 0, 0, 0],
+        [20, 100, 10, 12, 5, 13],
+        [1, 5, 0, 4, 1, 3],
     ]
 
     print("\nFunction   Truth")
@@ -83,9 +133,12 @@ if __name__ == "__main__":
             f"{str(s.increasingTriplet(case)):<5}      {str(s._brute_force(case)):<5}"
         )
 
-    for i in range(100):
+    errors = 0
+    for i in range(10):
         length = random.randint(10, 1000)
         seq = [random.randint(-1000, 1000) for i in range(length)]
         if s._brute_force(seq) != s.increasingTriplet(seq):
-            print("Error")
-            break
+            errors += 1
+
+    if errors:
+        print(f"Errors: {errors}")
