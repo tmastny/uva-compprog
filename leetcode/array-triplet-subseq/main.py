@@ -5,6 +5,15 @@ import random
 
 class Solution:
     def _fastest(self, nums):
+        """
+        Fast and clean O(n) solution. The key idea here is updating.
+        Each element in the array is either:
+        1. a new min
+        2. a new (smaller) mid
+        3. an element greater than mid
+        We can take advantage of this sequence to write this compact code
+        to find this.
+        """
         lo = math.inf
         mid = math.inf
 
