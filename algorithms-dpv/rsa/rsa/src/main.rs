@@ -8,6 +8,8 @@
 //  - primes p,q must be generated with a strong random number generator
 // https://crypto.stanford.edu/~dabo/pubs/papers/RSA-survey.pdf
 
+use std::collections::BTreeMap;
+
 struct Euclid {
     x: i32,
     y: i32,
@@ -44,6 +46,42 @@ fn modexp(x: i32, y: i32, n: i32) -> i32 {
     return x * z * z % n;
 }
 
+fn factors_from_roots(n: i32, e: i32, d: i32) -> Vec<i32> {
+    let exp = e * d - 1;
+    let mut factors = Vec::new();
+
+    println!("Element    Exp  Roots          gcd");
+    for i in 2..n {
+        let mut roots = Vec::new();
+        let mut factor = 1;
+        let mut root_exp = exp;
+        while root_exp % 2 == 0 && root_exp / 2 >= 0 {
+            let a = modexp(i, root_exp / 2, n);
+            roots.push(a);
+            if a != 1 && a != -1 {
+                factor = gcd(a - 1, n);
+                break;
+            } else if a == -1 {
+                break;
+            }
+            root_exp /= 2;
+        }
+        factors.push(factor);
+        println!("{:<11}{:<5}{:<15}{}", i, root_exp, format!("{:?}", roots), factor);
+    }
+
+    return factors;
+}
+
+fn find_public_inverse(exp_mod: i32) -> i32 {
+    for elem in 3..exp_mod {
+        if gcd(elem, exp_mod) == 1 {
+            return elem
+        }
+    }
+    return 3;
+}
+
 
 
 fn main() {
@@ -68,18 +106,29 @@ fn main() {
     let q = 11;
     let n = p * q;
     let exp_mod = (p - 1) * (q - 1);
-
-    // find public inverse
-    let mut e = 3;
-    for elem in [3, 5, 7, 11, 13] {
-        if gcd(elem, exp_mod) == 1 {
-            e = elem;
-            break;
-        }
-    }
+    let e = find_public_inverse(exp_mod);
 
     println!("Public key: (N = {}, e = {})", n, e);
 
     let d = inverse(e, exp_mod);
     println!("Secret key: {}", d);
+
+    println!("\nProblem 1.42");
+
+    let p = 3;
+    let q = 5;
+    let n = p * q;
+    let exp_mod = (p - 1) * (q - 1);
+    let e = find_public_inverse(exp_mod);
+    let d = inverse(e, exp_mod);
+
+    println!("Given (N = {}, e = {}, d = {}), find the factors of N.", n, e, d);
+    let factors = factors_from_roots(n, e, d);
+
+    let mut m = BTreeMap::new();
+    for f in &factors {
+        *m.entry(f).or_insert(0) += 1;
+    }
+
+    println!("Factors of n and count of roots: {:?}", m);
 }
