@@ -1,9 +1,22 @@
+import math
 from typing import List
 import random
 
 
 class Solution:
     def _fastest(self, nums):
+        lo = math.inf
+        mid = math.inf
+
+        for n in nums:
+            if n <= lo:
+                lo = n
+            elif n <= mid:
+                mid = n
+            else:
+                return True
+
+        return False
 
     def _fast_no_cache(self, nums):
         """
@@ -110,7 +123,7 @@ class Solution:
         return False
 
     def increasingTriplet(self, nums: List[int]) -> bool:
-        return self._fast_no_cache(nums)
+        return self._fastest(nums)
 
 
 if __name__ == "__main__":
