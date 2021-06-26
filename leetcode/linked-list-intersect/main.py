@@ -23,13 +23,30 @@
 #   you find the intersection point.
 
 # Loop detection: O(n)
-#   Make list A into a loop. Then list B is a list with a cycle.
+#   Connect the head and tail of list A. Then if the lists intersect,
+#   list B is a list with a cycle.
 #   If we can find the cycle point in O(n), that is the solution.
+#   Problem:
+#       the standard loop detection algo is O(n), but it doesn't return the
+#       node that starts the loop. Rather, the "fast" pointer
+#       eventually overtakes the slow pointer, proving a loop exists.
+
+# Stack: time O(n), space O(n)
+#   Add nodes from a to stack_a and b to stack_b. After we reach
+#   the end of both lists, pop nodes from stack a and b until they
+#   aren't equal. Then the previous popped node is the intersection
+#   point.
+#   Note:
+#       It's true that this solution has O(n) memory, but the stacks
+#       would be pointers to the objects, not copies of the objects
+#       themselves. So the memory footprint would be much smaller
+#       than 2 * size of nodes.
 
 class ListNode:
     def __init__(self, x):
         self.val = x
         self.next = None
+
 
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
@@ -57,7 +74,7 @@ def print_node(head):
 
 if __name__ == "__main__":
     cases = [
-        [[4,1,8,4,5], [5,6,1,8,4,5]],
+        [[4, 1, 8, 4, 5], [5, 6, 1, 8, 4, 5]],
     ]
     cases = [list(map(make_node, case)) for case in cases]
 
