@@ -23,41 +23,42 @@ class ListNode:
 # Option 2:
 #   implement ripple-carry adder for these linked lists
 
-class Solution:
+# Notes:
+#   1. `return head.next` trick
 
+class Solution:
     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
         head = ListNode()
         node = head
         carry = 0
 
-        while l1 is not None or l2 is not None or carry:
-            val1 = 0 if l1 is None else l1.val
-            val2 = 0 if l2 is None else l2.val
+        while l1 or l2 or carry:
+            node.next = ListNode()
+            node = node.next
+
+            val1 = l1.val if l1 else 0
+            val2 = l2.val if l2 else 0
 
             sum = val1 + val2 + carry
             node.val = sum % 10
-            carry = sum // 10
+            carry = 1 if sum >= 10 else 0
 
-            l1 = None if l1 is None else l1.next
-            l1 = None if l2 is None else l2.next
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
 
-            if l1 or l2 or carry:
-                node.next = ListNode()
-                node = node.next
-
-        return head
+        return head.next
 
 
 def make_node(lst):
     head = ListNode()
     node = head
-    for i, val in enumerate(lst):
+    for val in lst:
+        node.next = ListNode()
+        node = node.next
         node.val = val
-        if i + 1 < len(lst):
-            node.next = ListNode()
-            node = node.next
 
-    return head
+
+    return head.next
 
 
 def print_node(head):
@@ -70,10 +71,11 @@ def print_node(head):
 
 if __name__ == "__main__":
     cases = [
-        # [[2, 4, 3], [5, 6, 4], [7, 0, 8]],
-        # [[0], [0], [0]],
-        # [[9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9], []],
+        [[2, 4, 3], [5, 6, 4], [7, 0, 8]],
+        [[0], [0], [0]],
+        [[9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9], []],
         [[0, 8, 6, 5, 6, 8, 3, 5, 7], [6, 7, 8, 0, 8, 5, 8, 9, 7], []],
+        [[9], [9], []],
     ]
     cases = [list(map(make_node, case)) for case in cases]
 
