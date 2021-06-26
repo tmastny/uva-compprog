@@ -14,48 +14,34 @@ class ListNode:
         self.next = next
 
 
+# Option 1: git hash 55cc931
+#   convert to number using first as msd, then reverse the
+#   digit, sum, and return a list of that number.
+#   The problem is that there is some complexity getting
+#   the conversion right.
+
+# Option 2:
+#   implement ripple-carry adder for these linked lists
+
 class Solution:
-    def _make_num(self, node: ListNode):
-        if node.next is None:
-            return node.val
-
-        num = 0
-        if node.val == 0:
-            num = 10
-            node = node.next
-
-        while node is not None:
-            num = num * 10 + node.val
-            node = node.next
-
-        return self._reverse_num(num)
-
-    def _reverse_num(self, num):
-        rnum = 0
-
-        last_num = num
-        while num >= 0 and last_num >= 10:
-            rnum = rnum * 10 + (num % 10)
-
-            last_num = num
-            num //= 10
-
-        return rnum
 
     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
-        sum = self._make_num(l1) + self._make_num(l2)
-        print(f"sum: {self._make_num(l1)} + {self._make_num(l2)} = {sum}")
-
         head = ListNode()
         node = head
+        carry = 0
 
-        last_sum = sum
-        while sum >= 0 and last_sum >= 10:
+        while l1 is not None or l2 is not None or carry:
+            val1 = 0 if l1 is None else l1.val
+            val2 = 0 if l2 is None else l2.val
+
+            sum = val1 + val2 + carry
             node.val = sum % 10
-            last_sum = sum
-            sum //= 10
+            carry = sum // 10
 
-            if sum != 0:
+            l1 = None if l1 is None else l1.next
+            l1 = None if l2 is None else l2.next
+
+            if l1 or l2 or carry:
                 node.next = ListNode()
                 node = node.next
 
