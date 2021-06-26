@@ -59,7 +59,20 @@ class ListNode:
 
 
 class Solution:
+    def _simplified_(self, headA: ListNode, headB: ListNode) -> ListNode:
+        nodeA = headA
+        nodeB = headB
+
+        while nodeA != nodeB:
+            nodeA = nodeA.next if nodeA else headA
+            nodeB = nodeB.next if nodeB else headB
+
+        return nodeA
+
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        return self._simplified_(headA, headB)
+
+    def _getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
         if headA == headB:
             return headA
 
