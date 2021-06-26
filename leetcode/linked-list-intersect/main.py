@@ -40,7 +40,8 @@
 #       It's true that this solution has O(n) memory, but the stacks
 #       would be pointers to the objects, not copies of the objects
 #       themselves. So the memory footprint would be much smaller
-#       than 2 * size of nodes.
+#       than 2 * size of nodes. A typical pointer is 8 bytes, or
+#       64 bits, which is larger than a typical int (32 bits).
 
 class ListNode:
     def __init__(self, x):
@@ -50,7 +51,7 @@ class ListNode:
 
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
-        return headA
+        return headB
 
 
 def make_node(lst):
@@ -74,12 +75,22 @@ def print_node(head):
 
 if __name__ == "__main__":
     cases = [
-        [[4, 1, 8, 4, 5], [5, 6, 1, 8, 4, 5]],
+        [[4, 1, 8, 4, 5], [5, 6, 1]],
     ]
     cases = [list(map(make_node, case)) for case in cases]
 
     s = Solution()
 
     for l1, l2 in cases:
+        node1 = l1
+        while node1.val != 8:
+            node1 = node1.next
+
+        node2 = l2
+        while node2.next:
+            node2 = node2.next
+
+        node2.next = node1
+
         node = s.getIntersectionNode(l1, l2)
         print_node(node)
