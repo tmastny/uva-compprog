@@ -63,15 +63,29 @@ class Solution:
         if headA == headB:
             return headA
 
+        on = {"a": "a", "b": "b"}
+        swap = {"a": "b", "b": "a"}
+        to = {"a": headB, "b": headA}
         nodeA = headA
         nodeB = headB
 
-        while nodeA.next is not headB:
+        while True:
             if nodeA is nodeB:
                 return nodeA
 
-            nodeA = nodeA.next if nodeA.next else headB
-            nodeB = nodeB.next if nodeB.next else headA
+            nodeA = nodeA.next
+            nodeB = nodeB.next
+
+            if not nodeA:
+                nodeA = to[on["a"]]
+                on["a"] = swap[on["a"]]
+
+            if not nodeB:
+                nodeB = to[on["b"]]
+                on["b"] = swap[on["b"]]
+
+            if nodeA is headA and on["a"] == "a":
+                break
 
         return None
 
@@ -101,18 +115,26 @@ if __name__ == "__main__":
     ]
     cases = [list(map(make_node, case)) for case in cases]
 
+    node3 = ListNode(3)
+    node2 = ListNode(2)
+    node2.next = node3
+    cases.append([node3, node2])
+
     s = Solution()
 
+    i = 1
     for l1, l2 in cases:
-        node1 = l1
-        while node1.val != 8:
-            node1 = node1.next
+        if i == 1:
+            node1 = l1
+            while node1.val != 8:
+                node1 = node1.next
 
-        node2 = l2
-        while node2.next:
-            node2 = node2.next
+            node2 = l2
+            while node2.next:
+                node2 = node2.next
 
-        node2.next = node1
+            node2.next = node1
+            i += 1
 
         node = s.getIntersectionNode(l1, l2)
         print_node(node)
@@ -122,7 +144,7 @@ if __name__ == "__main__":
     cases2 = [list(map(make_node, case)) for case in cases2]
 
     for l1, l2 in cases2:
-        print_node(l1)
-        print_node(l2)
+        # print_node(l1)
+        # print_node(l2)
         node = s.getIntersectionNode(l1, l2)
         print_node(node)
