@@ -40,6 +40,10 @@ class ListNode:
         self.val = val
         self.next: ListNode = next
 
+# 1 2 3 4
+# ^ ^
+#   ^ ^
+#     ^ ^ <- even.next is None
 
 class Solution:
     def oddEvenList(self, head: ListNode) -> ListNode:
@@ -48,21 +52,17 @@ class Solution:
 
         evenhead = head.next
 
-        lag = ListNode(next=head)
-        lead = head.next
+        odd = head
+        even = head.next
 
-        i = 0
-        while lead:
-            next_lag = lag.next
-            lag.next = lead
+        while even and even.next:
+            odd.next = even.next
+            odd = odd.next
 
-            lead = lead.next
-            lag = next_lag
-            i += 1
+            even.next = even.next.next
+            even = even.next
 
-        last = lag.next
-        lag.next = evenhead if i % 2 == 1 else None
-        last.next = None if i % 2 == 1 else evenhead
+        odd.next = evenhead
 
         return head
 
