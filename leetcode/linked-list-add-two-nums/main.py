@@ -5,9 +5,6 @@
 # output = [7,0,8]    807
 
 
-from typing import List
-
-
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -26,6 +23,7 @@ class ListNode:
 # Notes:
 #   1. `return head.next` trick
 
+
 class Solution:
     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
         head = ListNode()
@@ -41,7 +39,7 @@ class Solution:
 
             sum = val1 + val2 + carry
             node.val = sum % 10
-            carry = 1 if sum >= 10 else 0
+            carry = sum // 10
 
             l1 = l1.next if l1 else None
             l2 = l2.next if l2 else None
@@ -56,7 +54,6 @@ def make_node(lst):
         node.next = ListNode()
         node = node.next
         node.val = val
-
 
     return head.next
 
