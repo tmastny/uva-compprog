@@ -131,4 +131,10 @@ fn main() {
     }
 
     println!("Factors of n and count of roots: {:?}", m);
+
+    println!("\nProblem 1.45(c)");
+    // todo
+
+    println!("\nProblem 1.45(d)");
+    println!("{}", inverse(17, (17 - 1) * (23 - 1)));
 }
