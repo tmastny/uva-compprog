@@ -45,6 +45,12 @@ class ListNode:
 #   ^ ^
 #     ^ ^ <- even.next is None
 
+# 1 2 3 4 5
+# ^ ^
+#   ^ ^
+#     ^ ^
+#       ^ ^ <- even.next is None
+
 class Solution:
     def oddEvenList(self, head: ListNode) -> ListNode:
         if not head:
