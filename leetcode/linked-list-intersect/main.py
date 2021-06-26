@@ -2,6 +2,14 @@
 # Input                        Output
 # [4,1,8,4,5], [5,6,1,8,4,5]   [8,4,5]
 
+# [4, 1, 8, 4, 5], [5, 6, 1, 8, 4, 5]   [8, 4, 5]
+#  4  5 13 17 22    5 11 12 20 24 29     8 12 17
+# 18 17  9  5  0   24 18 17  9  5  0
+
+# 29 - 22 = 7 <- no, this doesn't work: we aren't checking
+#                the values (1 is a false positive), but pointers
+
+
 # Note:
 #   The intersection is *not* the point at which the remaining
 #   values are equal: then the output of example 1 would be
@@ -43,6 +51,7 @@
 #       than 2 * size of nodes. A typical pointer is 8 bytes, or
 #       64 bits, which is larger than a typical int (32 bits).
 
+
 class ListNode:
     def __init__(self, x):
         self.val = x
@@ -51,7 +60,20 @@ class ListNode:
 
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
-        return headB
+        if headA == headB:
+            return headA
+
+        nodeA = headA
+        nodeB = headB
+
+        while nodeA.next is not headB:
+            if nodeA is nodeB:
+                return nodeA
+
+            nodeA = nodeA.next if nodeA.next else headB
+            nodeB = nodeB.next if nodeB.next else headA
+
+        return None
 
 
 def make_node(lst):
@@ -92,5 +114,15 @@ if __name__ == "__main__":
 
         node2.next = node1
 
+        node = s.getIntersectionNode(l1, l2)
+        print_node(node)
+
+    cases2 = [[[4, 1, 8, 4, 5], [5, 6, 1]], [[4], [5]]]
+
+    cases2 = [list(map(make_node, case)) for case in cases2]
+
+    for l1, l2 in cases2:
+        print_node(l1)
+        print_node(l2)
         node = s.getIntersectionNode(l1, l2)
         print_node(node)
