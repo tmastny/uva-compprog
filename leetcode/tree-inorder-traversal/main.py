@@ -63,7 +63,6 @@ class Solution:
 
         stack.append(node)
 
-
     def _iterative_traversal(self, root: TreeNode) -> List[int]:
         vals = []
         leftstack = []
@@ -77,13 +76,17 @@ class Solution:
             vals.append(node.val)
             self._add_to_leftstack(node.right, leftstack)
 
-
         return vals
+
 
 if __name__ == "__main__":
     cases = [
-        [1, None, 2, None, None, 3], [], [1], [1, 2], [1, None, 2],
-        [0, 1, 2, 3, 4, 5, 6]
+        [1, None, 2, None, None, 3],
+        [],
+        [1],
+        [1, 2],
+        [1, None, 2],
+        [0, 1, 2, 3, 4, 5, 6],
     ]
     cases = [TreeNode.from_list(case) for case in cases]
 
