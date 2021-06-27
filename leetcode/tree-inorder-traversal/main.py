@@ -28,7 +28,7 @@ class TreeNode:
           1   2      2   3
          3 4 5 6    4 5 6 7
         l(0) = 1    l(1) = 3   l(2) = 5   l(i) = i * 2 + 1
-        r(0) = 2    r(1) = 4   r(2) = 6   r(i) = i * 2 + 2s
+        r(0) = 2    r(1) = 4   r(2) = 6   r(i) = i * 2 + 2
         """
 
         return cls._add_to_list(ls, 0)
@@ -41,14 +41,14 @@ class TreeNode:
 
 class Solution:
     def _recursive_traversal(self, node: TreeNode, vals: List[int]):
-        print(node.val)
-        if not node.left:
-            self._recursive_traversal(node.left, vals)
+        if not node:
+            return
+
+        self._recursive_traversal(node.left, vals)
 
         vals.append(node.val)
 
-        if not node.right:
-            self._recursive_traversal(node.right, vals)
+        self._recursive_traversal(node.right, vals)
 
     def inorderTraversal(self, root: TreeNode) -> List[int]:
         vals = []
