@@ -57,8 +57,11 @@ class Solution:
         return vals
 
     def _iterative_traversal(self, root: TreeNode) -> List[int]:
-        stack = [root]
+        if root is None:
+            return []
+
         vals = []
+        stack = [root]
         while len(stack):
             node = stack[-1]
 
@@ -67,19 +70,27 @@ class Solution:
                 continue
 
             while node.left:
-                stack.append(node)
+                stack.append(node.left)
                 node = node.left
 
             vals.append(node.val)
+            stack.pop()
+
+            if not stack:
+                break
+
+            node = stack.pop()
+            vals.append(node.val)
+
             stack.append(node.right)
-
-        while len(stack):
-
 
         return vals
 
 if __name__ == "__main__":
-    cases = [[1, None, 2, None, None, 3], [], [1], [1, 2], [1, None, 2]]
+    cases = [
+        [1, None, 2, None, None, 3], [], [1], [1, 2], [1, None, 2],
+        [0, 1, 2, 3, 4, 5, 6]
+    ]
     cases = [TreeNode.from_list(case) for case in cases]
 
     s = Solution()
