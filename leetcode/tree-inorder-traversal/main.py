@@ -78,6 +78,24 @@ class Solution:
 
         return vals
 
+    def _clean_iterative(self, root: TreeNode):
+        vals = []
+        stack = []
+        node = root
+        while node and len(stack):
+            while node:
+                stack.append(node)
+                node = node.left
+
+            node = stack.pop()
+            vals.append(node.val)
+
+            node = node.right
+
+            node =
+
+        return vals
+
 
 if __name__ == "__main__":
     cases = [
