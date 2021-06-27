@@ -56,33 +56,27 @@ class Solution:
 
         return vals
 
+    def _add_to_leftstack(self, node, stack):
+        while node:
+            stack.append(node)
+            node = node.left
+
+        stack.append(node)
+
+
     def _iterative_traversal(self, root: TreeNode) -> List[int]:
-        if root is None:
-            return []
-
         vals = []
-        stack = [root]
-        while len(stack):
-            node = stack[-1]
+        leftstack = []
+        self._add_to_leftstack(root, leftstack)
 
+        while leftstack:
+            node = leftstack.pop()
             if node is None:
-                stack.pop()
                 continue
 
-            while node.left:
-                stack.append(node.left)
-                node = node.left
-
             vals.append(node.val)
-            stack.pop()
+            self._add_to_leftstack(node.right, leftstack)
 
-            if not stack:
-                break
-
-            node = stack.pop()
-            vals.append(node.val)
-
-            stack.append(node.right)
 
         return vals
 
