@@ -128,7 +128,6 @@ class Solution:
         return vals
 
 
-
 if __name__ == "__main__":
     cases = [
         [1, None, 2, None, None, 3],

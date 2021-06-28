@@ -40,6 +40,7 @@ class ListNode:
         self.val = val
         self.next: ListNode = next
 
+
 # 1 2 3 4
 # ^ ^
 #   ^ ^
@@ -50,6 +51,7 @@ class ListNode:
 #   ^ ^
 #     ^ ^
 #       ^ ^ <- even.next is None
+
 
 class Solution:
     def oddEvenList(self, head: ListNode) -> ListNode:
