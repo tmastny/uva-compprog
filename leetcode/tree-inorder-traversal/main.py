@@ -79,6 +79,9 @@ class Solution:
         return vals
 
     def _clean_iterative(self, root: TreeNode):
+        # the trick here is to pop after the left search.
+        # I was always trying to pop before the left search, which made it
+        # much more complicated.
         vals = []
         stack = []
         node = root
@@ -92,9 +95,38 @@ class Solution:
 
             node = node.right
 
-            node =
+        return vals
+
+    def _morris(self, root: TreeNode) -> List[int]:
+        """
+        Morris traversal is an inorder traversal algorithm that is done
+        in O(n) time and O(1) memory, compared to the O(n) memory of other
+        solutions.
+
+        The key idea is that the predecessor to the current node
+        (root for example) makes the current node it's right child.
+        """
+        vals = []
+        node = root
+        while node:
+            if node.left is None:
+                vals.append(node.val)
+                node = node.right
+            else:
+                predecessor = node.left
+                while predecessor.right and predecessor.right != node:
+                    predecessor = predecessor.right
+
+                if predecessor.right == node:
+                    predecessor.right = None
+                    vals.append(node.val)
+                    node = node.right
+                else:
+                    predecessor.right = node
+                    node = node.left
 
         return vals
+
 
 
 if __name__ == "__main__":
@@ -110,4 +142,4 @@ if __name__ == "__main__":
 
     s = Solution()
     for case in cases:
-        print(s._iterative_traversal(case))
+        print(s._morris(case))
