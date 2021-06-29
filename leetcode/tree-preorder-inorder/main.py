@@ -22,17 +22,19 @@ class TreeNode:
 
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        if not inorder:
+            return None
 
         root = TreeNode(preorder[0])
         ri = inorder.index(root.val)
 
         i = 1
-        root.left = self.buildTree(preorder[i:], inorder[ri + 1 :])
+        root.left = self.buildTree(preorder[i:], inorder[:ri])
 
         if root.left:
             i += 1
 
-        root.right = self.buildTree(preorder[i:], inorder[:ri])
+        root.right = self.buildTree(preorder[i:], inorder[ri + 1 :])
 
         return root
 
@@ -42,11 +44,11 @@ def print_inorder(node):
         return
 
     print_inorder(node.left)
-    print(node.val, end="")
+    print(node.val, end=",")
     print_inorder(node.right)
 
 
-def print_bfs(node):
+def print_preorder(node):
     queue = deque([node])
     while queue:
         size = len(queue)
@@ -59,11 +61,13 @@ def print_bfs(node):
             queue.appendleft(node.left)
             queue.appendleft(node.right)
 
+    print()
+
 
 if __name__ == "__main__":
     cases = [
-        [[1, 2], [1, 2]],
-        [[1, 2], [2, 1]],
+        # [[1, 2], [1, 2]],
+        # [[1, 2], [2, 1]],
         [[3, 9, 20, 15, 7], [9, 3, 15, 20, 7]],
         [[-1], [-1]],
         [[1, 2, 3], [2, 1, 3]],
@@ -72,6 +76,6 @@ if __name__ == "__main__":
     s = Solution()
     for preorder, inorder in cases:
         node = s.buildTree(preorder, inorder)
+        print_preorder(node)
         print_inorder(node)
         print()
-        print_bfs(node)
