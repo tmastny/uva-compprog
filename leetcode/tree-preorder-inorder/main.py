@@ -6,12 +6,6 @@
 # Preorder does NOT correspond to a breadth-first search.
 
 from typing import List
-from collections import deque
-
-
-def val_is_left_of(val, root, array):
-    return True
-
 
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
