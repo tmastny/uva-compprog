@@ -9,6 +9,10 @@ from typing import List
 from collections import deque
 
 
+def val_is_left_of(val, root, array):
+    return True
+
+
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -18,17 +22,19 @@ class TreeNode:
 
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
-        if not inorder or not preorder:
-            return None
 
-        node = TreeNode(preorder[0])
+        root = TreeNode(preorder[0])
+        ri = inorder.index(root.val)
 
-        node_index = inorder.index(preorder[0])
+        i = 1
+        root.left = self.buildTree(preorder[i:], inorder[ri + 1 :])
 
-        node.left = self.buildTree(preorder[1:], inorder[0:node_index])
-        node.right = self.buildTree(preorder[2:], inorder[node_index:])
+        if root.left:
+            i += 1
 
-        return node
+        root.right = self.buildTree(preorder[i:], inorder[:ri])
+
+        return root
 
 
 def print_inorder(node):
