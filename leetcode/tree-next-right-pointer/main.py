@@ -38,14 +38,14 @@ class Solution:
         queue = deque([root])
 
         while queue:
-            next = None
-            for node in queue:
-                node.next = next
-                next = node
 
             level = len(queue)
-            for _ in range(level):
+            for i in range(level):
                 node = queue.pop()
+
+                if i + 1 < level:
+                    node.next = queue[-1]
+
                 if node.left:
                     queue.appendleft(node.left)
                 if node.right:
