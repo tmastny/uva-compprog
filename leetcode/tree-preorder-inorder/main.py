@@ -2,8 +2,8 @@
 #   preorder       inorder         output
 #   [3,9,20,15,7]  [9,3,15,20,7]   [3,9,20,null,null,15,7]
 
-# Preorder corresponds to a breadth-first search, and iorder
-# is a depth-first search.
+# See the pre and in order print methods for the definition.
+# Preorder does NOT correspond to a breadth-first search.
 
 from typing import List
 from collections import deque
@@ -21,22 +21,21 @@ class TreeNode:
 
 
 class Solution:
-    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+    def _build(self, preorder, pi, inorder):
         if not inorder:
             return None
 
-        root = TreeNode(preorder[0])
+        root = TreeNode(preorder[pi[0]])
         ri = inorder.index(root.val)
 
-        i = 1
-        root.left = self.buildTree(preorder[i:], inorder[:ri])
-
-        if root.left:
-            i += 1
-
-        root.right = self.buildTree(preorder[i:], inorder[ri + 1 :])
+        pi[0] += 1
+        root.left = self._build(preorder, pi, inorder[:ri])
+        root.right = self._build(preorder, pi, inorder[ri + 1 :])
 
         return root
+
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        return self._build(preorder, [0], inorder)
 
 
 def print_inorder(node):
@@ -49,25 +48,19 @@ def print_inorder(node):
 
 
 def print_preorder(node):
-    queue = deque([node])
-    while queue:
-        size = len(queue)
-        for _ in range(size):
-            node = queue.pop()
-            if node is None:
-                continue
+    if node is None:
+        return
 
-            print(node.val, end=",")
-            queue.appendleft(node.left)
-            queue.appendleft(node.right)
-
-    print()
+    print(node.val, end=",")
+    print_preorder(node.left)
+    print_preorder(node.right)
 
 
 if __name__ == "__main__":
     cases = [
-        # [[1, 2], [1, 2]],
-        # [[1, 2], [2, 1]],
+        [[3, 1, 2, 4], [1, 2, 3, 4]],
+        [[1, 2], [1, 2]],
+        [[1, 2], [2, 1]],
         [[3, 9, 20, 15, 7], [9, 3, 15, 20, 7]],
         [[-1], [-1]],
         [[1, 2, 3], [2, 1, 3]],
@@ -77,5 +70,6 @@ if __name__ == "__main__":
     for preorder, inorder in cases:
         node = s.buildTree(preorder, inorder)
         print_preorder(node)
-        print_inorder(node)
         print()
+        print_inorder(node)
+        print("\n")
