@@ -6,14 +6,6 @@
 # Preorder does NOT correspond to a breadth-first search.
 # In fact, they are all a special case of a depth-first search.
 
-# Improvements:
-#   1. build a hash map of the root to the index of the array
-#      so the left/right split can be found in constant time,
-#      instead of a linear search (which makes the algo O(n^2)
-#      instead of O(n)).
-#
-#   2. use indices instead of slices
-
 from typing import List
 
 
@@ -26,6 +18,15 @@ class TreeNode:
 
 class Solution:
     def _build(self, preorder, pi, inorder):
+        """
+        Improvements:
+          1. build a hash map of the root to the index of the array
+             so the left/right split can be found in constant time,
+             instead of a linear search (which makes the algo O(n^2)
+             instead of O(n)).
+
+          2. use indices instead of slices
+        """
         if not inorder:
             return None
 
