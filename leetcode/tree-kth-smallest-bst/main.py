@@ -1,6 +1,3 @@
-from collections import deque
-
-
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -25,7 +22,28 @@ class TreeNode:
 
 class Solution:
     def kthSmallest(self, root: TreeNode, k: int) -> int:
-        return 0
+        kth = [0, 0]
+
+        def kth_smallest(kth, node):
+            if node is None or kth[0] == k:
+                return
+
+            kth_smallest(kth, node.left)
+
+            if kth[0] == k:
+                return
+
+            kth[0] += 1
+            kth[1] = node.val
+
+            if kth[0] == k:
+                return
+
+            kth_smallest(kth, node.right)
+
+        kth_smallest(kth, root)
+
+        return kth[1]
 
 
 def print_inorder(node):
@@ -34,7 +52,7 @@ def print_inorder(node):
 
     print_inorder(node.left)
 
-    print(node.val)
+    print(node.val, end=",")
 
     print_inorder(node.right)
 
@@ -44,4 +62,7 @@ if __name__ == "__main__":
 
     s = Solution()
     for tree, k in cases:
-        s.kthSmallest(TreeNode.from_list(tree), k)
+        root = TreeNode.from_list(tree)
+        print_inorder(root)
+        print()
+        print(s.kthSmallest(root, k))
