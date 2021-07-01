@@ -1,33 +1,71 @@
-from typing import List
+# Solution is based on Union-Find data structure,
+# see notes in Algorithms I notebook, page 14
+
+from typing import List, Union
+
+
+class UnionFind:
+    def __init__(self) -> None:
+        self.parent = []
+        self.rank = []
+        self.count = 0
+
+    def add(self, x):
+        self.parent.append(x)
+        self.rank.append(0)
+        self.count += 1
+
+    def find(self, x):
+        while x != self.parent[x]:
+            self.parent[x] = self.parent[self.parent[x]]
+            x = self.parent[x]
+        return x
+
+    def union(self, x, y):
+        x = self.find(x)
+        y = self.find(y)
+
+        if x == y:
+            return
+
+        if self.rank[x] < self.rank[y]:
+            self.parent[x] = y
+        elif self.rank[x] > self.rank[y]:
+            self.parent[y] = x
+        else:
+            self.parent[y] = x
+            self.rank[x] += 1
+
+        self.count -= 1
 
 
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        def near_land(grid, r, c):
-            rows = len(grid)
-            cols = len(grid[0])
+        rows = len(grid)
+        cols = len(grid[0])
 
-            for hshift in [-1, 1]:
-                if 0 <= r + hshift < rows and grid[r + hshift][c] == "1":
-                    return True
+        coords = {}
+        index = 0
+        uf = UnionFind()
+        for r in range(rows):
+            for c in range(cols):
+                point = grid[r][c]
+                if point == "1":
+                    if (r, c) not in coords:
+                        coords[(r, c)] = index
+                        index += 1
+                        uf.add(coords[(r, c)])
 
-            for vshift in [-1, 1]:
-                if 0 <= c + vshift < cols and grid[r][c + vshift] == "1":
-                    return True
+                    for nr, nc in [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]:
+                        if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == point:
+                            if (nr, nc) not in coords:
+                                coords[(nr, nc)] = index
+                                index += 1
+                                uf.add(coords[(nr, nc)])
 
-            return False
+                            uf.union(coords[(r, c)], coords[(nr, nc)])
 
-        islands = 0
-        for r in range(len(grid)):
-            for c in range(len(grid[0])):
-                if islands == 0 and grid[r][c] == "1":
-                    islands = 1
-                    continue
-
-                if grid[r][c] == "1" and not near_land(grid, r, c):
-                    islands += 1
-
-        return islands
+        return uf.count
 
 
 if __name__ == "__main__":
