@@ -40,7 +40,23 @@ class UnionFind:
 
 
 class Solution:
-    def numIslands(self, grid: List[List[str]]) -> int:
+    def _coord_to_index_unionfind(self, grid):
+        """
+        Maps tuple of coordinates (r, c) to a unique index for UnionFind.
+        Each time a coordinate is visited for the first time, it's assigned
+        a unique index and added to UnionFind. It's then `union`ed to the
+        surroudning points.
+
+        Only `land` is considered. If water is also considered, the water
+        will also contribute to the connected component count. Example:
+        1 1 0
+        0 0 1  Two islands, but four connected components.
+        0 0 1
+
+        Speed: 10th percentile.
+            My guess is the slow performance has to do with the coord-to-index
+            hashing.
+        """
         rows = len(grid)
         cols = len(grid[0])
 
@@ -66,6 +82,9 @@ class Solution:
                             uf.union(coords[(r, c)], coords[(nr, nc)])
 
         return uf.count
+
+    def numIslands(self, grid: List[List[str]]) -> int:
+        return self._coord_to_index_unionfind(grid)
 
 
 if __name__ == "__main__":
