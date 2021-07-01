@@ -39,7 +39,54 @@ class UnionFind:
         self.count -= 1
 
 
+class UnionFindRC(UnionFind):
+    def __init__(self, n) -> None:
+        self.parent = [i for i in range(n)]
+        self.rank = [0 for i in range(n)]
+        self.count = n
+
+
 class Solution:
+    def _coord_index_type_unionfind(self, grid):
+        """
+        This is very similar to `_coord_to_index_unionfind`, but uses
+        a direct mapping of the coordinates to indices of the UnionFind
+        array.
+
+        It also adds additional logic to keep track of the land connected
+        components.
+
+        Speed: 0th percentile
+        """
+        rows = len(grid)
+        cols = len(grid[0])
+
+        def rci(r, c):
+            return cols * r + c
+
+        coords = {}
+        index = 0
+        uf = UnionFindRC(rows * cols)
+        for r in range(rows):
+            for c in range(cols):
+                point = grid[r][c]
+                for nr, nc in [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]:
+                    if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == point:
+                        uf.union(rci(r, c), rci(nr, nc))
+
+        def irc(n):
+            c = n % cols
+            r = (n - c) // cols
+            return (r, c)
+
+        islands = set()
+        for i in range(rows * cols):
+            r, c = irc(uf.find(i))
+            if grid[r][c] == "1" and (r, c) not in islands:
+                islands.add((r, c))
+
+        return len(islands)
+
     def _coord_to_index_unionfind(self, grid):
         """
         Maps tuple of coordinates (r, c) to a unique index for UnionFind.
@@ -84,7 +131,7 @@ class Solution:
         return uf.count
 
     def numIslands(self, grid: List[List[str]]) -> int:
-        return self._coord_to_index_unionfind(grid)
+        return self._coord_index_type_unionfind(grid)
 
 
 if __name__ == "__main__":
