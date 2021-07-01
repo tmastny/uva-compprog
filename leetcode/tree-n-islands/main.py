@@ -29,11 +29,11 @@ class UnionFind:
             return
 
         if self.rank[x] < self.rank[y]:
-            self.parent[x] = y
-        elif self.rank[x] > self.rank[y]:
-            self.parent[y] = x
-        else:
-            self.parent[y] = x
+            x, y = y, x
+
+        self.parent[y] = x
+
+        if self.rank[x] == self.rank[y]:
             self.rank[x] += 1
 
         self.count -= 1
