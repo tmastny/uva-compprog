@@ -130,8 +130,42 @@ class Solution:
 
         return uf.count
 
+    def _dfs(self, grid):
+        """
+        Treat neighboring islands as land. Once you visit land,
+        visit all connecting points (and mark them connected (dict or "*")).
+
+        Then search for unvisited landed. All the other connected components
+        will already be visited, any new one is a different island.
+
+        I think of it as trying all paths in the maze.
+        """
+        rows = len(grid)
+        cols = len(grid[0])
+
+        def visit(r, c):
+            if not (0 <= r < rows and 0 <= c < cols):
+                return
+
+            if grid[r][c] != "1":
+                return
+
+            grid[r][c] = "*"
+            neighbors = [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]
+            for nr, nc in neighbors:
+                visit(nr, nc)
+
+        islands = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == "1":
+                    visit(r, c)
+                    islands += 1
+
+        return islands
+
     def numIslands(self, grid: List[List[str]]) -> int:
-        return self._coord_index_type_unionfind(grid)
+        return self._dfs(grid)
 
 
 if __name__ == "__main__":
