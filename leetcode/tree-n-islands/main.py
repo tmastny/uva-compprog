@@ -1,7 +1,8 @@
 # Solution is based on Union-Find data structure,
 # see notes in Algorithms I notebook, page 14
 
-from typing import List, Union
+from typing import List
+from collections import deque
 
 
 class UnionFind:
@@ -132,13 +133,10 @@ class Solution:
 
     def _dfs(self, grid):
         """
-        Treat neighboring islands as land. Once you visit land,
-        visit all connecting points (and mark them connected (dict or "*")).
+        Same idea as `_dfs`, but doing a bfs. Maybe mildly
+        faster, since it doesn't have to use the call stack.
 
-        Then search for unvisited landed. All the other connected components
-        will already be visited, any new one is a different island.
-
-        I think of it as trying all paths in the maze.
+        Speed: 48th percentile
         """
         rows = len(grid)
         cols = len(grid[0])
@@ -154,6 +152,46 @@ class Solution:
             neighbors = [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]
             for nr, nc in neighbors:
                 visit(nr, nc)
+
+        islands = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == "1":
+                    visit(r, c)
+                    islands += 1
+
+        return islands
+
+    def _bfs(self, grid):
+        """
+        Treat neighboring islands as land. Once you visit land,
+        visit all connecting points (and mark them connected (dict or "*")).
+
+        Then search for unvisited landed. All the other connected components
+        will already be visited, any new one is a different island.
+
+        I think of it as trying all paths in the maze.
+
+        Speed: 48th percentile
+        """
+        rows = len(grid)
+        cols = len(grid[0])
+
+        def visit(r, c):
+            queue = deque([(r, c)])
+
+            while queue:
+                qr, qc = queue.pop()
+                if not (0 <= r < rows and 0 <= c < cols):
+                    continue
+                if grid[r][c] != "1":
+                    return
+
+                grid[qr][qc] = "*"
+
+                neighbors = [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]
+                for nr, nc in neighbors:
+                    queue.appendleft((qr, qc))
 
         islands = 0
         for r in range(rows):
