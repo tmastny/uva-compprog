@@ -133,10 +133,16 @@ class Solution:
 
     def _dfs(self, grid):
         """
-        Same idea as `_dfs`, but doing a bfs. Maybe mildly
-        faster, since it doesn't have to use the call stack.
+        Treat neighboring islands as land. Once you visit land,
+        visit all connecting points (and mark them connected (dict or "*")).
+
+        Then search for unvisited landed. All the other connected components
+        will already be visited, any new one is a different island.
+
+        I think of it as trying all paths in the maze.
 
         Speed: 48th percentile
+        Memory: 26th percentile
         """
         rows = len(grid)
         cols = len(grid[0])
@@ -164,15 +170,11 @@ class Solution:
 
     def _bfs(self, grid):
         """
-        Treat neighboring islands as land. Once you visit land,
-        visit all connecting points (and mark them connected (dict or "*")).
-
-        Then search for unvisited landed. All the other connected components
-        will already be visited, any new one is a different island.
-
-        I think of it as trying all paths in the maze.
+        Same idea as `_dfs`, but doing a bfs. Maybe mildly
+        faster, since it doesn't have to use the call stack.
 
         Speed: 48th percentile
+        Memory: 85th
         """
         rows = len(grid)
         cols = len(grid[0])
@@ -181,17 +183,17 @@ class Solution:
             queue = deque([(r, c)])
 
             while queue:
-                qr, qc = queue.pop()
+                r, c = queue.pop()
                 if not (0 <= r < rows and 0 <= c < cols):
                     continue
                 if grid[r][c] != "1":
-                    return
+                    continue
 
-                grid[qr][qc] = "*"
+                grid[r][c] = "*"
 
                 neighbors = [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]
                 for nr, nc in neighbors:
-                    queue.appendleft((qr, qc))
+                    queue.appendleft((nr, nc))
 
         islands = 0
         for r in range(rows):
@@ -203,7 +205,7 @@ class Solution:
         return islands
 
     def numIslands(self, grid: List[List[str]]) -> int:
-        return self._dfs(grid)
+        return self._bfs(grid)
 
 
 if __name__ == "__main__":
