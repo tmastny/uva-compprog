@@ -1,5 +1,7 @@
 # Solution is based on Union-Find data structure,
 # see notes in Algorithms I notebook, page 14
+# and https://algs4.cs.princeton.edu/15uf/
+# https://en.wikipedia.org/wiki/Disjoint-set_data_structure
 
 from typing import List
 from collections import deque
@@ -141,8 +143,11 @@ class Solution:
 
         I think of it as trying all paths in the maze.
 
+        So the input isn't permenantly modified, could go back and replace
+        "*" with "1".
+
         Speed: 48th percentile
-        Memory: 26th percentile
+        Memory: 26th
         """
         rows = len(grid)
         cols = len(grid[0])
