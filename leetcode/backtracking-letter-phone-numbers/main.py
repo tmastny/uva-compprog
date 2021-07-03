@@ -15,6 +15,16 @@ class Solution:
 
     def _combo_r(self, prefix, digits, combos):
         """
+        Recursive until there are no more digits, and then
+        add the chain to the combination list.
+
+        Need to add only at the bottom of the list, because
+        I want the full sequence (or path through the tree),
+        not just the subsequence.
+
+        For better memory usage, I could use the index of of the
+        current digit, instead of the slice.
+
         Speed: 84th percentile
         """
         if not digits:
@@ -29,6 +39,8 @@ class Solution:
         "2": "abc"
           a       b       c
         d e f   d e f   d e f
+
+        I feel like there must be a cleaner solution.
         """
 
         combos = []
