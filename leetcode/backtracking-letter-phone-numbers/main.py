@@ -18,7 +18,11 @@ class Solution:
 
 
 if __name__ == "__main__":
-    cases = ["23", "", "2"]
+    cases = [
+        ["23", ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]],
+        ["", []],
+        ["2", ["a", "b", "c"]],
+    ]
 
     s = Solution()
     for digits in cases:
