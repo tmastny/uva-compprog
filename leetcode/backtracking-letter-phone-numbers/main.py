@@ -2,7 +2,7 @@ from typing import List
 
 
 class Solution:
-    num_to_letter = {
+    num_to_letters = {
         "2": "abc",
         "3": "def",
         "4": "ghi",
@@ -13,9 +13,31 @@ class Solution:
         "9": "wzyz",
     }
 
-    def letterCombinations(self, digits: str) -> List[str]:
-        pass
+    def _combo_r(self, digits, combos):
+        if not digits:
+            return ""
 
+        for i in range(len(digits)):
+            for letter in self.num_to_letters[digits[i]]:
+                for j in range(i + 1, len(digits)):
+                    for letterj in self.num_to_letters[digits[j]]:
+                        combos.append(letter + letterj)
+
+
+    def letterCombinations(self, digits: str) -> List[str]:
+        """
+        Example: "23"
+        "2": "abc"
+          a       b       c
+        d e f   d e f   d e f
+        """
+        # if len(digits) == 1:
+        #     return list(self.letterCombinations[digits])
+
+        combos = []
+        self._combo_r(digits, combos)
+
+        return combos
 
 if __name__ == "__main__":
     cases = [
@@ -25,5 +47,5 @@ if __name__ == "__main__":
     ]
 
     s = Solution()
-    for digits in cases:
+    for digits, _ in cases:
         print(s.letterCombinations(digits))
