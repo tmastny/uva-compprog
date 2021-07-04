@@ -3,6 +3,18 @@ from typing import List
 
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
+        """
+        This solution is more difficult in terms of memory than other
+        leetcode problems, because there is no immediately obvious way
+        to use indicies rather than copying and creating new lists and
+        sets on each recrusion.
+
+        Is there a way to improve memory usage? The tricky part is that
+        the recursion step needs to eliminate `n`, but remember the current
+        state of prefix and nums for the next `n`.
+
+        Speed: 69th percentile, memory 0th percentile
+        """
         nums = set(nums)
         permutations = []
 
