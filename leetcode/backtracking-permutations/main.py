@@ -3,7 +3,34 @@ from typing import List
 
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
-        return self._ref_permute(nums)
+        return self._permute_without_set(nums)
+
+
+    def _permute_without_set(self, nums):
+        """
+        The efficiency of set here is overrated. Because
+        the number of permutations grows at O(n!), there will
+        never be more than even 50 elements, so a linear search
+        is sufficient.
+
+        Speed: 88th percentile, memory 88th percentile
+        """
+        permutations = []
+
+        def find_permutations(prefix: List[int]):
+            if len(prefix) == len(nums):
+                permutations.append(list(prefix))
+
+            for n in nums:
+                if n not in prefix:
+                    prefix.append(n)
+                    find_permutations(prefix)
+
+                    prefix.pop()
+
+        find_permutations([])
+
+        return permutations
 
     def _ref_permute(self, nums):
         """
