@@ -3,6 +3,38 @@ from typing import List
 
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
+        return self._ref_permute(nums)
+
+    def _ref_permute(self, nums):
+        """
+        More memory efficient version that relies on modifying
+        data structures and passing by reference instead of copying
+        them. Not sure how to do it with `nums`, because modifying
+        the iterator returns unexpected results.
+
+        Turns out to be much faster, but just as memory intensive.
+
+        Speed: 88th percentile, memory 0th percentile
+        """
+        nums = set(nums)
+        permutations = []
+
+        def find_permutations(prefix: List[int], nums: set[int]):
+            if not nums:
+                permutations.append(list(prefix))
+
+            for n in nums:
+                prefix.append(n)
+                find_permutations(prefix, nums - {n})
+
+                prefix.pop()
+
+        find_permutations([], nums)
+
+        return permutations
+
+
+    def _copy_permute(self, nums):
         """
         This solution is more difficult in terms of memory than other
         leetcode problems, because there is no immediately obvious way
