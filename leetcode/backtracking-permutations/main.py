@@ -3,7 +3,19 @@ from typing import List
 
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
-        pass
+        nums = set(nums)
+        permutations = []
+
+        def find_permutations(prefix, nums):
+            if not nums:
+                permutations.append(prefix)
+
+            for n in nums:
+                find_permutations(prefix + [n], nums - {n})
+
+        find_permutations([], nums)
+
+        return permutations
 
 
 if __name__ == "__main__":
