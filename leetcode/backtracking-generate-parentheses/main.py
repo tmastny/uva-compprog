@@ -4,14 +4,20 @@ from typing import List
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         """
+        Each time an open parenthese is added to the string,
+        an additional closed parenthese must be added in the future.
+
+        Speed: 67th percentile. Memory: 0th (used slices instead of indices)
+
+        Example:
         n = 3
         ((())), ()()(), (())(), ()(()), (()())
-                    (
-                         (
-                    )         (
-                 )          )
-                   (      )
-                 )      )
+
+        i    prefix     open    closed
+        0               (((
+        1    (          ((      )
+        2    ((         (       ))
+        3    (()        (       )
         """
         parentheses = []
 
