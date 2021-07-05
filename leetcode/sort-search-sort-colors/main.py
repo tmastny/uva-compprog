@@ -9,13 +9,44 @@ from typing import List
 #   2. one-pass
 #   3. constant memory
 
-# Two-pass, O(n) memory:
-#   count the frequency of each element. Return a
-#   a new array built placing elements to the
-#   number of elements.
+# Two-pass, O(1) memory:
+#   count the frequency of each element. Overwrite
+#   the array using the count of each element
+
 
 class Solution:
     def sortColors(self, nums: List[int]) -> None:
+        self._zero_two(nums)
+
+    def _zero_two(self, nums):
+        """
+        In this approach we ignore the one, and swap
+        zeroes and twos to the beginning and end of the
+        array.
+
+        Speed: 48th percentile
+        """
+        zero = 0
+        two = len(nums) - 1
+        i = 0
+
+        while i <= two:
+            if nums[i] == 0:
+                nums[i], nums[zero] = nums[zero], nums[i]
+                zero += 1
+                i += 1
+            elif nums[i] == 2:
+                nums[i], nums[two] = nums[two], nums[i]
+                two -= 1
+            else:
+                i += 1
+
+    def _zero_one(self, nums: List[int]) -> None:
+        """
+        One pass with swapping.
+
+        Speed: 91th percentile, memory 0
+        """
         zero = one = 0
 
         for i in range(len(nums)):
@@ -29,7 +60,6 @@ class Solution:
             if nums[i] == 1:
                 nums[i], nums[one] = nums[one], nums[i]
                 one += 1
-
 
 
 if __name__ == "__main__":
