@@ -43,7 +43,8 @@ class Solution:
 
     def _zero_one(self, nums: List[int]) -> None:
         """
-        One pass with swapping.
+        One pass with swapping. Keep track of the index
+        to swap zero or one.
 
         Speed: 91th percentile, memory 0
         """
