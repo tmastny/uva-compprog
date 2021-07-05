@@ -9,40 +9,49 @@ class Solution:
         rows = len(board)
         cols = len(board[0])
 
+        def within(r, c):
+            return 0 <= r < rows and 0 <= c < cols
+
         def is_word(r, c):
             letters = deque(word[1:])
-            queue = deque([(r, c)])
+            queue = deque([(r, c, 1)])
+            used = set((r, c))
 
-            while queue:
+            while queue and letters:
                 r, c = queue.pop()
+                letter = letters[0]
 
-                for nr, nc in [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]:
-                    if 0 <= nr < rows and 0 <= nc < cols and board[r][c] == letters[0]:
-                        queue.appendleft((r, c))
+                found_letter = False
+                for nr, nc, i in [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]:
+                    if (nr, nc) not in used and within(nr, nc) and board[nr][nc] == letter:
+                        queue.appendleft((nr, nc))
+                        found_letter = True
 
-                letters.pop()
+                if found_letter:
+                    letters.popleft()
+
+                last_rc = (r, c)
 
             if letters:
                 return False
 
             return True
 
-
-
         for r in range(rows):
             for c in range(cols):
                 if board[r][c] == word[0]:
-                    return is_word(r, c)
+                    if is_word(r, c):
+                        return True
 
         return False
 
 
-
-
 if __name__ == "__main__":
     cases = [
-        [[["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCCED"],
-        [[["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "SEE"],
+        # [[["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCCED"],
+        # [[["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "SEE"],
+        # [[["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCB"],
+        [[["A","B","C","E"],["S","F","E","S"],["A","D","E","E"]], "ABCESEEEFS"]
     ]
 
     s = Solution()
