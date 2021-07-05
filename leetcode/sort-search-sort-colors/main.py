@@ -15,34 +15,28 @@ from typing import List
 #   number of elements.
 
 class Solution:
-
     def sortColors(self, nums: List[int]) -> None:
-        index = {0: None, 1: None, 2: None}
-        print('i nums')
+        zero = one = 0
+
         for i in range(len(nums)):
-            if index[nums[i]] is None:
-                index[nums[i]] = i
+            if nums[i] == 0:
+                nums[i], nums[zero] = nums[zero], nums[i]
 
-            if nums[i] == 1 and index[2] is not None:
-                nums[i], nums[index[2]] = nums[index[2]], nums[i]
-                index[1] = index[2]
-                index[2] += 1
+                zero += 1
+                if zero - 1 == one:
+                    one += 1
 
-            elif nums[i] == 0 and index[1] is not None:
-                nums[i], nums[index[1]] = nums[index[1]], nums[i]
-                index[1] += 1
+            if nums[i] == 1:
+                nums[i], nums[one] = nums[one], nums[i]
+                one += 1
 
-            elif nums[i] == 0 and index[2] is not None:
-                nums[i], nums[index[2]] = nums[index[2]], nums[i]
-                index[2] += 1
-            print(f'{i} {nums}')
 
 
 if __name__ == "__main__":
     cases = [
         [[2, 0, 2, 1, 1, 0], [0, 0, 1, 1, 2, 2]],
-        # [[2, 0, 1], [0, 1, 2]],
-        # [[0], [0]],
+        [[2, 0, 1], [0, 1, 2]],
+        [[0], [0]],
     ]
 
     s = Solution()
