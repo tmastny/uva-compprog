@@ -35,30 +35,30 @@ class Solution:
             freq[n] += 1
 
         counts = [(v, k) for k, v in freq.items()]
-        quickselect(counts, len(nums) - k)
+        quickselect(counts, len(counts) - k)
 
         return [k for _, k in reversed(counts[-k:])]
 
 
 
 def partition(n, lo, hi, pivot):
-    i = lo
-    while i <= hi:
-        # pivot index points to the first value of occurence of element
-        if i < pivot and n[i] >= n[pivot]:
-            n[i], n[pivot - 1] = n[pivot - 1], n[i]
-            n[pivot], n[pivot - 1] = n[pivot - 1], n[pivot]
-            pivot -= 1
+    pivot = n[pivot]
+    pleft = pright = lo
 
-        elif i > pivot and n[i] < n[pivot]:
-            n[i], n[pivot + 1] = n[pivot + 1], n[i]
-            n[pivot], n[pivot + 1] = n[pivot + 1], n[pivot]
-            pivot += 1
+    while pright <= hi:
+        if n[pright] < pivot:
+            n[pleft], n[pright] = n[pright], n[pleft]
+            pleft += 1
+            pright += 1
+
+        elif n[pright] > pivot:
+            n[pright], n[hi] = n[hi], n[pright]
+            hi -= 1
 
         else:
-            i += 1
+            pright += 1
 
-    return pivot
+    return pleft, pright
 
 
 def quickselect(n, k):
@@ -66,12 +66,12 @@ def quickselect(n, k):
         if lo >= hi:
             return
 
-        pivot = partition(n, lo, hi, randint(lo, hi))
+        left, right = partition(n, lo, hi, randint(lo, hi))
 
         if k < pivot:
-            _quickselect_r(n, k, lo, pivot)
+            _quickselect_r(n, k, lo, left - 1)
         elif k > pivot:
-            _quickselect_r(n, k, pivot, hi)
+            _quickselect_r(n, k, right + 1, hi)
 
     return _quickselect_r(n, k, 0, len(n) - 1)
 
@@ -82,6 +82,8 @@ if __name__ == "__main__":
         [[6, 5, 10, 3, 11, 4, 9], 2],
         [[0, 1, 10, 3, 7, 5, 6], 3],
         [[0, 1, 10, 3, 7, 5, 6], 6],
+        [[5,1,6,2,4,1,1,1,7,6,9], 0],
+        [[5,1,6,2,4,1,1,1,7,6,9], 1]
     ]
 
     print("Partition Tests")
