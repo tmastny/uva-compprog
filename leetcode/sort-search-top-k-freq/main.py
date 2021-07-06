@@ -33,6 +33,7 @@ class Solution:
 def partition(n, lo, hi, pivot):
     i = lo
     while i <= hi:
+        # pivot index points to the first value of occurence of element
         if i < pivot and n[i] >= n[pivot]:
             n[i], n[pivot - 1] = n[pivot - 1], n[i]
             n[pivot], n[pivot - 1] = n[pivot - 1], n[pivot]
@@ -46,14 +47,18 @@ def partition(n, lo, hi, pivot):
         else:
             i += 1
 
-
-def _quickselect_r(n, k, lo, hi):
-    lo, mi, hi = partition(n, k, lo, hi, randint(lo, hi))
-
-    _quickselect_r(n, k, lo, hi)
+    return pivot
 
 
 def quickselect(n, k):
+    def _quickselect_r(n, k, lo, hi):
+        pivot = partition(n, lo, hi, randint(lo, hi))
+
+        if k < pivot:
+            _quickselect_r(n, k, lo, pivot)
+        elif k > pivot:
+            _quickselect_r(n, k, pivot, hi)
+
     return _quickselect_r(n, k, 0, len(n) - 1)
 
 
