@@ -1,5 +1,6 @@
 from typing import List
 from collections import defaultdict
+from random import randint
 
 # Time: O(n log n), memory: O(n)
 #   Count the frequency of elements with a dictionary.
@@ -11,40 +12,71 @@ from collections import defaultdict
 #   Track the element with the minimum frequency. If
 #   len(dictionary) == k, the next element either
 #   replaces the minimum or is not kept in the dictionary.
+#   This doesn't work:
+#       min_freq doesn't work. If I could another occurence
+#       of the min_freq element, it might not be min_freq
+#       anymore, and another from `topk` would be the new minimum.
 
 
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         freq = defaultdict(int)
-        topk = set()
-        min_freq = ()  # key, value
-
         for n in nums:
             freq[n] += 1
 
-            # min_freq doesn't work. If I could another occurence
-            # of the min_freq element, it might not be min_freq
-            # anymore, and another from `topk` would be the new minimum.
-            if len(topk) < k:
-                topk.add(n)
-                if not min_freq or freq[n] < min_freq[1]:
-                    min_freq = (n, freq[n])
+        counts = [(v, k) for k, v in freq.items()]
+        quickselect(counts, len(nums) - k)
 
-            elif freq[n] > min_freq[1]:
-                topk.remove(min_freq[0])
-                topk.add(n)
-                min_freq = (n, freq[n])
+        return []
 
-        return list(topk)
+
+def partition(n, lo, hi, pivot):
+    i = lo
+    while i <= hi:
+        if i < pivot and n[i] >= n[pivot]:
+            n[i], n[pivot - 1] = n[pivot - 1], n[i]
+            n[pivot], n[pivot - 1] = n[pivot - 1], n[pivot]
+            pivot -= 1
+
+        elif i > pivot and n[i] < n[pivot]:
+            n[i], n[pivot + 1] = n[pivot + 1], n[i]
+            n[pivot], n[pivot + 1] = n[pivot + 1], n[pivot]
+            pivot += 1
+
+        else:
+            i += 1
+
+
+def _quickselect_r(n, k, lo, hi):
+    lo, mi, hi = partition(n, k, lo, hi, randint(lo, hi))
+
+    _quickselect_r(n, k, lo, hi)
+
+
+def quickselect(n, k):
+    return _quickselect_r(n, k, 0, len(n) - 1)
 
 
 if __name__ == "__main__":
-    cases = [
-        # [[1, 1, 1, 2, 2, 3], 2],
-        # [[1], 1],
-        [[3, 0, 1, 0], 1]
+    partition_tests = [
+        [[6, 5, 10, 3, 0, 4, 9], 2],
+        [[6, 5, 10, 3, 11, 4, 9], 2],
+        [[0, 1, 10, 3, 7, 5, 6], 3],
+        [[0, 1, 10, 3, 7, 5, 6], 6],
     ]
 
-    s = Solution()
-    for nums, k in cases:
-        print(s.topKFrequent(nums, k))
+    print("Partition Tests")
+    for n, pivot in partition_tests:
+        partition(n, 0, len(n) - 1, pivot)
+        print(n)
+
+    # cases = [
+    #     # [[1, 1, 1, 2, 2, 3], 2],
+    #     # [[1], 1],
+    #     [[3, 0, 1, 0], 1]
+    # ]
+
+    # print("Leetcode Problem")
+    # s = Solution()
+    # for nums, k in cases:
+    #     print(s.topKFrequent(nums, k))
