@@ -19,6 +19,16 @@ from random import randint
 
 
 class Solution:
+    def _sort(self, nums, k):
+        freq = defaultdict(int)
+        for n in nums:
+            freq[n] += 1
+
+        counts = [(v, k) for k, v in freq.items()]
+        counts.sort()
+
+        return [k for _, k in reversed(counts[-k:])]
+
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         freq = defaultdict(int)
         for n in nums:
@@ -27,7 +37,8 @@ class Solution:
         counts = [(v, k) for k, v in freq.items()]
         quickselect(counts, len(nums) - k)
 
-        return []
+        return [k for _, k in reversed(counts[-k:])]
+
 
 
 def partition(n, lo, hi, pivot):
@@ -52,6 +63,9 @@ def partition(n, lo, hi, pivot):
 
 def quickselect(n, k):
     def _quickselect_r(n, k, lo, hi):
+        if lo >= hi:
+            return
+
         pivot = partition(n, lo, hi, randint(lo, hi))
 
         if k < pivot:
@@ -75,13 +89,28 @@ if __name__ == "__main__":
         partition(n, 0, len(n) - 1, pivot)
         print(n)
 
-    # cases = [
-    #     # [[1, 1, 1, 2, 2, 3], 2],
-    #     # [[1], 1],
-    #     [[3, 0, 1, 0], 1]
-    # ]
+    qtests = [
+        [[6, 5, 10, 3, 0, 4, 9], 2],
+        [[6, 5, 10, 3, 11, 4, 9], 2],
+        [[0, 1, 10, 3, 7, 5, 6], 3],
+        [[0, 1, 10, 3, 7, 5, 6], 6],
+    ]
 
-    # print("Leetcode Problem")
-    # s = Solution()
-    # for nums, k in cases:
-    #     print(s.topKFrequent(nums, k))
+    print()
+    print("Quick Select")
+    print([0,1,2,3,4,5,6,7])
+    for n, _ in qtests:
+        quickselect(n, 3)
+        print(n)
+
+    print()
+    print("Top K")
+    cases = [
+        [[1, 1, 1, 2, 2, 3], 2],
+        [[1], 1],
+        [[3, 0, 1, 0], 1]
+    ]
+
+    s = Solution()
+    for nums, k in cases:
+        print(s.topKFrequent(nums, k))
