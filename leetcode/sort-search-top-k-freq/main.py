@@ -18,8 +18,28 @@ from random import randint
 #       anymore, and another from `topk` would be the new minimum.
 
 
+class VK:
+    def __init__(self, v, k) -> None:
+        self.v = v
+        self.k = k
+
+    def __lt__(self, other):
+        return self.v < other.v
+
+    def __repr__(self) -> str:
+        return f'({self.v}, {self.k})'
+
+
 class Solution:
     def _sort(self, nums, k):
+        """
+        Time: O(n log n), memory O(n)
+
+        Despite worse time complexity, this algorithm is substantially faster.
+        Possibly because the built-in sort method is optimized.
+
+        Time: 51, memory 31
+        """
         freq = defaultdict(int)
         for n in nums:
             freq[n] += 1
@@ -30,19 +50,42 @@ class Solution:
         return [k for _, k in reversed(counts[-k:])]
 
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        """
+        Time: O(n), memory: O(n)
+
+        Frequency of each unique element is stored in a dictionary at O(n) time
+        and O(n) memory. The frequency of each element is converted to a list.
+
+        Then Quickselect is ran on the frequencies to find the top k at O(n) time.
+        Lastly, the elements associated with those frequencies are returned.
+
+        Time: 26, memory 15
+        """
         freq = defaultdict(int)
         for n in nums:
             freq[n] += 1
 
-        counts = [(v, k) for k, v in freq.items()]
+        counts = [VK(v, k) for k, v in freq.items()]
         quickselect(counts, len(counts) - k)
 
-        return [k for _, k in reversed(counts[-k:])]
+        return [vk.k for vk in reversed(counts[-k:])]
 
 
+def partition(n, lo, hi, pivot_index):
+    """
+    See: https://en.wikipedia.org/wiki/Dutch_national_flag_problem
+    if current value (pright) is smaller than pivot, slide the
+    pivot window to the right. For example: pivot = 6
+        0 3 2 6 6 3 8 1 0 2
+            ^ ^ ^
+            ^ ^
+        0 3 2 3 6 6 8 1 0 2
+                ^   ^
+                ^   ^
 
-def partition(n, lo, hi, pivot):
-    pivot = n[pivot]
+    if current value is larger than pivot, put at the end of array
+    """
+    pivot = n[pivot_index]
     pleft = pright = lo
 
     while pright <= hi:
@@ -68,10 +111,10 @@ def quickselect(n, k):
 
         left, right = partition(n, lo, hi, randint(lo, hi))
 
-        if k < pivot:
+        if k < left:
             _quickselect_r(n, k, lo, left - 1)
-        elif k > pivot:
-            _quickselect_r(n, k, right + 1, hi)
+        elif k > right:
+            _quickselect_r(n, k, right, hi)
 
     return _quickselect_r(n, k, 0, len(n) - 1)
 
@@ -82,8 +125,8 @@ if __name__ == "__main__":
         [[6, 5, 10, 3, 11, 4, 9], 2],
         [[0, 1, 10, 3, 7, 5, 6], 3],
         [[0, 1, 10, 3, 7, 5, 6], 6],
-        [[5,1,6,2,4,1,1,1,7,6,9], 0],
-        [[5,1,6,2,4,1,1,1,7,6,9], 1]
+        [[5, 1, 6, 2, 4, 1, 1, 1, 7, 6, 9], 0],
+        [[5, 1, 6, 2, 4, 1, 1, 1, 7, 6, 9], 1],
     ]
 
     print("Partition Tests")
@@ -100,7 +143,7 @@ if __name__ == "__main__":
 
     print()
     print("Quick Select")
-    print([0,1,2,3,4,5,6,7])
+    print([0, 1, 2, 3, 4, 5, 6, 7])
     for n, _ in qtests:
         quickselect(n, 3)
         print(n)
@@ -110,7 +153,8 @@ if __name__ == "__main__":
     cases = [
         [[1, 1, 1, 2, 2, 3], 2],
         [[1], 1],
-        [[3, 0, 1, 0], 1]
+        [[3, 0, 1, 0], 1],
+        [[5, 2, 5, 3, 5, 3, 1, 1, 3], 2],
     ]
 
     s = Solution()

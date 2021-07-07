@@ -24,6 +24,8 @@ class Solution:
         zeroes and twos to the beginning and end of the
         array.
 
+        See https://en.wikipedia.org/wiki/Dutch_national_flag_problem
+
         Speed: 48th percentile
         """
         zero = 0
