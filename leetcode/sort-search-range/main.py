@@ -1,64 +1,48 @@
 from typing import List
 
-# The first idea is to use binary search to find `target`.
-# Once target is found, then use a while loop to find
-# the first and last occurence. However, the worst case
-# time-complexity of this is O(n), in the case where
-# every value of `nums` is equal to target.
+# Given a set of intervals, return a set of non-overlapping
+# intervals that cover all intervals in the input.
+# Input intervals are inclusive, so [1, 4], [4, 5] are overlappig
+# and should output [1, 5]
 
-# Therefore, the solution calls for exponential search
-# from the start and end of the array to find the first
-# instance of target from beginning and end.
+# Time O(n log n), memory O(n):
+#   1. sort the array.
+#   2. Compare the start of the interval to the end of the last one.
+#      If they overlap, combine them.
 
 
 class Solution:
-    def _bleft(self, n, target, lo, hi):
-        while lo < hi:
-            mid = (lo + hi) // 2
-            if n[mid] < target:
-                lo = mid + 1
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        """
+        Speed 54, memory 0
+        """
+        intervals.sort()
+        merged = []
+
+        curr = intervals[0]
+        for i in range(1, len(intervals)):
+            if intervals[i][0] <= curr[1]:
+                curr[1] = max(curr[1], intervals[i][1])
             else:
-                hi = mid
+                merged.append(curr)
+                curr = intervals[i]
 
-        return lo
+        merged.append(curr)
+        return merged
 
-    def searchRange(self, nums: List[int], target: int) -> List[int]:
-        """
-        `nums` is sorted in ascending order. `target` is value to find in array.
-        Goal is to return the starting and ending indices (inclusive) that contain
-        the target. If target not found return [-1, -1].
-
-        Speed 45, memory 50
-        """
-        if len(nums) == 0:
-            return [-1, -1]
-
-
-        left = self._bleft(nums, target, 0, len(nums))
-        if left >= len(nums) or nums[left] != target:
-            return [-1, -1]
-
-        right = self._bleft(nums, target + 1, 0, len(nums)) - 1
-
-        return [left, right]
 
 if __name__ == "__main__":
     cases = [
-        # 0, 1, 2, 3, 4, 5
-        [[5, 7, 7, 8, 8, 10], 8],
-        [[5, 7, 7, 8, 8, 10], 6],
-        [[], 0],
-        [[5, 7, 7, 8, 8, 10], 5],
-        [[5, 7, 7, 8, 8, 10], 10],
-        [[5, 7], 5],
-        [[5, 7], 7],
-        [[5], 5],
-        [[2, 2], 3],
-        [[2, 2], 1],
-        [[2, 2], 2],
-        [[1], 0]
+        [[5, 6], [1, 4]],
+        [[1, 3], [2, 6], [8, 10], [15, 18]],
+        [[1, 4], [4, 5]],
+        [[1, 5], [2, 6], [2, 10]],
+        [[20, 30]],
+        [[20, 20]],
+        [[1, 4], [2, 3]],
+        [[2, 3], [4, 5], [6, 7], [8, 9], [1, 10]],
     ]
 
     s = Solution()
-    for nums, target in cases:
-        print(f'{target:<2} {s.searchRange(nums, target)}')
+    for intervals in cases:
+        print(s.merge(intervals))
