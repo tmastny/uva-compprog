@@ -8,7 +8,7 @@ from typing import List
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
         """
-        Speed 75, memory 53
+        Speed 75, memory 53¡
         """
         if len(nums) == 1:
             return -1 if target not in nums else 0
