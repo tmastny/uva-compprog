@@ -14,20 +14,17 @@ from typing import List
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
         """
-        Speed 54, memory 0
+        Speed 54, memory 53
         """
         intervals.sort()
+
         merged = []
-
-        curr = intervals[0]
-        for i in range(1, len(intervals)):
-            if intervals[i][0] <= curr[1]:
-                curr[1] = max(curr[1], intervals[i][1])
+        for interval in intervals:
+            if len(merged) and interval[0] <= merged[-1][1]:
+                merged[-1][1] = max(merged[-1][1], interval[1])
             else:
-                merged.append(curr)
-                curr = intervals[i]
+                merged.append(interval)
 
-        merged.append(curr)
         return merged
 
 
