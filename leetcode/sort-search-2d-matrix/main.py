@@ -1,23 +1,51 @@
 from typing import List
 
 # Integers in each row and column are sorted in acsending order.
-# Must be O(log n) where `n` is the number of entries in the matrix.
+# Must be faster than O(n * m).
 
 
 # _in_matrix:
 #   Speed 24, memory 10
 #
-# Partitions matrix into two submatrices (*, &).
-# `_` entries as less than or greater than v.
+# Partitions matrix into two submatrices (+, &),
+# and recursively searches each.
+# `_` entries are less than or greater than v.
 # if t > v:          if t < v:
 #     ______&&&&&|       &&&&&++++++|
 #     ______&&&&&|       &&&&&++++++|
 #     _____v&&&&&|       &&&&&v_____|
 #     ++++++&&&&&|       &&&&&______|
 #     -----------|       -----------|
+#   Time complexity: O(n^0.7). There are two
+#   subproblems at each step, and each subproblem
+#   size of size 3/8 * n (or a total of 3/4).
 
+# _stepthrough:
+#   Speed 68, memory 69
+# Steps through the entries in order searching
+# for target.
+#
+# Time complexity O(n + m).
+# Reverts to a linear search when the number of
+# rows or columns is one.
 
 class Solution:
+    def _stepthrough(self, m, target):
+        r = len(m) - 1
+        c = 0
+        cols = len(m[0])
+
+        while r >= 0 and c < cols:
+            if m[r][c] == target:
+                return True
+            elif target < m[r][c]:
+                r -= 1
+            else:
+                c += 1
+
+        return False
+
+
     def _mid(self, range):
         return (range[0] + range[1]) // 2
 
@@ -48,7 +76,8 @@ class Solution:
         return False
 
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
-        return self._in_matrix(matrix, target, (0, len(matrix)), (0, len(matrix[0])))
+        # return self._in_matrix(matrix, target, (0, len(matrix)), (0, len(matrix[0])))
+        return self._stepthrough(matrix, target)
 
 
 if __name__ == "__main__":
@@ -64,7 +93,8 @@ if __name__ == "__main__":
                 [10, 13, 14, 17, 24],
                 [18, 21, 23, 26, 30],
             ],
-            5, True
+            5,
+            True,
         ],
         [
             [
@@ -74,7 +104,8 @@ if __name__ == "__main__":
                 [10, 13, 14, 17, 24],
                 [18, 21, 23, 26, 30],
             ],
-            20, False
+            20,
+            False,
         ],
         [
             [
@@ -84,7 +115,8 @@ if __name__ == "__main__":
                 [10, 13, 14, 17, 24],
                 [18, 21, 23, 26, 30],
             ],
-            24, True
+            24,
+            True,
         ],
         [[[3, 6, 9, 16, 22], [10, 13, 14, 17, 24], [18, 21, 23, 26, 30]], 20, False],
         [[[3, 6, 9, 16, 22], [10, 13, 14, 17, 24], [18, 21, 23, 26, 30]], 10, True],
@@ -98,7 +130,8 @@ if __name__ == "__main__":
                 [16, 17, 18, 19, 20],
                 [21, 22, 23, 24, 25],
             ],
-            5, True
+            5,
+            True,
         ],
         [[[5, 6, 10, 14], [6, 10, 13, 18], [10, 13, 18, 19]], 14, True],
         [
@@ -109,7 +142,8 @@ if __name__ == "__main__":
                 [10, 13, 14, 17, 24],
                 [18, 21, 23, 26, 30],
             ],
-            21, True
+            21,
+            True,
         ],
     ]
 
