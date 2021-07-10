@@ -14,19 +14,6 @@ from typing import List
 
 
 class Solution:
-    def _bleft(self, n, target):
-        lo, hi = 0, len(n)
-
-        while lo < hi:
-            mid = (lo + hi) // 2
-
-            if n[mid] < target:
-                lo = mid + 1
-            else:
-                hi = mid
-
-        return lo
-
     def _mid(self, range):
         return (range[0] + range[1]) // 2
 
