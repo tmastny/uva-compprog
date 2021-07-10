@@ -4,6 +4,12 @@ from typing import List
 # Must be faster than O(n * m).
 
 
+# This is great resouce, showing an adversial approach
+# to complexity analysis: https://stackoverflow.com/a/18160169/6637133
+# Also known as the Saddleback search: https://stackoverflow.com/a/2458113/6637133
+# Reference includes my solution: http://twistedoakstudios.com/blog/Post5365_searching-a-sorted-matrix-faster
+
+
 # _in_matrix:
 #   Speed 24, memory 10
 #
@@ -19,13 +25,17 @@ from typing import List
 #   Time complexity: O(n^0.7). There are two
 #   subproblems at each step, and each subproblem
 #   size of size 3/8 * n (or a total of 3/4).
+# See here: https://leetcode.com/problems/search-a-2d-matrix-ii/discuss/66154/Is-there's-a-O(log(m)+log(n))-solution-I-know-O(n+m)-and-O(m*log(n))/182918
 
 # _stepthrough:
 #   Speed 68, memory 69
 # Steps through the entries in order searching
-# for target.
+# for target.``
 #
-# Time complexity O(n + m).
+# Time complexity O(n + m), which is roughly
+# equivalent to O(n^0.5), faster than the recursive
+# solution.
+#
 # Reverts to a linear search when the number of
 # rows or columns is one.
 
