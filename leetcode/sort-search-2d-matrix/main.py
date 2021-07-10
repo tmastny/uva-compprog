@@ -34,15 +34,12 @@ class Solution:
         rlo = clo = 0
         rhi, chi = len(m), len(m[0])
 
-
-
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
         rows = len(matrix)
         cols = len(matrix[0])
 
         closest_row = min(self._bleft(ColView(matrix, cols // 2), target), rows - 1)
         closest_col = min(self._bleft(matrix[rows // 2], target), cols - 1)
-
 
         row_on_col = min(self._bleft(ColView(matrix, closest_col), target), rows - 1)
         if matrix[row_on_col][closest_col] == target:
