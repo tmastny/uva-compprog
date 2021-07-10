@@ -10,6 +10,7 @@ from typing import List
 # iteration).
 
 # Example:
+#        0  1  2  3
 #   n = [3, 1, 0, 0]
 #   i   n[i]     steps
 #   0   3        3
@@ -19,8 +20,18 @@ from typing import List
 
 
 class Solution:
-    def canJump(self, nums: List[int]) -> bool:
+    def _backfront(self, nums):
+        lastindex = len(nums) - 1
+        for i in range(len(nums) - 2, -1, -1):
+            if i + nums[i] >= lastindex:
+                lastindex = i
 
+        return lastindex == 0
+
+    def canJump(self, nums: List[int]) -> bool:
+        """
+        Speed 26, memory 72
+        """
         steps = 0
         for i in range(len(nums) - 1):
             steps = max(nums[i], steps - 1)
@@ -36,4 +47,4 @@ if __name__ == "__main__":
 
     s = Solution()
     for nums, _ in cases:
-        print(s.canJump(nums))
+        print(s._backfront(nums))
