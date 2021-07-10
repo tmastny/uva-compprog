@@ -4,7 +4,11 @@ from typing import List
 # Must be O(log n) where `n` is the number of entries in the matrix.
 
 
+# _in_matrix:
+#   Speed 24, memory 10
+#
 # Partitions matrix into two submatrices (*, &).
+# `_` entries as less than or greater than v.
 # if t > v:          if t < v:
 #     ______&&&&&|       &&&&&++++++|
 #     ______&&&&&|       &&&&&++++++|
@@ -44,9 +48,6 @@ class Solution:
         return False
 
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
-        """
-        Speed 24, memory 10
-        """
         return self._in_matrix(matrix, target, (0, len(matrix)), (0, len(matrix[0])))
 
 
