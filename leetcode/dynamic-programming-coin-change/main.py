@@ -41,7 +41,9 @@ from typing import List
 #   coinage to cover 5. In other words, the problem is now
 #   [[2, 3], 5]. Therefore, there is a recursive way to design
 #   the algorithm. The think this also leads to the proof of the
-#   "advanced" greedy approach.
+#   "advanced" greedy approach. Thinking working backwards: take the
+#   minimum solution, and show that the greedy algorithm would have
+#   reached it.
 
 
 class Solution:
@@ -65,6 +67,7 @@ class Solution:
         return -1
 
     def coinChange(self, coins: List[int], amount: int) -> int:
+        coins.sort()
         return self._greedy(coins, amount, len(coins) - 1, 0)
 
 
@@ -77,6 +80,8 @@ if __name__ == "__main__":
         [[1], 2, 2],
         [[2, 3, 9], 10, 4],
         [[2, 3, 9], 14, 3],
+        [[2, 5, 10, 1], 27, 4],
+        [[186, 419, 83, 408], 6249, 20],
     ]
 
     s = Solution()
