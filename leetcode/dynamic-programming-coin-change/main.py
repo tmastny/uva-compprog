@@ -16,6 +16,9 @@ from typing import List
 #
 #       (Recall the flashlight-bridge crossing problem, where
 #       the greedy approach does not return the minimum.)
+#   Could use a more advanced greedy approach that lowers the number
+#   of the largest coinage by one if there is no solution. That
+#   resolves the counter-example.
 
 
 # Option 2: Use the solution to amount - 1
@@ -33,8 +36,19 @@ from typing import List
 #   would be larger than the total. May only be an optimization
 #   to option 1.
 
+# Option 4: recursive
+#   Consider this example: [[2, 3, 9], 14]. With 1 9, we need
+#   coinage to cover 5. In other words, the problem is now
+#   [[2, 3], 5]. Therefore, there is a recursive way to design
+#   the algorithm. The think this also leads to the proof of the
+#   "advanced" greedy approach.
 
 class Solution:
+    def _greedy(self, coins: List[int], amount):
+        for i in range(len(coins) - 1, -1, -1):
+            n_coins = amount // coins[i]
+
+
     def coinChange(self, coins: List[int], amount: int) -> int:
         pass
 
@@ -47,6 +61,7 @@ if __name__ == "__main__":
         [[1], 1, 1],
         [[1], 2, 2],
         [[2, 3, 9], 10, 4],
+        [[2, 3, 9], 14, 3]
     ]
 
     s = Solution()
