@@ -13,6 +13,16 @@ from typing import List
 #
 #       Is this the most efficient approach?
 
+
+# Option 2: Use the solution to amount - 1
+#   This is a typical dynamic programming strategy, where the
+#   answer to the current problem can be derived from previous
+#   instance.
+
+#   Not immediately obvious how. For example:
+#   coins = [1, 5], amount = 5. The solution to 4 would require
+#   4 coins, while 5 would require 1.
+
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
         pass
