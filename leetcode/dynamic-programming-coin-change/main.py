@@ -52,7 +52,12 @@ class Solution:
         for i in range(coin_index, -1, -1):
             n_coins = amount // coins[i]
             while n_coins > 0:
-                new_total_coins = self._greedy(coins, amount - coins[i] * n_coins, coin_index - 1, total_coins + n_coins)
+                new_total_coins = self._greedy(
+                    coins,
+                    amount - coins[i] * n_coins,
+                    coin_index - 1,
+                    total_coins + n_coins,
+                )
                 if new_total_coins != -1:
                     return new_total_coins
                 n_coins -= 1
@@ -76,4 +81,4 @@ if __name__ == "__main__":
 
     s = Solution()
     for coins, amount, ans in cases:
-        print(f'{s.coinChange(coins, amount):>2} {ans:>2}')
+        print(f"{s.coinChange(coins, amount):>2} {ans:>2}")
