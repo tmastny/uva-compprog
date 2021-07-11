@@ -43,14 +43,24 @@ from typing import List
 #   the algorithm. The think this also leads to the proof of the
 #   "advanced" greedy approach.
 
-class Solution:
-    def _greedy(self, coins: List[int], amount):
-        for i in range(len(coins) - 1, -1, -1):
-            n_coins = amount // coins[i]
 
+class Solution:
+    def _greedy(self, coins: List[int], amount, coin_index, total_coins):
+        if amount == 0:
+            return total_coins
+
+        for i in range(coin_index, -1, -1):
+            n_coins = amount // coins[i]
+            while n_coins > 0:
+                new_total_coins = self._greedy(coins, amount - coins[i] * n_coins, coin_index - 1, total_coins + n_coins)
+                if new_total_coins != -1:
+                    return new_total_coins
+                n_coins -= 1
+
+        return -1
 
     def coinChange(self, coins: List[int], amount: int) -> int:
-        pass
+        return self._greedy(coins, amount, len(coins) - 1, 0)
 
 
 if __name__ == "__main__":
@@ -61,9 +71,9 @@ if __name__ == "__main__":
         [[1], 1, 1],
         [[1], 2, 2],
         [[2, 3, 9], 10, 4],
-        [[2, 3, 9], 14, 3]
+        [[2, 3, 9], 14, 3],
     ]
 
     s = Solution()
     for coins, amount, ans in cases:
-        print(s.coinChange(coins, amount), ans)
+        print(f'{s.coinChange(coins, amount):>2} {ans:>2}')
