@@ -1,6 +1,8 @@
 from typing import List
+from math import inf
 
 # Must return the minimum number of coins necessary to make the amount.
+# See: Algorithms 1 notebok, page 18.
 
 # Option 1: Greedy
 #   Use the largest denomination of coin until the next coin
@@ -48,6 +50,15 @@ from typing import List
 
 class Solution:
     def _greedy(self, coins: List[int], amount, coin_index, total_coins):
+        """
+        Call:
+            coins.sort()
+            return self._greedy(coins, amount, len(coins) - 1, 0)
+
+        Greedy solution doesn't not work in general. If any solution
+        exists in the greedy path before the minimum, that solution will
+        be reported. For example: [[13, 9, 3, 1], 21, 3]
+        """
         if amount == 0:
             return total_coins
 
@@ -67,8 +78,34 @@ class Solution:
         return -1
 
     def coinChange(self, coins: List[int], amount: int) -> int:
-        coins.sort()
-        return self._greedy(coins, amount, len(coins) - 1, 0)
+        pass
+
+    def _brute_force(self, coins, amount, coin_index, total_coins, min_total_coins):
+        """
+        Time limit exceeded
+        Call:
+            if amount == 0:
+                return 0
+
+            coins.sort()
+            n_coins = [inf]
+            self._brute_force(coins, amount, len(coins) - 1, 0, n_coins)
+
+            return n_coins[0] if n_coins[0] is not inf else -1
+        """
+        if amount == 0:
+            return total_coins
+
+        for i in range(coin_index, -1, -1):
+            n_coins = amount // coins[i]
+            while n_coins > 0:
+                new_total_coins = self._brute_force(coins,amount - coins[i] * n_coins, coin_index - 1, total_coins + n_coins, min_total_coins)
+                if new_total_coins != -1 and new_total_coins < min_total_coins[0]:
+                    min_total_coins[0] = new_total_coins
+                    return new_total_coins
+                n_coins -= 1
+
+        return -1
 
 
 if __name__ == "__main__":
@@ -82,6 +119,7 @@ if __name__ == "__main__":
         [[2, 3, 9], 14, 3],
         [[2, 5, 10, 1], 27, 4],
         [[186, 419, 83, 408], 6249, 20],
+        [[13, 9, 3, 1], 21, 3]
     ]
 
     s = Solution()
