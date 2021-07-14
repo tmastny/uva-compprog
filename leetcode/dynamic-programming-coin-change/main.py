@@ -78,7 +78,17 @@ class Solution:
         return -1
 
     def coinChange(self, coins: List[int], amount: int) -> int:
-        pass
+        return self._dp(coins, amount)
+
+    def _dp(self, coins: List[int], amount):
+        d = [[0] * (amount + 1) for _ in range(len(coins))]
+
+        for i in range(len(coins)):
+            for j in range(amount + 1):
+                if j % coins[i] == 0:
+                    d[i][j] = j // coins[i]
+
+        return d
 
     def _brute_force(self, coins, amount, coin_index, total_coins, min_total_coins):
         """
@@ -110,18 +120,19 @@ class Solution:
 
 if __name__ == "__main__":
     cases = [
-        [[1, 2, 5], 11, 3],
-        [[2], 3, -1],
-        [[1], 0, 0],
-        [[1], 1, 1],
-        [[1], 2, 2],
+        # [[1, 2, 5], 11, 3],
+        # [[2], 3, -1],
+        # [[1], 0, 0],
+        # [[1], 1, 1],
+        # [[1], 2, 2],
         [[2, 3, 9], 10, 4],
-        [[2, 3, 9], 14, 3],
-        [[2, 5, 10, 1], 27, 4],
-        [[186, 419, 83, 408], 6249, 20],
-        [[13, 9, 3, 1], 21, 3]
+        # [[2, 3, 9], 14, 3],
+        # [[2, 5, 10, 1], 27, 4],
+        # [[186, 419, 83, 408], 6249, 20],
+        # [[13, 9, 3, 1], 21, 3]
     ]
 
     s = Solution()
     for coins, amount, ans in cases:
-        print(f"{s.coinChange(coins, amount):>2} {ans:>2}")
+        print(s.coinChange(coins, amount))
+        #print(f"{s.coinChange(coins, amount):>2} {ans:>2}")
