@@ -78,9 +78,65 @@ class Solution:
         return -1
 
     def coinChange(self, coins: List[int], amount: int) -> int:
-        return self._dp(coins, amount)
+        return self._dp_bottomup_optimized(coins, amount)
 
-    def _dp(self, coins: List[int], amount):
+    def _dp_topdown(self, coins: List[int], amount):
+        pass
+
+    def _dp_bottomup_optimized(self, coins: List[int], amount):
+        """
+        This version uses a simplified dynamic programming structure.
+        The other adopted the two-dimensional array from the subset sum
+        problem, but restricts the memory to a single array, and updates
+        the amount in place as it iterates through the coins.
+
+        This also highlights the importance of the base-case.
+
+        Speed 55th, memory 97
+        """
+        dp = [inf] * (amount + 1)
+        dp[0] = 0
+
+        for j in range(1, amount + 1):
+            for coin in coins:
+                remaining_amount = j - coin
+                if remaining_amount >= 0:
+                    dp[j] = min(dp[j], dp[remaining_amount] + 1)
+
+        return dp[amount] if dp[amount] is not inf else -1
+
+    def _dp_bottomup(self, coins: List[int], amount):
+        """
+        Time complexity:
+            O(nk) where n == len(coins), k == amount.
+
+        Speed 13th, memory 25th
+        """
+        if amount == 0:
+            return 0
+
+        # sort may not be necessary, but simplifies the implementation
+        # see https://stackoverflow.com/a/45427013/6637133
+        coins.sort()
+        d = [[0] * (amount + 1) for _ in range(len(coins))]
+
+        for i in range(len(coins)):
+            for j in range(amount + 1):
+                remaining_amount = j - coins[i]
+
+                if j % coins[i] == 0:
+                    d[i][j] = j // coins[i]
+
+                elif i > 0 and remaining_amount >= 0 and d[i][remaining_amount] > 0:
+                    last_coinage = d[i - 1][j] if d[i - 1][j] > 0 else inf
+                    d[i][j] = min(d[i][remaining_amount] + 1, last_coinage)
+
+                elif i > 0:
+                    d[i][j] = d[i - 1][j]
+
+        return d[-1][amount] if d[-1][amount] > 0 else -1
+
+    def _dp_dividing(self, coins: List[int], amount):
         """
         Time Limit exceeded
         Time complexity:
@@ -115,8 +171,8 @@ class Solution:
                     d[i][j] = (
                         min(min_coins, d[i - 1][j]) if d[i - 1][j] > 0 else min_coins
                     )
-        return d
-        # return d[-1][amount] if d[-1][amount] > 0 else -1
+
+        return d[-1][amount] if d[-1][amount] > 0 else -1
 
     def _brute_force(self, coins, amount, coin_index, total_coins, min_total_coins):
         """
@@ -154,26 +210,26 @@ class Solution:
 
 if __name__ == "__main__":
     cases = [
-        # [[1, 2, 5], 11, 3],
-        # [[1, 2, 3, 5], 8, 2],
-        # [[1, 2, 3, 5], 6, 2],
-        # [[2], 3, -1],
-        # [[1], 0, 0],
-        # [[1], 1, 1],
-        # [[1], 2, 2],
-        # [[2, 3, 9], 10, 4],
-        # [[2, 3, 9], 14, 3],
+        [[1, 2, 5], 11, 3],
+        [[1, 2, 3, 5], 8, 2],
+        [[1, 2, 3, 5], 6, 2],
+        [[2], 3, -1],
+        [[1], 0, 0],
+        [[1], 1, 1],
+        [[1], 2, 2],
+        [[2, 3, 9], 10, 4],
+        [[2, 3, 9], 14, 3],
         [[2, 5, 10, 1], 27, 4],
-        # [[186, 419, 83, 408], 6249, 20],
-        # [[13, 9, 3, 1], 21, 3],
-        # [[388, 232, 419, 338, 49, 434, 4, 143], 4993, 13],
+        [[186, 419, 83, 408], 6249, 20],
+        [[13, 9, 3, 1], 21, 3],
+        [[388, 232, 419, 338, 49, 434, 4, 143], 4993, 13],
     ]
 
     s = Solution()
     for coins, amount, ans in cases:
-        # if s.coinChange returns `d` from s._dp
-        for row in s.coinChange(coins, amount):
-            for v in row:
-                print(f'{v:>3}', end="")
-            print()
-        # print(f"{s.coinChange(coins, amount):>2} {ans:>2}")
+        # print method when s.coinChange returns `d` from s._dp
+        # for row in s.coinChange(coins, amount):
+        #     for v in row:
+        #         print(f'{v:>3}', end="")
+        #     print()
+        print(f"{s.coinChange(coins, amount):>2} {ans:>2}")
