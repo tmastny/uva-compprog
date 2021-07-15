@@ -81,6 +81,19 @@ class Solution:
         return self._dp(coins, amount)
 
     def _dp(self, coins: List[int], amount):
+        """
+        Time Limit exceeded
+        Time complexity:
+            O(nkd) where n == len(coins), k == amount and
+            d is the maximum number of times an coin divides the amount.
+            Each coin `n` has to traverse each value from 0 to k + 1. Then
+            on it k, it has to walk the number of times it divides `k`.
+
+        I think depending on the divisors is making it too slow
+        """
+        if amount == 0:
+            return 0
+
         coins.sort()
         d = [[0] * (amount + 1) for _ in range(len(coins))]
 
@@ -89,13 +102,21 @@ class Solution:
                 if j % coins[i] == 0:
                     d[i][j] = j // coins[i]
                 elif i > 0:
-                    n_coins = max((j - coins[i - 1]) // coins[i], 0)
-                    remainder = j - coins[i] * n_coins
-                    remainder = j if remainder < 0 else remainder
+                    n_coins_i = j // coins[i]
+                    n_coins_total = []
+                    while n_coins_i:
+                        remainder = j - coins[i] * n_coins_i
+                        if remainder >= 0 and d[i - 1][remainder] > 0:
+                            n_coins_total.append(n_coins_i + d[i - 1][remainder])
 
-                    d[i][j] = d[i - 1][remainder] + n_coins
+                        n_coins_i -= 1
 
-        return d[-1][amount]
+                    min_coins = min(n_coins_total) if n_coins_total else d[i - 1][j]
+                    d[i][j] = (
+                        min(min_coins, d[i - 1][j]) if d[i - 1][j] > 0 else min_coins
+                    )
+        return d
+        # return d[-1][amount] if d[-1][amount] > 0 else -1
 
     def _brute_force(self, coins, amount, coin_index, total_coins, min_total_coins):
         """
@@ -116,7 +137,13 @@ class Solution:
         for i in range(coin_index, -1, -1):
             n_coins = amount // coins[i]
             while n_coins > 0:
-                new_total_coins = self._brute_force(coins,amount - coins[i] * n_coins, coin_index - 1, total_coins + n_coins, min_total_coins)
+                new_total_coins = self._brute_force(
+                    coins,
+                    amount - coins[i] * n_coins,
+                    coin_index - 1,
+                    total_coins + n_coins,
+                    min_total_coins,
+                )
                 if new_total_coins != -1 and new_total_coins < min_total_coins[0]:
                     min_total_coins[0] = new_total_coins
                     return new_total_coins
@@ -127,19 +154,26 @@ class Solution:
 
 if __name__ == "__main__":
     cases = [
-        [[1, 2, 5], 11, 3],
-        [[2], 3, -1],
-        [[1], 0, 0],
-        [[1], 1, 1],
-        [[1], 2, 2],
-        [[2, 3, 9], 10, 4],
-        [[2, 3, 9], 14, 3],
+        # [[1, 2, 5], 11, 3],
+        # [[1, 2, 3, 5], 8, 2],
+        # [[1, 2, 3, 5], 6, 2],
+        # [[2], 3, -1],
+        # [[1], 0, 0],
+        # [[1], 1, 1],
+        # [[1], 2, 2],
+        # [[2, 3, 9], 10, 4],
+        # [[2, 3, 9], 14, 3],
         [[2, 5, 10, 1], 27, 4],
-        [[186, 419, 83, 408], 6249, 20],
-        [[13, 9, 3, 1], 21, 3]
+        # [[186, 419, 83, 408], 6249, 20],
+        # [[13, 9, 3, 1], 21, 3],
+        # [[388, 232, 419, 338, 49, 434, 4, 143], 4993, 13],
     ]
 
     s = Solution()
     for coins, amount, ans in cases:
-        # print(s.coinChange(coins, amount))
-        print(f"{s.coinChange(coins, amount):>2} {ans:>2}")
+        # if s.coinChange returns `d` from s._dp
+        for row in s.coinChange(coins, amount):
+            for v in row:
+                print(f'{v:>3}', end="")
+            print()
+        # print(f"{s.coinChange(coins, amount):>2} {ans:>2}")
