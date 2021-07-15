@@ -110,6 +110,9 @@ class Solution:
         the amount in place as it iterates through the coins.
 
         This also highlights the importance of the base-case.
+        This is sort of the inverse of the "grid" solution. Instead of
+        a dynamic programming solution on the `ith` coin, it's a solution
+        on the `ith` amount.
 
         Speed 55th, memory 97
         """
