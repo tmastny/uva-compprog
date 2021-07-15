@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import List
 from math import inf
 
@@ -78,10 +79,28 @@ class Solution:
         return -1
 
     def coinChange(self, coins: List[int], amount: int) -> int:
-        return self._dp_bottomup_optimized(coins, amount)
+        n_coins = self._dp_topdown(coins, amount, {0: 0})
+        return n_coins if n_coins != inf else -1
 
-    def _dp_topdown(self, coins: List[int], amount):
-        pass
+    def _dp_topdown(self, coins: List[int], amount, dp: List):
+        """
+        Speed 42th, memory 14th
+        """
+        if amount < 0:
+            return inf
+
+        if amount in dp:
+            return dp[amount]
+
+        n_coins = []
+        for coin in coins:
+            n_coins.append(self._dp_topdown(coins, amount - coin, dp) + 1)
+
+        min_coins = min(n_coins)
+        dp[amount] = min_coins
+        return min_coins
+
+
 
     def _dp_bottomup_optimized(self, coins: List[int], amount):
         """
@@ -103,7 +122,7 @@ class Solution:
                 if remaining_amount >= 0:
                     dp[j] = min(dp[j], dp[remaining_amount] + 1)
 
-        return dp[amount] if dp[amount] is not inf else -1
+        return dp[amount] if dp[amount] != inf else -1
 
     def _dp_bottomup(self, coins: List[int], amount):
         """
