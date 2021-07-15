@@ -8,10 +8,12 @@ class Solution:
 
 if __name__ == "__main__":
     cases = [
+        [[1, 2, 10, 3, 4], 4],
         [[10, 9, 2, 5, 3, 7, 101, 18], 4],
         [[0, 1, 0, 3, 2, 3], 4],
         [[7, 7, 7, 7, 7, 7, 7], 1],
     ]
+
     s = Solution()
     for nums, ans in cases:
         print(f"{s.lengthOfLIS(nums):>2} {ans:>2}")
