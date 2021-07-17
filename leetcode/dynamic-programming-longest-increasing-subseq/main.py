@@ -34,7 +34,8 @@ class Solution:
         nums.sort(key=itemgetter(0))
 
         largest_index = len(nums) - 1
-        print_nums(nums)
+
+        #print_nums(nums)
         max_run = -inf
         increases = [0]
         for _, n in nums:
@@ -63,6 +64,7 @@ if __name__ == "__main__":
         # [[10, 9, 2, 5, 3, 7, 101, 18], 4],
         # [[0, 1, 0, 3, 2, 3], 4],
         [[7, 7, 7, 7, 7, 7, 7], 1],
+        [[7, 6, 7, 8], 3],   # have to be careful about how to handle duplicates
         # [[0, 7, 6, 1, 5, 2, 4, 3], 4],
         # [[7, 6, 5, 4, 3, 2, 1, 0], 1],
         # [[41, 20, 30, 21, 22, 23, 24, 10], 5],
