@@ -7,15 +7,6 @@
 
 using namespace std;
 
-struct RunNum {
-  int val;
-  int run_index;
-};
-
-bool operator<(const RunNum& lhs, const RunNum& rhs) {
-    return lhs.val < rhs.val;
-}
-
 vector<int> remove_successive_dups(vector<int>& nums) {
     vector<int> deduped = {nums[0]};
     for (int i = 1; i < nums.size(); i++) {
