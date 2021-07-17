@@ -13,7 +13,6 @@ if __name__ == "__main__":
         [[0, 1, 0, 3, 2, 3], 4],
         [[7, 7, 7, 7, 7, 7, 7], 1],
     ]
-
     s = Solution()
     for nums, ans in cases:
         print(f"{s.lengthOfLIS(nums):>2} {ans:>2}")
