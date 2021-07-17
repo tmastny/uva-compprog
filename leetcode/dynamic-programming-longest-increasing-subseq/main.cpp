@@ -23,21 +23,9 @@ public:
     int lengthOfLIS(vector<int>& nums) {
         auto nums_deduped = remove_successive_dups(nums);
 
-        // vector<vector<int>> nums_vi;
-        // for (int i = 0; i < nums_deduped.size(); i++) {
-        //     nums_vi.push_back({nums_deduped[i], i});
-        // }
-
-        // stable_sort(nums_vi.begin(), nums_vi.end());
-
-
-        // set<RunNum> RunCounter {RunNum {nums_vi[0][1], 1}};
-        //set<RunNum> RunCounter {RunNum {nums_deduped[0], 1}};
         map<int, int> RunCounter {{nums_deduped[0], 1}};
-        //set<RunNum> RunCounter;
         int prev_run_length = 1;
         for (int i = 1; i < nums_deduped.size(); i++) {
-            //int n = nums_vi[i][1];
             int n = nums_deduped[i];
 
             auto it = RunCounter.lower_bound(n);
@@ -45,8 +33,6 @@ public:
             int run_length = 1;
             if (it != RunCounter.begin()) {
                 run_length = prev(it)->second + 1;
-
-                //cout << n << "    " << prev(it)->first << " " << prev(it)->second << endl;
             }
 
             if (n > nums_deduped[i - 1]) {
@@ -55,7 +41,6 @@ public:
 
             RunCounter[n] = run_length;
             prev_run_length = run_length;
-            //out << n << " " << run_length << endl;
         }
 
         //cout << "-----" << endl;
