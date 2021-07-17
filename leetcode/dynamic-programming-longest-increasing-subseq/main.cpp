@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <set>
+#include <iterator>
 
 using namespace std;
 
@@ -28,10 +29,28 @@ public:
 
         set<RunNum> RunCounter {RunNum {nums_vi[0][1], 1}};
         for (int i = 1; i < nums_vi.size(); i++) {
+            int n = nums_vi[i][1];
 
+            auto lower = RunCounter.lower_bound(RunNum {n, 0});
+            auto lower = prev(lower);
+
+            int run_length = 1;
+            if (lower != RunCounter.begin()) {
+                run_length = lower->run_index;
+            }
+
+            RunCounter.insert(RunNum {n, run_length});
         }
 
 
+        int max_run_length = 0;
+        for (auto run : RunCounter) {
+            if (run.run_index > max_run_length) {
+              max_run_length = run.run_index;
+            }
+        }
+
+        return max_run_length;
     }
 };
 
@@ -66,5 +85,9 @@ int main() {
     };
 
     Solution s;
+
+    for (auto&& test : cases) {
+        cout << s.lengthOfLIS(get<0>(test)) << " " << get<1>(test) << endl;
+    }
 
 }
