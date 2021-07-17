@@ -43,9 +43,6 @@ public:
             prev_run_length = run_length;
         }
 
-        //cout << "-----" << endl;
-
-
         int max_run_length = 0;
         for (auto run : RunCounter) {
             if (run.second > max_run_length) {
