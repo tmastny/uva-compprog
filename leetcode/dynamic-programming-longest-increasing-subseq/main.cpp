@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <set>
+#include <map>
 #include <iterator>
 
 using namespace std;
@@ -15,45 +16,6 @@ bool operator<(const RunNum& lhs, const RunNum& rhs) {
     return lhs.val < rhs.val;
 }
 
-class Solution {
-public:
-    int lengthOfLIS(vector<int>& nums) {
-        auto nums_deduped = remove_successive_dups(nums);
-
-        vector<vector<int>> nums_vi;
-        for (int i = 0; i < nums.size(); i++) {
-            nums_vi.push_back({nums[i], i});
-        }
-
-        stable_sort(nums_vi.begin(), nums_vi.end());
-
-        set<RunNum> RunCounter {RunNum {nums_vi[0][1], 1}};
-        for (int i = 1; i < nums_vi.size(); i++) {
-            int n = nums_vi[i][1];
-
-            auto lower = RunCounter.lower_bound(RunNum {n, 0});
-            auto lower = prev(lower);
-
-            int run_length = 1;
-            if (lower != RunCounter.begin()) {
-                run_length = lower->run_index;
-            }
-
-            RunCounter.insert(RunNum {n, run_length});
-        }
-
-
-        int max_run_length = 0;
-        for (auto run : RunCounter) {
-            if (run.run_index > max_run_length) {
-              max_run_length = run.run_index;
-            }
-        }
-
-        return max_run_length;
-    }
-};
-
 vector<int> remove_successive_dups(vector<int>& nums) {
     vector<int> deduped = {nums[0]};
     for (int i = 1; i < nums.size(); i++) {
@@ -64,6 +26,60 @@ vector<int> remove_successive_dups(vector<int>& nums) {
 
     return deduped;
 }
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        auto nums_deduped = remove_successive_dups(nums);
+
+        // vector<vector<int>> nums_vi;
+        // for (int i = 0; i < nums_deduped.size(); i++) {
+        //     nums_vi.push_back({nums_deduped[i], i});
+        // }
+
+        // stable_sort(nums_vi.begin(), nums_vi.end());
+
+
+        // set<RunNum> RunCounter {RunNum {nums_vi[0][1], 1}};
+        //set<RunNum> RunCounter {RunNum {nums_deduped[0], 1}};
+        map<int, int> RunCounter {{nums_deduped[0], 1}};
+        //set<RunNum> RunCounter;
+        int prev_run_length = 1;
+        for (int i = 1; i < nums_deduped.size(); i++) {
+            //int n = nums_vi[i][1];
+            int n = nums_deduped[i];
+
+            auto it = RunCounter.lower_bound(n);
+
+            int run_length = 1;
+            if (it != RunCounter.begin()) {
+                run_length = prev(it)->second + 1;
+
+                //cout << n << "    " << prev(it)->first << " " << prev(it)->second << endl;
+            }
+
+            if (n > nums_deduped[i - 1]) {
+                run_length = max(run_length, prev_run_length + 1);
+            }
+
+            RunCounter[n] = run_length;
+            prev_run_length = run_length;
+            //out << n << " " << run_length << endl;
+        }
+
+        //cout << "-----" << endl;
+
+
+        int max_run_length = 0;
+        for (auto run : RunCounter) {
+            if (run.second > max_run_length) {
+              max_run_length = run.second;
+            }
+        }
+
+        return max_run_length;
+    }
+};
 
 int main() {
     vector<tuple<vector<int>, int>> cases = {
@@ -88,6 +104,7 @@ int main() {
 
     for (auto&& test : cases) {
         cout << s.lengthOfLIS(get<0>(test)) << " " << get<1>(test) << endl;
+        //cout << "*******" << endl;
     }
 
 }
