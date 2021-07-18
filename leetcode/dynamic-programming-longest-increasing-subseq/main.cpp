@@ -83,7 +83,8 @@ int main() {
         // {{100, 99, 98, 97, 96, 21, 110, 22, 109, 23, 101, 0, 1}, 4},
         // {{10, 23, 41, 3, 61}, 4},
 
-        // {{2, 15, 3, 7, 8, 6, 18}, 5},
+        {{2, 15, 3, 7, 8, 6, 18}, 5},
+		{{2, 15, 3, 7, 8, 6, 7, 8, 15, 16, 17, 18}, 7},
 
         // // which subsequence should the last element continue?
         // // the latest element needs to continue whichever is the longest
