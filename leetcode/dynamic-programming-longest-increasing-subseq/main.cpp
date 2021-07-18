@@ -25,31 +25,33 @@ public:
 
         auto nums_deduped = remove_successive_dups(nums);
 
-        map<int, int> RunCounter {{nums_deduped[0], 1}};
-        int longest_run = nums_deduped[0];
-        for (int i = 1; i < nums_deduped.size(); i++) {
+        map<int, int> RunLength {{nums_deduped[0], 1}};
+
+		int top_of_longest_run = nums_deduped[0];
+
+		for (int i = 1; i < nums_deduped.size(); i++) {
             int n = nums_deduped[i];
 
-            if (n > longest_run) {
-				RunCounter[n] = RunCounter[longest_run] + 1;
-				longest_run = n;
+            if (n > top_of_longest_run) {
+				RunLength[n] = RunLength[top_of_longest_run] + 1;
+				top_of_longest_run = n;
 
 			} else {
-				auto it = RunCounter.lower_bound(n);
+				auto it = RunLength.lower_bound(n);
 				int run_length = 1;
-				if (it != RunCounter.begin()) {
+				if (it != RunLength.begin()) {
 					run_length = prev(it)->second + 1;
 				}
 
-				RunCounter[n] = run_length;
-				if (run_length > RunCounter[longest_run]) {
-					longest_run = n;
+				RunLength[n] = run_length;
+				if (run_length > RunLength[top_of_longest_run]) {
+					top_of_longest_run = n;
 				}
 			}
         }
 
         int max_run_length = 0;
-        for (auto run : RunCounter) {
+        for (auto run : RunLength) {
             if (run.second > max_run_length) {
               max_run_length = run.second;
             }
@@ -61,43 +63,46 @@ public:
 
 int main() {
     vector<tuple<vector<int>, int>> cases = {
-        {{10, 11, 12, 13, 14, 1, 2, 3}, 5},
-        {{1, 2, 10, 3, 4}, 4},
-        {{0, 10, 11, 12, 13, 1, 2, 3, 4, 5}, 6},
-        {{10, 9, 2, 5, 3, 7, 101, 18}, 4},
-        {{0, 9, 4, 10, 3, 15, 5, 18, 1, 20}, 6},
-        {{0, 1, 0, 3, 2, 3}, 4},
-        {{7, 7, 7, 7, 7, 7, 7}, 1},
+        // {{10, 11, 12, 13, 14, 1, 2, 3}, 5},
+        // {{1, 2, 10, 3, 4}, 4},
+        // {{0, 10, 11, 12, 13, 1, 2, 3, 4, 5}, 6},
+        // {{10, 9, 2, 5, 3, 7, 101, 18}, 4},
+        // {{0, 9, 4, 10, 3, 15, 5, 18, 1, 20}, 6},
+        // {{0, 1, 0, 3, 2, 3}, 4},
+        // {{7, 7, 7, 7, 7, 7, 7}, 1},
 
         // have to be careful about how to handle duplicates
         {{7, 6, 7, 8}, 3},
-        {{0, 7, 6, 1, 5, 2, 4, 3}, 4},
-        {{7, 6, 5, 4, 3, 2, 1, 0}, 1},
-        {{41, 20, 30, 21, 22, 23, 24, 10}, 5},
-        {{7, 1, 5, 2, 3, 4, 6, 0}, 5},
-        {{100, 99, 98, 97, 96, 21, 22, 23, 0, 1}, 3},
-        {{100, 99, 98, 97, 96, 21, 110, 22, 109, 23, 101, 0, 1}, 4},
-        {{10, 23, 41, 3, 61}, 4},
-        {{2, 15, 3, 7, 8, 6, 18}, 5},
+		{{15, 20, 7, 30, 7, 7, 8, 9, 10}, 4},
 
-        // which subsequence should the last element continue?
-        // the latest element needs to continue whichever is the longest
-        // forms the longest subseqence.
-        //              should match to 8
-                    {{9, 7, 8, 6, 10}, 3},
-                {{10, 9, 7, 8, 6, 11}, 3},
-        {{1, 2, 3, 4, 9, 7, 8, 6, 10}, 7},
+        // {{0, 7, 6, 1, 5, 2, 4, 3}, 4},
+        // {{7, 6, 5, 4, 3, 2, 1, 0}, 1},
+        // {{41, 20, 30, 21, 22, 23, 24, 10}, 5},
+        // {{7, 1, 5, 2, 3, 4, 6, 0}, 5},
+        // {{100, 99, 98, 97, 96, 21, 22, 23, 0, 1}, 3},
+        // {{100, 99, 98, 97, 96, 21, 110, 22, 109, 23, 101, 0, 1}, 4},
+        // {{10, 23, 41, 3, 61}, 4},
 
-        //               should match to 9
-              {{7, 8, 9, 7, 8, 6, 10}, 4},
-          {{10, 7, 8, 9, 7, 8, 6, 11}, 4},
+        // {{2, 15, 3, 7, 8, 6, 18}, 5},
 
-        // 80 or 60 are valid continuations
-            {{80, 60, 100}, 2},
-            {{80, 60, 100, 61, 62}, 3},
-            {{80, 60, 100, 81, 82}, 3},
+        // // which subsequence should the last element continue?
+        // // the latest element needs to continue whichever is the longest
+        // // forms the longest subseqence.
+        // //              should match to 8
+        //             {{9, 7, 8, 6, 10}, 3},
+        //         {{10, 9, 7, 8, 6, 11}, 3},
+        // {{1, 2, 3, 4, 9, 7, 8, 6, 10}, 7},
 
-        {{9, 7, 8, 6, 10, 7, 8, 9}, 5}
+        // //               should match to 9
+        //       {{7, 8, 9, 7, 8, 6, 10}, 4},
+        //   {{10, 7, 8, 9, 7, 8, 6, 11}, 4},
+
+        // // 80 or 60 are valid continuations
+        //     {{80, 60, 100}, 2},
+        //     {{80, 60, 100, 61, 62}, 3},
+        //     {{80, 60, 100, 81, 82}, 3},
+
+        // {{9, 7, 8, 6, 10, 7, 8, 9}, 4}
     };
 
     Solution s;
