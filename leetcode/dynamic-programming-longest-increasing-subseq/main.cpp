@@ -48,6 +48,7 @@ public:
 					top_of_longest_run = n;
 				}
 			}
+			cout << n << " " << RunLength[n] << endl;
         }
 
         int max_run_length = 0;
@@ -71,20 +72,16 @@ int main() {
         // {{0, 1, 0, 3, 2, 3}, 4},
         // {{7, 7, 7, 7, 7, 7, 7}, 1},
 
-        // have to be careful about how to handle duplicates
-        {{7, 6, 7, 8}, 3},
-		{{15, 20, 7, 30, 7, 7, 8, 9, 10}, 4},
 
-        // {{0, 7, 6, 1, 5, 2, 4, 3}, 4},
-        // {{7, 6, 5, 4, 3, 2, 1, 0}, 1},
-        // {{41, 20, 30, 21, 22, 23, 24, 10}, 5},
-        // {{7, 1, 5, 2, 3, 4, 6, 0}, 5},
-        // {{100, 99, 98, 97, 96, 21, 22, 23, 0, 1}, 3},
-        // {{100, 99, 98, 97, 96, 21, 110, 22, 109, 23, 101, 0, 1}, 4},
-        // {{10, 23, 41, 3, 61}, 4},
 
-        {{2, 15, 3, 7, 8, 6, 18}, 5},
-		{{2, 15, 3, 7, 8, 6, 7, 8, 15, 16, 17, 18}, 7},
+		// the problem is 11 matches 10, because -5 and 10 are tied.
+		// Then 12 matches 11 for a run length of 3.
+		// Ties are currently broken in favor of the lower bound,
+		// because the max run length is only updated on >, not >=
+		// So it this case it checks against 15 as `top_of_longest_run`
+		// rather than -5. But should ties always break for the most recent run?
+		    {{10, 15, 20, -10, -5, 11, 12}, 4},
+		// rl: 1   2   3    1   2   3   4
 
         // // which subsequence should the last element continue?
         // // the latest element needs to continue whichever is the longest
