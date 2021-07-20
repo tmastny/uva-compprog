@@ -83,6 +83,11 @@ int main() {
 		    {{10, 15, 20, -10, -5, 11, 12}, 4},
 		// rl: 1   2   3    1   2   3   4
 
+		// this example proves it's not just the most recent sequence.
+		    {{10, 15, 20, -10, -5, -50, 11, 12}, 4},
+
+
+
         // // which subsequence should the last element continue?
         // // the latest element needs to continue whichever is the longest
         // // forms the longest subseqence.
