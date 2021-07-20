@@ -86,6 +86,19 @@ int main() {
 		// this example proves it's not just the most recent sequence.
 		    {{10, 15, 20, -10, -5, -50, 11, 12}, 4},
 
+		// 4 values less than 11
+		//	10, -10, -5, -50
+		//            ^------> -5 is the value with the longest run
+		// Problem:
+		// 	1. requires finding all previous values less than 11.
+		//	   Not a problem with binary search tree
+		//
+		//  2. of those, which has the max run length. Obvious method is O(n)
+		//     which is too slow. Unclear how to use a heap here.
+
+		// Is it possible to use the number of elements less than the 11,
+		// like used in an order tree?
+
 
 
         // // which subsequence should the last element continue?
