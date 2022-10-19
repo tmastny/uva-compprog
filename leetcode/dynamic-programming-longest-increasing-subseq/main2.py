@@ -5,7 +5,7 @@ cases = [
     [[11, 10], 1],
     [[10, 11], 2],
     [[10, 11, 12, 13, 14, 1, 2, 3], 5],
-#    [[1, 2, 10, 3, 4], 4],
+    [[1, 2, 10, 3, 4], 4],
 #    [[0, 10, 11, 12, 13, 1, 2, 3, 4, 5], 6],
 #    [[10, 9, 2, 5, 3, 7, 101, 18], 4],
 #    [[0, 9, 4, 10, 3, 15, 5, 18, 1, 20], 6],
@@ -33,17 +33,18 @@ class Solution:
     max_len = 1 
 
     def _lengthOfLIS(self, nums, start, length):
-                
-        for i in range(start + 1, len(nums)):
-            if nums[i] > nums[0]:
-                return self._lengthOfLIS(nums, i, length + 1)
 
+        for i in range(start + 1, len(nums)):
+            if nums[i] > nums[start]:
+                self.max_len = max(
+                    self._lengthOfLIS(nums, i, length + 1), self.max_len
+                )        
         return length 
 
     def lengthOfLIS(self, nums: List[int]) -> int:
-        return self._lengthOfLIS(nums, 0, 1)
-
-
+        self._lengthOfLIS(nums, 0, 1)
+        return self.max_len
+    
 # Find the length of the longest increasing subsequence
 
 if __name__ == "__main__":
