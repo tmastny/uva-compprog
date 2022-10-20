@@ -29,33 +29,30 @@ def print_nums(nums):
 
 
 class Solution:
-    
+
     lenLISAtIndex = []
-    
+
     def _findLenLISAtIndex(self, nums, start):
         if self.lenLISAtIndex[start] > 0:
             return self.lenLISAtIndex[start]
-            
+
         length = 1
         for i in range(start + 1, len(nums)):
             if nums[i] > nums[start]:
-                length = max(
-                    self._findLenLISAtIndex(nums, i) + 1,
-                    length
-                )
-        
+                length = max(self._findLenLISAtIndex(nums, i) + 1, length)
+
         self.lenLISAtIndex[start] = length
         return length
-                
-    
+
     def lengthOfLIS(self, nums: List[int]) -> int:
-        
+
         self.lenLISAtIndex = [0 for i in range(len(nums))]
-        
+
         for i in range(len(nums)):
             self.lenLISAtIndex[i] = self._findLenLISAtIndex(nums, i)
-        
+
         return max(self.lenLISAtIndex)
+
 
 # Find the length of the longest increasing subsequence
 
@@ -63,7 +60,7 @@ if __name__ == "__main__":
     s = Solution()
     for nums, ans in cases:
         print_nums(nums)
-        
+
         solution = s.lengthOfLIS(nums)
         outcome = "Right!" if solution == ans else "Wrong!"
 
