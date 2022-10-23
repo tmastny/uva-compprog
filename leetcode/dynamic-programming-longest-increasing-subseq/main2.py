@@ -1,3 +1,5 @@
+# Problem: https://leetcode.com/explore/interview/card/top-interview-questions-medium/111/dynamic-programming/810/
+
 from typing import List
 from collections import deque
 
@@ -71,6 +73,10 @@ class SolutionSlow:
 #   max, the length increases. Otherwise, if there are values 
 #   greater than the new one, but less than the max,
 #   we can keep building that sequence until we expand the array.
+
+# References:
+# - Explanation: https://algodaily.com/challenges/longest-increasing-subsequence
+# - Solution: https://www.interviewbit.com/blog/longest-increasing-subsequence/
 class Solution:
 
     def lengthOfLIS(self, nums: List[int]) -> int:
