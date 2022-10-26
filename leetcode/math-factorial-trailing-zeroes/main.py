@@ -14,7 +14,7 @@ class Solution:
         zeroes += min(twos, fives)
     
         return zeroes
-        
+
 cases = [
     (3, 0),
     (5, 1),
@@ -27,5 +27,3 @@ if __name__ == "__main__":
         
         if output != ans:
             print(f'input={input}, output={output}, ans={ans}')
-            
-    
