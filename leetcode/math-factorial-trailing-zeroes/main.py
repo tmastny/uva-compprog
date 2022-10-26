@@ -1,16 +1,11 @@
 class Solution:
     def trailingZeroes(self, n: int) -> int:
-        zeroes, twos, fives = 0, 0, 0
+        zeroes = 0
         for i in range(1, n + 1):
             while i % 2 == 0:
-                twos += 1
+                zero += 1
                 i //= 2
-            
-            while i % 5 == 0:
-                fives += 1
-                i //= 5            
-            
-        
+
         zeroes += min(twos, fives)
     
         return zeroes
@@ -27,5 +22,4 @@ if __name__ == "__main__":
         
         if output != ans:
             print(f'input={input}, output={output}, ans={ans}')
-            
     

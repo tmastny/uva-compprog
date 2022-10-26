@@ -46,6 +46,6 @@ if __name__ == "__main__":
     for input, ans in cases:
         s = Solution()
         output = s.isHappy(input)
-        
+
         if output != ans:
             print(f'input={input}, output={output}')
