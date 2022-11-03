@@ -1,4 +1,6 @@
-from math import log2
+from random import randint
+from sys import argv
+
 #   1011
 # & 0110
 # ------
@@ -11,7 +13,7 @@ from math import log2
 # note: bit-wise not: ~x == -x-1
 class SolutionBitwise:
     def getSum(self, a: int, b: int) -> int:
-        mask = 2**10
+        mask = 2**32
         sum = mask
         bit_pos = 0 # (int(log2(bit_pos)) - 1)
 
@@ -23,23 +25,31 @@ class SolutionBitwise:
             sum |= (carry ^ abit ^ bbit) << bit_pos
             bit_pos += 1
 
-            carry = abit & bbit
+            carry = abit & bbit | (abit | bbit) & carry
 
             a >>= 1
             b >>= 1
 
         return sum ^ mask
 
-# Carry-ahead addition overall all bits. 
+# Carry-ahead addition overall all bits.
 # Example:
 #
 #  11.                              1010
 #  101      101    101       010     010
 #  111  &<< 111  ^ 111  &<< 1010  ^  100
 # 1100     1010    010       100    1100
-class Solution:
-    def getSum(self, a: int, b: int) -> int:
 
+# This solution doesn't work for additional bits. See reference
+# Reference: https://timmastny.com/blog/adding-integers-logarithmic-time/
+# This solution is only calculating the 2nd or 3rd lookahead bit.
+# Significantly more comparisons have to happy for all lookahead bits,
+# which is why the Reference says it requires so many gates.
+
+# The fundamental algorithm must be sequential, because
+# c[i + 1] = a[i]b[i] + (a[i] + b[i])c[i]
+class SolutionWrongLookahead:
+    def getSum(self, a: int, b: int) -> int:
         and_carry = (a & b) << 1
 
         xor = a ^ b
@@ -47,9 +57,27 @@ class Solution:
 
         return and_carry ^ carry_carry ^ xor
 
+#   101 |    101
+# + 111 |  ^ 111
+#  1100 |    010
+
+class Solution:
+    def getSum(self, a: int, b: int) -> int:
+        mask = 0xffffffff
+        while b:
+            carry = a & b
+            a = (a ^ b) & mask
+            b = (carry << 1) & mask
+
+        return ~(a ^ mask) if a >> 31 else a
+
 # next step: 2's complement
 
 cases = [
+    (301, 799),
+    (61, 6),
+    (44, 94),
+    (193, 370),
     (1, -1),
     (-1, 1),
     (-10, 30),
@@ -75,3 +103,18 @@ if __name__ == "__main__":
 
         if output != a + b:
             print(f'{a} + {b} = {output}, {a + b}')
+
+    num = 10
+    if len(argv) > 2:
+        num = int(argv[2])
+
+    if len(argv) >= 2 and argv[1] == 'sim':
+        print("=====> starting sim <======")
+        for _ in range(num):
+            a = randint(0, 1000)
+            b = randint(0, 1000)
+
+            s = Solution()
+            output = s.getSum(a, b)
+            if output != a + b:
+                print(f'{a} + {b} = {output}, {a + b}')
