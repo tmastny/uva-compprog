@@ -30,6 +30,13 @@ class SolutionBitwise:
 
         return sum ^ mask
 
+# Carry-ahead addition overall all bits. 
+# Example:
+#
+#  11.                              1010
+#  101      101    101       010     010
+#  111  &<< 111  ^ 111  &<< 1010  ^  100
+# 1100     1010    010       100    1100
 class Solution:
     def getSum(self, a: int, b: int) -> int:
 
@@ -39,10 +46,6 @@ class Solution:
         carry_carry = (and_carry & xor) << 1
 
         return and_carry ^ carry_carry ^ xor
-#  11
-#  101      101    101       010
-#  111  &<< 111  ^ 111  &<< 1010
-# 1100     1010    010       100
 
 # next step: 2's complement
 
