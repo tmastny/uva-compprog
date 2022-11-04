@@ -57,22 +57,34 @@ class SolutionWrongLookahead:
 
         return and_carry ^ carry_carry ^ xor
 
-#   101 |    101
-# + 111 |  ^ 111
-#  1100 |    010
-
+# Example:
+#   1        a       b
+#   11 |    11      11 |    10       10 |   100      100
+# + 01 |  ^ 01  &<< 01 |  ^ 10  &<<  10 | ^  00  &<<  00
+#  100 |    10      10 |    00      100 |   100      000
 class Solution:
     def getSum(self, a: int, b: int) -> int:
         mask = 0xffffffff
+        a &= mask
+
         while b:
-            carry = a & b
-            a = (a ^ b) & mask
-            b = (carry << 1) & mask
+            # sum[i] = propagate   ^ carry
+            # sum[i] = a[i] ^ b[i] ^ (a[i-1] & b[i-1])
+            # ^sum^    ^--- a ---^   ^----- b -------^
+            sum = (a ^ b) & mask
+            carry = ((a & b) << 1) & mask
+
+            a = sum
+            b = carry
 
         return ~(a ^ mask) if a >> 31 else a
 
 # next step: 2's complement
-
+# flip all the bits and add one:
+#   example: 0000 -> 1111 -> (1)0000 = 0 (overflow ignored)
+#   example:
+#       7 = 0111 -> 1000 -> 1001 = -7
+#           0110 <- 0110 <- 1001
 cases = [
     (301, 799),
     (61, 6),
