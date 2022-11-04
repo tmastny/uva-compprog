@@ -64,6 +64,9 @@ class SolutionWrongLookahead:
 #  100 |    10      10 |    00      100 |   100      000
 class Solution:
     def getSum(self, a: int, b: int) -> int:
+        # explanation of mask:
+        # https://leetcode.com/problems/sum-of-two-integers/discuss/776952/Python-BEST-LeetCode-371-Explanation-for-Python
+
         mask = 0xffffffff
         a &= mask
 
