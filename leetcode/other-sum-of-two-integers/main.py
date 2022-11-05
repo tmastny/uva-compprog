@@ -65,7 +65,7 @@ class SolutionWrongLookahead:
 class Solution:
     def getSum(self, a: int, b: int) -> int:
         # explanation of mask:
-        # https://leetcode.com/problems/sum-of-two-integers/discuss/776952/Python-BEST-LeetCode-371-Explanation-for-Python
+        # https://leetcode.com/problems/sum-of-two-integers/discuss/489210/Read-this-if-you-want-to-learn-about-masks
 
         mask = 0xffffffff
         a &= mask
@@ -88,6 +88,17 @@ class Solution:
 #   example:
 #       7 = 0111 -> 1000 -> 1001 = -7
 #           0110 <- 0110 <- 1001
+
+# Another way to think about it beyond the procedure:
+# The leading bit is negative, but all the other bits
+# are their normal positive values. So for example:
+
+# 100 = -4           |   110 = -4 + 2 = -2
+# 101 = -3 = -4 + 1  |   111 = -4 + 3 = -1
+
+# -7 |   1001      1001 |     1101
+#  4 | ^ 0100  &<< 0100 |  ^  1111    ~0010
+# -3 |   1101      0000 |     0010     1101 = -3 ----> 0011 = 3
 cases = [
     (301, 799),
     (61, 6),
