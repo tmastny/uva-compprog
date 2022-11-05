@@ -7,6 +7,34 @@ from collections import Counter
 # This solution does not garauntee that the tasks are executed
 # in the *least* amount of time. It only finds a solution that
 # respects all the task delays.
+class SolutionFinishTasks:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        delay = n + 1
+
+        # orders task from most to least common
+        num_tasks = Counter(tasks)
+        tasks = {task: {"num": num, "delay": 0} for task, num in num_tasks.items()}
+
+        time = 0
+        while tasks:
+            # finds a task with no delay to execute
+            for task, stats in tasks.items():
+                if stats["delay"] == 0:
+                    stats["delay"] = delay
+
+                    tasks[task]["num"] -= 1
+                    if tasks[task]["num"] == 0:
+                        del tasks[task]
+                    break
+
+            time += 1
+            for task, stats in tasks.items():
+                if stats["delay"] > 0:
+                    tasks[task]["delay"] -= 1
+
+        return time
+
+
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
         delay = n + 1
