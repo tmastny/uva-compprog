@@ -1,9 +1,30 @@
 from typing import List
+from collections import defaultdict
+
+# majority element appears more than floor(n / 2) times
+# majority element always exists
+
+# Best solution O(n) time, O(1) spaces
+#   Naive solution is dictionary counter, but that
+#   requires O(n) space
+
+# 43% time, 86% memory
+class SolutionDict:
+    def majorityElement(self, nums: List[int]) -> int:
+        counter = defaultdict(int)
+        for n in nums:
+            counter[n] += 1
+
+        return max(counter, key=counter.get)
 
 
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
-        return 0
+        counter = defaultdict(int)
+        for n in nums:
+            counter[n] += 1
+
+        return max(counter, key=counter.get)
 
 
 cases = [
