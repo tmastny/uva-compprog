@@ -1,10 +1,11 @@
 from operator import add, mul, sub
 from typing import List
 
-class Solution:
-   operators = {"+": add, "-": sub, "*": mul, "/": lambda l, r: int(l / r)}
 
-   def evalRPN(self, tokens: List[str]) -> int:
+class Solution:
+    operators = {"+": add, "-": sub, "*": mul, "/": lambda l, r: int(l / r)}
+
+    def evalRPN(self, tokens: List[str]) -> int:
         tokens = tokens
         stack = []
 
@@ -12,7 +13,6 @@ class Solution:
             if t not in self.operators:
                 stack.append(int(t))
                 continue
-
 
             func = self.operators[t]
             right = stack.pop()
