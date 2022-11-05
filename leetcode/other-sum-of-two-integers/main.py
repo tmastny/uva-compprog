@@ -62,12 +62,16 @@ class SolutionWrongLookahead:
 #   11 |    11      11 |    10       10 |   100      100
 # + 01 |  ^ 01  &<< 01 |  ^ 10  &<<  10 | ^  00  &<<  00
 #  100 |    10      10 |    00      100 |   100      000
+
+# -7 |   1001      1001 |     1101
+#  4 | ^ 0100  &<< 0100 |  ^  1111    ~0010
+# -3 |   1101      0000 |     0010     1101 = -3 ----> 0011 = 3
 class Solution:
     def getSum(self, a: int, b: int) -> int:
         # explanation of mask:
         # https://leetcode.com/problems/sum-of-two-integers/discuss/489210/Read-this-if-you-want-to-learn-about-masks
 
-        mask = 0xffffffff
+        mask = 2**32 - 1 #\ max positive integer in 32 bits
         a &= mask
 
         while b:
@@ -80,6 +84,13 @@ class Solution:
             a = sum
             b = carry
 
+        # return two's complement if leading bit is 1
+        # We should just return a, but we have to deal with overflow.
+        # The plan is to take two's complement *twice* with the mask
+        # to prevent overflow:
+        # (a ^ mask) + 1 = two's complement
+        # ~((a ^ mask) + 1) + 1 = a (32-bit)
+        # Note the 1s cancel out.
         return ~(a ^ mask) if a >> 31 else a
 
 # next step: 2's complement
@@ -96,9 +107,18 @@ class Solution:
 # 100 = -4           |   110 = -4 + 2 = -2
 # 101 = -3 = -4 + 1  |   111 = -4 + 3 = -1
 
-# -7 |   1001      1001 |     1101
-#  4 | ^ 0100  &<< 0100 |  ^  1111    ~0010
-# -3 |   1101      0000 |     0010     1101 = -3 ----> 0011 = 3
+# Two's complement also literally means that the sum of
+# a and two's complement of a equals 2^n for n-bit a.
+# This is way a + two's complement of a = 0, when you
+# consider the maximum number of n-bits is 2^n - 1.
+
+# Example 3-bit example:
+# 3      =  011
+# 5 (-3) =  101
+# 8      = 1000 <- which is zero "modulo" 3-bit.
+#                  Extra bit is discard in mask
+# Indeed, it is modular arithmetic modulo 2^n
+
 cases = [
     (301, 799),
     (61, 6),
