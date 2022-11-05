@@ -1,5 +1,6 @@
 from typing import List
 from collections import defaultdict
+from statistics import median
 
 # majority element appears more than floor(n / 2) times
 # majority element always exists
@@ -45,16 +46,36 @@ class SolutionSort:
         return max_el
 
 
+# Solution: quickselect / median
+# 69% time, 86% memory
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
-        counter = defaultdict(int)
-        for n in nums:
-            counter[n] += 1
+        return int(median(nums))
 
-        return max(counter, key=counter.get)
+
+# Even faster O(n) time, one-pass algorithm:
+# Reference: https://leetcode.com/problems/majority-element/discuss/51613/O(n)-time-O(1)-space-fastest-solution
+# Paper: Linear Time Majority Voting Algorithm: https://www.cs.utexas.edu/~moore/best-ideas/mjrty/
+# 87% time,
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        element = None
+        counter = 0
+        for n in nums:
+            if counter == 0:
+                element = n
+                counter = 1
+            else:
+                if element == n:
+                    counter += 1
+                else:
+                    counter -= 1
+
+        return element
 
 
 cases = [
+    ([1], 1),
     ([6, 6, 6, 7, 7], 6),
     ([3, 2, 3], 3),
     ([2, 2, 1, 1, 1, 2, 2], 2),
