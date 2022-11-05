@@ -5,16 +5,16 @@
 #   Given: dividend = quotient * divisor + remainder
 
 #   The quotient is the maximum number we can multiple
-#   the divisor such that dividend >= quotient * divisor. 
+#   the divisor such that dividend >= quotient * divisor.
 
 #   We can also write the quotient as powers of two. So
-#   we can think of `quotient * divisor` as 
+#   we can think of `quotient * divisor` as
 #   divisor * certain powers of 2.
 class Solution:
     def divide(self, dividend: int, divisor: int) -> int:
         sign = 1 if dividend * divisor > 0 else -1
-            
-        dividend, divisor = abs(dividend), abs(divisor)         
+
+        dividend, divisor = abs(dividend), abs(divisor)
 
         quotient = 0
         while dividend >= divisor:
@@ -23,15 +23,16 @@ class Solution:
                 pow2 <<= 1
 
             quotient += pow2
-            dividend -= pow2        
-        
+            dividend -= pow2
+
         quotient //= divisor * sign
         if quotient > 2**31 - 1:
-            return  2**31 - 1
-        elif quotient < -2**31:
-            return -2**31
+            return 2**31 - 1
+        elif quotient < -(2**31):
+            return -(2**31)
 
         return quotient
+
 
 cases = [
     (-1234, 1, -1234),
@@ -46,7 +47,7 @@ cases = [
     (32, 8, 4),
     (17, 28, 0),
     (0, 10, 0),
-    (0, -10, 0)
+    (0, -10, 0),
 ]
 
 if __name__ == "__main__":
@@ -55,4 +56,4 @@ if __name__ == "__main__":
         output = s.divide(num, den)
 
         if output != ans:
-            print(f'{num} / {den} = {output} | {ans}')
+            print(f"{num} / {den} = {output} | {ans}")

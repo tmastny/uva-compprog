@@ -31,7 +31,7 @@ def print_nums(nums):
 
 
 # cached dynamic solution. Extremely slow: either
-# too slow to pass or in the 99th percentile 
+# too slow to pass or in the 99th percentile
 class SolutionSlow:
 
     lenLISAtIndex = []
@@ -57,20 +57,21 @@ class SolutionSlow:
 
         return max(self.lenLISAtIndex)
 
+
 # O(n log n):
 #   in a strictly increasing sequence, each iteration through
 #   nums we add the next element at the end of tails.
 #   Up to that point, the length of tails is the length
-#   of the longest increasing subsequence. 
+#   of the longest increasing subsequence.
 
-#   Once we encounter a non-increasing value, 
+#   Once we encounter a non-increasing value,
 #   the length of LIS doesn't increase. But this new
 #   value could be the start of a subsequence that is
 #   longer than the one we are currently tracking. So
 #   we do a binary search to find where the element
-#   would go in tails and replace the current value. 
+#   would go in tails and replace the current value.
 #   That way if there is another value larger than the current
-#   max, the length increases. Otherwise, if there are values 
+#   max, the length increases. Otherwise, if there are values
 #   greater than the new one, but less than the max,
 #   we can keep building that sequence until we expand the array.
 
@@ -78,18 +79,17 @@ class SolutionSlow:
 # - Explanation: https://algodaily.com/challenges/longest-increasing-subsequence
 # - Solution: https://www.interviewbit.com/blog/longest-increasing-subsequence/
 class Solution:
-
     def lengthOfLIS(self, nums: List[int]) -> int:
-        
+
         # tails[j] is the smallest element of `nums`
-        # in a subsequence of length `j`. 
+        # in a subsequence of length `j`.
         tails = [0] * len(nums)
-        
+
         # length is the number of non-zero elements in `tails`
         length = 0
-    
+
         # we iterate over each element of `nums` and binary search
-        # for the placement in `tails`    
+        # for the placement in `tails`
         for n in nums:
             lo, hi = 0, length
             while lo != hi:
@@ -100,12 +100,11 @@ class Solution:
                     hi = mid
             tails[lo] = n
             length = max(lo + 1, length)
-            
-            print(f'n={n:>2}, lo={lo:>2}, hi={hi:>2}, l={length:>2}, tails={tails}')
-            
+
+            print(f"n={n:>2}, lo={lo:>2}, hi={hi:>2}, l={length:>2}, tails={tails}")
+
         return length
 
-        
 
 # Find the length of the longest increasing subsequence
 

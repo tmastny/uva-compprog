@@ -17,30 +17,29 @@
 # 6^2 + 8^2 = 100
 # 1^2 + 0^2 + 0^2 = 1
 
+
 class Solution:
     def __init__(self):
         self.visited_n = set()
-        
+
     def isHappy(self, n: int) -> bool:
         if n == 1:
             return True
-        
+
         if n in self.visited_n:
             return False
-        
+
         self.visited_n.add(n)
-            
+
         sum_of_sq_digits = 0
         while n:
-            sum_of_sq_digits += (n % 10)**2
+            sum_of_sq_digits += (n % 10) ** 2
             n //= 10
-                
+
         return self.isHappy(sum_of_sq_digits)
-        
-cases = [
-    (19, True), 
-    (2, False)
-]
+
+
+cases = [(19, True), (2, False)]
 
 if __name__ == "__main__":
     for input, ans in cases:
@@ -48,4 +47,4 @@ if __name__ == "__main__":
         output = s.isHappy(input)
 
         if output != ans:
-            print(f'input={input}, output={output}')
+            print(f"input={input}, output={output}")

@@ -39,6 +39,7 @@ from typing import List
 # Reverts to a linear search when the number of
 # rows or columns is one.
 
+
 class Solution:
     def _stepthrough(self, m, target):
         r = len(m) - 1
@@ -54,7 +55,6 @@ class Solution:
                 c += 1
 
         return False
-
 
     def _mid(self, range):
         return (range[0] + range[1]) // 2

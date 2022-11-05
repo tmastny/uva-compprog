@@ -31,7 +31,7 @@ class Solution:
             if closed:
                 paren(prefix + ")", open, closed[:-1])
 
-        paren("", [ "(" for _ in range(n)], [])
+        paren("", ["(" for _ in range(n)], [])
 
         return parentheses
 

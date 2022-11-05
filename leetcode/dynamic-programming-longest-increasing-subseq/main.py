@@ -27,6 +27,7 @@ def print_nums(nums):
         # print(f'({v:>2}, {i:>2}) ', end='')
     print()
 
+
 def remove_successive_dups(nums):
     deduped = [nums[0]]
     for i in range(1, len(nums)):
@@ -34,6 +35,7 @@ def remove_successive_dups(nums):
             deduped.append(nums[i])
 
     return deduped
+
 
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
@@ -81,14 +83,14 @@ if __name__ == "__main__":
         [[0, 9, 4, 10, 3, 15, 5, 18, 1, 20], 6],
         [[0, 1, 0, 3, 2, 3], 4],
         [[7, 7, 7, 7, 7, 7, 7], 1],
-        [[7, 6, 7, 8], 3],   # have to be careful about how to handle duplicates
+        [[7, 6, 7, 8], 3],  # have to be careful about how to handle duplicates
         [[0, 7, 6, 1, 5, 2, 4, 3], 4],
         [[7, 6, 5, 4, 3, 2, 1, 0], 1],
         [[41, 20, 30, 21, 22, 23, 24, 10], 5],
         [[7, 1, 5, 2, 3, 4, 6, 0], 5],
         [[100, 99, 98, 97, 96, 21, 22, 23, 0, 1], 3],
         [[100, 99, 98, 97, 96, 21, 110, 22, 109, 23, 101, 0, 1], 4],
-        [[10, 23, 41, 3, 61], 4]
+        [[10, 23, 41, 3, 61], 4],
     ]
     s = Solution()
     for nums, ans in cases:

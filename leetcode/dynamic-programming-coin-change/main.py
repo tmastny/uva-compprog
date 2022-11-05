@@ -100,8 +100,6 @@ class Solution:
         dp[amount] = min_coins
         return min_coins
 
-
-
     def _dp_bottomup_optimized(self, coins: List[int], amount):
         """
         This version uses a simplified dynamic programming structure.

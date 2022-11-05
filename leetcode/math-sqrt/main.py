@@ -37,7 +37,7 @@ class Solution1:
         return int(sqrt0)
 
 
-# But the input space is constrained to integers, 
+# But the input space is constrained to integers,
 # so I think we can do a binary search and
 # find the answer in O(log n) time.
 
@@ -61,12 +61,8 @@ class Solution:
 
         return lo if lo**2 <= x else lo - 1
 
-cases = [
-    (4, 2),
-    (16, 4),
-    (8, 2),
-    (2, 1)
-]
+
+cases = [(4, 2), (16, 4), (8, 2), (2, 1)]
 
 if __name__ == "__main__":
     for x, ans in cases:
@@ -74,7 +70,7 @@ if __name__ == "__main__":
         output = s.mySqrt(x)
 
         if output != ans:
-            print(f'{x}^.5 = {output} | {ans}')
+            print(f"{x}^.5 = {output} | {ans}")
 
     for x in [random.randint(1, 2**31 - 1) for _ in range(10)]:
         s = Solution()
@@ -84,4 +80,4 @@ if __name__ == "__main__":
         ans1 = s1.mySqrt(x)
 
         if ans != ans1:
-            print(f'{x}^.5 = {ans} | {ans1}')
+            print(f"{x}^.5 = {ans} | {ans1}")

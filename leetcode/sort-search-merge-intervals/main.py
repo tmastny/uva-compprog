@@ -27,7 +27,7 @@ class VK:
         return self.v < other.v
 
     def __repr__(self) -> str:
-        return f'({self.v}, {self.k})'
+        return f"({self.v}, {self.k})"
 
 
 class Solution:

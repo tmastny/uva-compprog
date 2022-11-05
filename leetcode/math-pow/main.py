@@ -6,12 +6,13 @@ class SolutionSlow:
         elif n < 0:
             x = 1 / x
             n *= -1
-        
+
         pow = x
         for i in range(n - 1):
             pow *= x
-        
+
         return pow
+
 
 # O(log n)
 #   let n = 9. In binary, 9 = 1001_b = 2^3 + 2^0.
@@ -30,7 +31,7 @@ class Solution:
         while n:
             if n & 1:
                 pow *= x
-            
+
             # this repeatedly squares x for each bit of n
             # x^2, x^2 * x^2 = x^4, x^4 * x^4 = x^8, etc.
             # Multiple x to pow when the bit is set
@@ -39,6 +40,7 @@ class Solution:
 
         return pow
 
+
 cases = [
     (2, 2, 4),
     (2, 9, 512),
@@ -46,7 +48,7 @@ cases = [
     (2.1, 3, 9.261),
     (2, -2, 0.25),
     (13142, 0, 1),
-    (2, 3, 8)
+    (2, 3, 8),
 ]
 
 if __name__ == "__main__":
@@ -55,4 +57,4 @@ if __name__ == "__main__":
         output = s.myPow(x, n)
 
         if output != ans:
-            print(f'{x}^{n} = {output} | {ans}')
+            print(f"{x}^{n} = {output} | {ans}")

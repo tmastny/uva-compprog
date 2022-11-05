@@ -2,6 +2,7 @@ from math import comb
 from collections import deque
 from collections import defaultdict
 
+
 class Solution:
     def _choose(self, r, c):
         """
@@ -29,20 +30,12 @@ class Solution:
 
         return paths[rows - 1][cols - 1]
 
-
-
     def uniquePaths(self, m: int, n: int) -> int:
         return self._dp(m, n)
 
 
 if __name__ == "__main__":
-    cases = [
-        [2, 2, 2],
-        [3, 7, 28],
-        [3, 2, 3],
-        [7, 3, 28],
-        [3, 3, 6]
-    ]
+    cases = [[2, 2, 2], [3, 7, 28], [3, 2, 3], [7, 3, 28], [3, 3, 6]]
 
     s = Solution()
     for m, n, ans in cases:

@@ -15,7 +15,7 @@ class SolutionBitwise:
     def getSum(self, a: int, b: int) -> int:
         mask = 2**32
         sum = mask
-        bit_pos = 0 # (int(log2(bit_pos)) - 1)
+        bit_pos = 0  # (int(log2(bit_pos)) - 1)
 
         carry = 0
         while a or b or carry:
@@ -31,6 +31,7 @@ class SolutionBitwise:
             b >>= 1
 
         return sum ^ mask
+
 
 # Carry-ahead addition overall all bits.
 # Example:
@@ -57,6 +58,7 @@ class SolutionWrongLookahead:
 
         return and_carry ^ carry_carry ^ xor
 
+
 # Example:
 #   1        a       b
 #   11 |    11      11 |    10       10 |   100      100
@@ -71,7 +73,7 @@ class Solution:
         # explanation of mask:
         # https://leetcode.com/problems/sum-of-two-integers/discuss/489210/Read-this-if-you-want-to-learn-about-masks
 
-        mask = 2**32 - 1 #\ max positive integer in 32 bits
+        mask = 2**32 - 1  # \ max positive integer in 32 bits
         a &= mask
 
         while b:
@@ -92,6 +94,7 @@ class Solution:
         # ~((a ^ mask) + 1) + 1 = a (32-bit)
         # Note the 1s cancel out.
         return ~(a ^ mask) if a >> 31 else a
+
 
 # next step: 2's complement
 # flip all the bits and add one:
@@ -139,7 +142,7 @@ cases = [
     (0, 100),
     (10, -30),
     (-134, -483),
-    (134, 483)
+    (134, 483),
 ]
 
 if __name__ == "__main__":
@@ -148,13 +151,13 @@ if __name__ == "__main__":
         output = s.getSum(a, b)
 
         if output != a + b:
-            print(f'{a} + {b} = {output}, {a + b}')
+            print(f"{a} + {b} = {output}, {a + b}")
 
     num = 10
     if len(argv) > 2:
         num = int(argv[2])
 
-    if len(argv) >= 2 and argv[1] == 'sim':
+    if len(argv) >= 2 and argv[1] == "sim":
         print("=====> starting sim <======")
         for _ in range(num):
             a = randint(0, 1000)
@@ -163,4 +166,4 @@ if __name__ == "__main__":
             s = Solution()
             output = s.getSum(a, b)
             if output != a + b:
-                print(f'{a} + {b} = {output}, {a + b}')
+                print(f"{a} + {b} = {output}, {a + b}")

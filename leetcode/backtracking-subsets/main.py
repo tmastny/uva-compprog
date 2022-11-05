@@ -2,6 +2,7 @@ from typing import List
 
 # See also: binary subsets: https://www.keithschwarz.com/binary-subsets/
 
+
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
         return self._subsets_i(nums)
@@ -18,7 +19,6 @@ class Solution:
             power_set += [subset + [n] for subset in power_set]
 
         return power_set
-
 
     def _subsets_r(self, nums: List[int]) -> List[List[int]]:
         """
@@ -44,6 +44,7 @@ class Solution:
         find_subsets([], 0)
 
         return power_set
+
 
 if __name__ == "__main__":
     cases = [[1, 2, 3], [0, 1], [1]]

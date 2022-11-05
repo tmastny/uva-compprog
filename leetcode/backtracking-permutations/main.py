@@ -5,7 +5,6 @@ class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
         return self._permute_without_set(nums)
 
-
     def _permute_without_set(self, nums):
         """
         The efficiency of set here is overrated. Because
@@ -59,7 +58,6 @@ class Solution:
         find_permutations([], nums)
 
         return permutations
-
 
     def _copy_permute(self, nums):
         """
