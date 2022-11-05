@@ -48,6 +48,11 @@ class SolutionSort:
 
 # Solution: quickselect / median
 # 69% time, 86% memory
+
+# note: why quickselect is O(n): https://stackoverflow.com/questions/8783408/why-is-the-runtime-of-the-selection-algorithm-on
+#   You recursive into each half:
+#       n + n/2 + n/4 + n/8 + n/16 +...
+#       Then by geometric sum, the total is 2n
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
         return int(median(nums))
@@ -56,7 +61,12 @@ class Solution:
 # Even faster O(n) time, one-pass algorithm:
 # Reference: https://leetcode.com/problems/majority-element/discuss/51613/O(n)-time-O(1)-space-fastest-solution
 # Paper: Linear Time Majority Voting Algorithm: https://www.cs.utexas.edu/~moore/best-ideas/mjrty/
-# 87% time,
+# 87% time
+# Note: this doesn't actually find the *count* of the majority element, only that
+#       it *is* the majority, if the majority exists
+# Also note:
+#   if majority *may* not exist, you must take an additional pass through
+#   the array to confirm it is a majority
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
         element = None
