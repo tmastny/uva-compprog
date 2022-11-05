@@ -1,9 +1,34 @@
 from typing import List
+from collections import Counter
+
+# edge case where you want to prioritize/start the most common
+# so you aren't bottlenecked at the end waiting on one task
 
 
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
-        return 0
+        delay = n + 1
+
+        num_tasks = Counter(tasks)
+        tasks = {task: {"num": num, "delay": 0} for task, num in num_tasks.items()}
+
+        time = 0
+        while tasks:
+            for task, stats in tasks.items():
+                if stats["delay"] == 0:
+                    stats["delay"] = delay
+
+                    tasks[task]["num"] -= 1
+                    if tasks[task]["num"] == 0:
+                        del tasks[task]
+                    break
+
+            time += 1
+            for task, stats in tasks.items():
+                if stats["delay"] > 0:
+                    tasks[task]["delay"] -= 1
+
+        return time
 
 
 cases = [
