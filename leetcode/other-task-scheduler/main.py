@@ -37,7 +37,7 @@ class SolutionFinishTasks:
 
 # Greedy approach: the next task should always be one with no delay,
 # but the largest number of remaining executions
-class Solution:
+class SolutionTooSlow:
     def leastInterval(self, tasks: List[str], n: int) -> int:
         delay = n + 1
 
@@ -51,6 +51,40 @@ class Solution:
             if available:
                 # task with most remaining num
                 next = max(available, key=lambda t: tasks[t]["num"])
+                tasks[next]["delay"] = delay
+
+                tasks[next]["num"] -= 1
+                if tasks[next]["num"] == 0:
+                    del tasks[next]
+
+            time += 1
+            for task, stats in tasks.items():
+                if stats["delay"] > 0:
+                    tasks[task]["delay"] -= 1
+
+        return time
+
+
+# Same idea as before, but with fewer copies and passes.
+# Turns out to still be too slow, but slightly faster. Passes
+# additional test cases.
+class SolutionStillTooSlow:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        delay = n + 1
+
+        num_tasks = Counter(tasks)
+        tasks = {task: {"num": num, "delay": 0} for task, num in num_tasks.items()}
+
+        time = 0
+        while tasks:
+
+            next = None
+            max = 0
+            for task, stats in tasks.items():
+                if stats["delay"] == 0 and stats["num"] > max:
+                    next, max = task, stats["num"]
+
+            if next:
                 tasks[next]["delay"] = delay
 
                 tasks[next]["num"] -= 1
