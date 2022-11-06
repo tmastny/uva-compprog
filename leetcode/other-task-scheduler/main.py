@@ -4,7 +4,7 @@ from collections import Counter
 # edge case where you want to prioritize/start the most common
 # so you aren't bottlenecked at the end waiting on one task
 
-# This solution does not garauntee that the tasks are executed
+# This solution does not guaranteed that the tasks are executed
 # in the *least* amount of time. It only finds a solution that
 # respects all the task delays.
 class SolutionFinishTasks:

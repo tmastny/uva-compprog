@@ -1,59 +1,35 @@
-# Reference:
-#   https://leetcode.com/problems/divide-two-integers/discuss/1516367/Complete-Thinking-Process-or-Intuitive-Explanation-or-All-rules-followed-or-C%2B%2B-code
-
-# Idea:
-#   Given: dividend = quotient * divisor + remainder
-
-#   The quotient is the maximum number we can multiple
-#   the divisor such that dividend >= quotient * divisor.
-
-#   We can also write the quotient as powers of two. So
-#   we can think of `quotient * divisor` as
-#   divisor * certain powers of 2.
+# long division
 class Solution:
-    def divide(self, dividend: int, divisor: int) -> int:
-        sign = 1 if dividend * divisor > 0 else -1
+    def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        output = []
 
-        dividend, divisor = abs(dividend), abs(divisor)
+        while len(output) < 10:
+            output.append(numerator // denominator)
+            numerator -= output[-1] * denominator
 
-        quotient = 0
-        while dividend >= divisor:
-            pow2 = divisor
-            while pow2 << 1 <= dividend:
-                pow2 <<= 1
+        return ""
 
-            quotient += pow2
-            dividend -= pow2
-
-        quotient //= divisor * sign
-        if quotient > 2**31 - 1:
-            return 2**31 - 1
-        elif quotient < -(2**31):
-            return -(2**31)
-
-        return quotient
-
+#      045            2.25           0.(44)
+#    ------          ____           ____
+#  5 | 225        4 | 9.0        9 | 4.0
+#      0              8              0
+#      22             1 0            4 0
+#      20               8            3 6
+#       25              20             40
+#       25              20
+#        0               0
 
 cases = [
-    (-1234, 1, -1234),
-    (1234, 1, 1234),
-    (1, 1, 1),
-    (101, 101, 1),
-    (10, 3, 3),
-    (7, -3, -2),
-    (-7, 3, -2),
-    (-7, -3, 2),
-    (58, 5, 11),
-    (32, 8, 4),
-    (17, 28, 0),
-    (0, 10, 0),
-    (0, -10, 0),
+    (225, 5, "45"),
+    (1, 2, "0.5"),
+    (2, 1, "2"),
+    (4, 333, "0.(012)")
 ]
 
 if __name__ == "__main__":
     for num, den, ans in cases:
         s = Solution()
-        output = s.divide(num, den)
+        output = s.fractionToDecimal(num, den)
 
         if output != ans:
             print(f"{num} / {den} = {output} | {ans}")
