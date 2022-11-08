@@ -121,7 +121,8 @@ class MaxHeap:
         return repr(self.data)
 
 
-# runtime: 0%!. Also provees that the greedy solution works.
+# runtime: 0%!. Also proves that the greedy solution works.
+# I also like how clean the solution looks.
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
         delay = n
