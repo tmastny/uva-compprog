@@ -1,15 +1,23 @@
 # long division
 class Solution:
     def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        quotient = []
+        if numerator < 0 and denominator > 0 or numerator > 0 and denominator < 0:
+            quotient = ["-"]
+        if numerator // denominator == 0:
+            quotient.append("0")
+
+        numerator, denominator = abs(numerator), abs(denominator)
+
         digits = []
         while numerator:
             digits.append(numerator % 10)
             numerator //= 10
 
         trailing_digits = set()
+        remainders = set()
         past_decimal = False
         repeating = False
-        quotient = []
         remainder = 0
         while True:
             digit = digits.pop() if digits else 0
@@ -19,13 +27,16 @@ class Solution:
 
             remainder = numerator - output * denominator
 
-            if past_decimal and output in trailing_digits:
+            if past_decimal and output in trailing_digits and remainder in remainders:
                 repeating = True
                 break
             elif past_decimal:
                 trailing_digits.add(output)
+                remainders.add(remainder)
 
             quotient.append(str(output))
+            if not past_decimal and output == 0:
+                quotient.pop()
 
             if not past_decimal and not digits:
                 if remainder == 0:
@@ -48,15 +59,7 @@ class Solution:
 
             quotient.insert(i, "(")
 
-        # remove leading zeroes if necessary
-        i = 0
-        while quotient[i] == "0":
-            i += 1
-
-        if quotient[i] == ".":
-            i -= 1
-
-        return "".join(quotient[i:])
+        return "".join(quotient)
 
 
 #      045            2.25           0.(4)
@@ -70,8 +73,16 @@ class Solution:
 #        0               0
 
 cases = [
-    # (4, 9, "0.(4)"),
-    # (9, 4, "2.25"),
+    (0, -123413, "0"),
+    (-50, 8, "-6.25"),
+    (-50, -8, "6.25"),
+    (-50, 8, "-6.25"),
+    (0, 3, "0"),
+    (22, 7, "3.(142857)"),
+    (31, 16, "1.9375"),
+    (22, 15, "1.4(6)"),
+    (4, 9, "0.(4)"),
+    (9, 4, "2.25"),
     (1234, 32, "38.5625"),
     (225, 5, "45"),
     (1, 2, "0.5"),
