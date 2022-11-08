@@ -14,8 +14,7 @@ class Solution:
             digits.append(numerator % 10)
             numerator //= 10
 
-        trailing_digits = set()
-        remainders = set()
+        repeated_output_remainder = {}
         past_decimal = False
         repeating = False
         remainder = 0
@@ -27,12 +26,11 @@ class Solution:
 
             remainder = numerator - output * denominator
 
-            if past_decimal and output in trailing_digits and remainder in remainders:
+            if past_decimal and (output, remainder) in repeated_output_remainder:
                 repeating = True
                 break
             elif past_decimal:
-                trailing_digits.add(output)
-                remainders.add(remainder)
+                repeated_output_remainder[(output, remainder)] = len(quotient)
 
             quotient.append(str(output))
 
@@ -48,13 +46,13 @@ class Solution:
         if repeating:
             quotient.append(")")
 
-            past_decimal = False
-            for i, digit in enumerate(quotient):
-                if past_decimal and digit == str(output):
-                    break
-                elif digit == ".":
-                    past_decimal = True
-
+            # past_decimal = False
+            # for i, digit in enumerate(quotient):
+            #     if past_decimal and digit == str(output):
+            #         break
+            #     elif digit == ".":
+            #         past_decimal = True
+            i = repeated_output_remainder[(output, remainder)]
             quotient.insert(i, "(")
 
         start = end = 1 if quotient[0] == "-" else 0
