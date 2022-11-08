@@ -121,9 +121,10 @@ class MaxHeap:
         return repr(self.data)
 
 
+# O(n log n)
 # runtime: 0%!. Also proves that the greedy solution works.
 # I also like how clean the solution looks.
-class Solution:
+class SolutionHeap:
     def leastInterval(self, tasks: List[str], n: int) -> int:
         delay = n
         available = MaxHeap(list(Counter(tasks).values()))
@@ -144,7 +145,35 @@ class Solution:
         return time
 
 
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        # *chunk*. chunks are subsequences of tasks
+        #   that between tasks of the highest frequency
+        # Example: A _ _ A _ _ A is 3 chunks, A _ _, A _ _, and A
+
+        counts = list(Counter(tasks).values())
+        max_count = max(counts)
+        tasks_with_max_count = counts.count(max_count)
+
+        idle_chunks = max_count - 1 # no idle on final chunk
+        idle_chunk_len = n + 1    # the task and delays until next task
+
+        # A _ _ A _ _ A  <- if B has same count as A, B must be done in
+        #   B     B    B    final chunk. Can't "squeeze" into a idle chunk
+        final_chunk_len = tasks_with_max_count
+
+        # if the total number of tasks is greater than the calculated
+        # length_of_all_chunks, then there are so many tasks that all
+        # the gaps are filled and remaining tasks are added to the end
+        length_of_all_chunks = max(
+            idle_chunks * idle_chunk_len + final_chunk_len,
+            len(tasks)
+        )
+
+        return length_of_all_chunks
+
 cases = [
+    (["A", "A", "A", "B", "C", "D", "E", "F"], 2, 8),
     (["A", "A", "A", "B", "B", "B"], 2, 8),
     (["A", "A", "A", "B", "B", "B"], 0, 6),
     (["A", "A", "A", "A", "A", "A", "B", "C", "D", "E", "F", "G"], 2, 16),
