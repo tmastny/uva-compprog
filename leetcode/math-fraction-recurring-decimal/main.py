@@ -1,4 +1,4 @@
-# long division
+# runtime: 94%
 class Solution:
     def fractionToDecimal(self, numerator: int, denominator: int) -> str:
         quotient = []
@@ -46,12 +46,6 @@ class Solution:
         if repeating:
             quotient.append(")")
 
-            # past_decimal = False
-            # for i, digit in enumerate(quotient):
-            #     if past_decimal and digit == str(output):
-            #         break
-            #     elif digit == ".":
-            #         past_decimal = True
             i = repeated_output_remainder[(output, remainder)]
             quotient.insert(i, "(")
 
@@ -83,7 +77,7 @@ class Solution:
 #        0               0
 
 cases = [
-    (1, 214748364, ""),
+    #(1, 214748364, ""),
     (500, 10, "50"),
     (225, -5, "-45"),
     (0, -123413, "0"),
