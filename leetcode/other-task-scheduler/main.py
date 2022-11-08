@@ -1,5 +1,6 @@
 from typing import List
-from collections import Counter
+from collections import Counter, deque
+import heapq
 
 # edge case where you want to prioritize/start the most common
 # so you aren't bottlenecked at the end waiting on one task
@@ -95,6 +96,49 @@ class SolutionStillTooSlow:
             for task, stats in tasks.items():
                 if stats["delay"] > 0:
                     tasks[task]["delay"] -= 1
+
+        return time
+
+
+class MaxHeap:
+    def __init__(self, data=None):
+        if data is None:
+            self.data = []
+        else:
+            self.data = [-i for i in data]
+            heapq.heapify(self.data)
+
+    def push(self, item):
+        heapq.heappush(self.data, -item)
+
+    def pop(self):
+        return -heapq.heappop(self.data)
+
+    def __bool__(self):
+        return bool(self.data)
+
+    def __repr__(self) -> str:
+        return repr(self.data)
+
+
+# runtime: 0%!. Also provees that the greedy solution works.
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        delay = n
+        available = MaxHeap(list(Counter(tasks).values()))
+        waiting = deque()
+
+        time = 0
+        while available or waiting:
+            time += 1
+
+            if waiting and time > waiting[-1][1] + delay:
+                available.push(waiting.pop()[0])
+
+            if available:
+                remaining = available.pop() - 1
+                if remaining:
+                    waiting.appendleft((remaining, time))
 
         return time
 

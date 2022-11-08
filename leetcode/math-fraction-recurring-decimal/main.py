@@ -1,3 +1,12 @@
+# alternate solution: https://leetcode.com/problems/fraction-to-recurring-decimal/discuss/51110/Do-not-use-python-as-cpp-here's-a-short-version-python-code
+# my solution was significantly complicated, because I had to break
+# into two separate cases: before and after decimal point with flags.
+# But that is unnecessary, because we can immediately calculate the
+# before decimal point answer with `numerator // denominator` directly.
+
+# This way there is also less post-processing of the zeroes, which also
+# took me a long time.
+
 # runtime: 94%
 class Solution:
     def fractionToDecimal(self, numerator: int, denominator: int) -> str:
@@ -77,7 +86,7 @@ class Solution:
 #        0               0
 
 cases = [
-    #(1, 214748364, ""),
+    # (1, 214748364, ""),
     (500, 10, "50"),
     (225, -5, "-45"),
     (0, -123413, "0"),
