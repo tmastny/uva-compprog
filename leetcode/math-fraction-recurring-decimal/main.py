@@ -35,8 +35,6 @@ class Solution:
                 remainders.add(remainder)
 
             quotient.append(str(output))
-            if not past_decimal and output == 0:
-                quotient.pop()
 
             if not past_decimal and not digits:
                 if remainder == 0:
@@ -59,7 +57,21 @@ class Solution:
 
             quotient.insert(i, "(")
 
-        return "".join(quotient)
+        start = end = 1 if quotient[0] == "-" else 0
+        while end < len(quotient) and quotient[end] == "0":
+            end += 1
+
+        end -= 1
+        if end == len(quotient) - 1 or quotient[end + 1] == ".":
+            end -= 1
+
+        quotient_str = ""
+        for i in range(len(quotient)):
+            if start <= i and i <= end:
+                continue
+            quotient_str += quotient[i]
+
+        return quotient_str
 
 
 #      045            2.25           0.(4)
@@ -73,7 +85,9 @@ class Solution:
 #        0               0
 
 cases = [
+    (1, 214748364, ""),
     (500, 10, "50"),
+    (225, -5, "-45"),
     (0, -123413, "0"),
     (-50, 8, "-6.25"),
     (-50, -8, "6.25"),
