@@ -1,11 +1,9 @@
-from collections import deque
-
 # long division
 class Solution:
     def fractionToDecimal(self, numerator: int, denominator: int) -> str:
-        digits = deque()
+        digits = []
         while numerator:
-            digits.appendleft(numerator % 10)
+            digits.append(numerator % 10)
             numerator //= 10
 
         trailing_digits = set()
@@ -14,7 +12,7 @@ class Solution:
         quotient = []
         remainder = 0
         while True:
-            digit = digits.popleft() if digits else 0
+            digit = digits.pop() if digits else 0
 
             numerator = remainder * 10 + digit
             output = numerator // denominator
