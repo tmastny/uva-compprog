@@ -18,6 +18,9 @@ class SolutionQueue:
 
 
 # runtime: 24%, O(1) memory
+# same type of solution as "fast" answers,
+# but I used `while` and fast used `for`.
+# `for` is faster in python
 class Solution:
     def duplicateZeros(self, arr: List[int]) -> None:
         """
