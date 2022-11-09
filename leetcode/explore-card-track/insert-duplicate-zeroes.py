@@ -2,37 +2,40 @@ from typing import List
 from collections import deque
 
 class Solution:
-    def sortedSquares(self, nums: List[int]) -> List[int]:
-        pos = deque()
-        neg = deque()
-        for n in nums:
-            if n < 0:
-                neg.appendleft(n**2)
-            else:
-                pos.append(n**2)
+    def duplicateZeros(self, arr: List[int]) -> None:
+        """
+        Do not return anything, modify arr in-place instead.
+        """
+        last = arr[0]
+        shift = prev_zero = False
+        for i, n in enumerate(arr):
+            if shift:
+                arr[i] = last
+                last = n
 
-        sqs = []
-        while neg and pos:
-            if neg[0] > pos[0]:
-                sqs.append(pos.popleft())
-            else:
-                sqs.append(neg.popleft())
+            if prev_zero:
+                last = n
+                arr[i] = 0
+                prev_zero = False
+                shift = True
 
-        remaining = neg if neg else pos
+            if n == 0:
+                prev_zero = True
 
-        return sqs + list(remaining)
 
 
 cases = [
-    ([-4, -1, 0, 3, 10], [0, 1, 9, 16, 100]),
-    ([-7, -3, 2, 3, 11], [4, 9, 9, 49, 121]),
+    ([1,0,2,3,0,4,5,0], [1,0,0,2,3,0,0,4]),
+    ([1,2,3], [1,2,3]),
     ([0], [0]),
 ]
 
 if __name__ == "__main__":
     for nums, ans in cases:
-        s = Solution()
-        output = s.sortedSquares(nums)
+        orig = nums.copy()
 
-        if output != ans:
-            print(f"{nums}, {output}: {ans}")
+        s = Solution()
+        s.duplicateZeros(nums)
+
+        if nums != ans:
+            print(f"{orig}, {nums}: {ans}")
