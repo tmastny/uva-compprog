@@ -1,6 +1,7 @@
 from typing import List
 from collections import deque
 
+
 class Solution:
     def sortedSquares(self, nums: List[int]) -> List[int]:
         pos = deque()
