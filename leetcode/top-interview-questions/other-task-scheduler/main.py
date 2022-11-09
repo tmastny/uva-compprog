@@ -155,8 +155,8 @@ class Solution:
         max_count = max(counts)
         tasks_with_max_count = counts.count(max_count)
 
-        idle_chunks = max_count - 1 # no idle on final chunk
-        idle_chunk_len = n + 1    # the task and delays until next task
+        idle_chunks = max_count - 1  # no idle on final chunk
+        idle_chunk_len = n + 1  # the task and delays until next task
 
         # A _ _ A _ _ A  <- if B has same count as A, B must be done in
         #   B     B    B    final chunk. Can't "squeeze" into a idle chunk
@@ -168,11 +168,11 @@ class Solution:
 
         # any tasks with lower frequencies can always go in idle chunks
         length_of_all_chunks = max(
-            idle_chunks * idle_chunk_len + final_chunk_len,
-            len(tasks)
+            idle_chunks * idle_chunk_len + final_chunk_len, len(tasks)
         )
 
         return length_of_all_chunks
+
 
 cases = [
     (["A", "A", "A", "B", "C", "D", "E", "F"], 2, 8),
