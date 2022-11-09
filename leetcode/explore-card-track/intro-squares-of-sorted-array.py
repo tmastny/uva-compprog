@@ -2,25 +2,15 @@ from typing import List
 
 
 class Solution:
-    def findNumbers(self, nums: List[int]) -> int:
-        evens = 0
-        for n in nums:
-            digits = 1
-            n //= 10
-            while n:
-                digits += 1
-                n //= 10
+    def sortedSquares(self, nums: List[int]) -> List[int]:
 
-            if digits % 2 == 0:
-                evens += 1
 
-        return evens
-
+        return []
 
 cases = [
-    ([12, 345, 2, 6, 7896], 2),
-    ([555, 901, 482, 1771], 1),
-    ([0], 0),
+    ([-4,-1,0,3,10], [0,1,9,16,100]),
+    ([-7,-3,2,3,11], [4,9,9,49,121]),
+    ([0], [0]),
 ]
 
 if __name__ == "__main__":
