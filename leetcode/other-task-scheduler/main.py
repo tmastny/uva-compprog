@@ -165,6 +165,8 @@ class Solution:
         # if the total number of tasks is greater than the calculated
         # length_of_all_chunks, then there are so many tasks that all
         # the gaps are filled and remaining tasks are added to the end
+
+        # any tasks with lower frequencies can always go in idle chunks
         length_of_all_chunks = max(
             idle_chunks * idle_chunk_len + final_chunk_len,
             len(tasks)
