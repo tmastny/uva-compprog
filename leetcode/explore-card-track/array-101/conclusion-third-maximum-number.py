@@ -1,5 +1,5 @@
 from typing import List
-
+from math import inf
 
 class Solution:
     def thirdMax(self, nums: List[int]) -> int:
@@ -7,25 +7,23 @@ class Solution:
         threes = []
 
         for n in nums:
-            if len(threes) < 3 and n not in threes:
+            if n in threes:
+                continue
+
+            if len(threes) < 3:
                 threes.append(n)
                 continue
 
-            next_loop = False
-            top = threes[0]
+            bot, top = inf, -inf
             for t in threes:
-                if n == t:
-                    next_loop = True
-                    break
-                
-                if n > top:
-                    top = n
+                if t > top:
+                    top = t
+                elif t < bot:
+                    bot = t
 
-            if next_loop:
-                continue
-            
-            if n > top:
-                threes.remove(min)
+            # [1,2,5] | 3
+            if n > bot:
+                threes.remove(bot)
                 threes.append(n)
         
         if len(threes) < 3:
