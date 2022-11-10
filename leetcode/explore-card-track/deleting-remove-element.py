@@ -20,6 +20,7 @@ class SolutionMultiPass:
 
         return k
 
+
 # single-pass, runtime: 50%
 class Solution:
     def removeElement(self, nums: List[int], val: int) -> int:
@@ -30,6 +31,7 @@ class Solution:
                 n_nonval += 1
 
         return n_nonval
+
 
 cases = [
     ([3, 2, 2, 3], 3, 2, [2, 2, 0, 0]),
