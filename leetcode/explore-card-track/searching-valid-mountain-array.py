@@ -16,12 +16,11 @@ class Solution:
             elif descending and arr[i] < arr[i + 1]:
                 return False
 
-
         return True if descending else False
 
 
 cases = [
-    ([1,2,3,4], False),
+    ([1, 2, 3, 4], False),
     ([0, 1, 2, 3, 2, 3, 0], False),
     ([0, 2, 3, 3, 5, 2, 1, 0], False),
     ([2, 1], False),
