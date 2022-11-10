@@ -11,6 +11,7 @@ class Solution1:
 
         return False
 
+
 # it's easier if you do it in one step. That why
 # you don't have the check the indices (and you can)
 # check half value
@@ -24,6 +25,7 @@ class Solution:
             map.add(n)
 
         return False
+
 
 cases = [
     ([-2, 0, 10, -19, 4, 6, -8], False),
