@@ -1,11 +1,12 @@
+from pudb import set_trace
 from typing import List
 from math import inf
 
 class Solution:
     def thirdMax(self, nums: List[int]) -> int:
-        
-        threes = []
+        set_trace()
 
+        threes = []
         for n in nums:
             if n in threes:
                 continue
