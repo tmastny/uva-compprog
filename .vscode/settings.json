@@ -27,5 +27,9 @@
     "queue": "cpp",
     "ostream": "cpp"
   },
-  "python.pythonPath": "/Users/Tim/anaconda/envs/comp-prog/bin/python"
+  "python.pythonPath": "/Users/Tim/anaconda/envs/comp-prog/bin/python",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "python.formatting.provider": "none"
 }
