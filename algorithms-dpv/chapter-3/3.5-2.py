@@ -53,7 +53,7 @@ class Graph:
         for node, neighbors in self.adj.items():
             if node not in adj:
                 adj[node] = []
-                
+                 
             for neighbor in neighbors:
                 adj[neighbor].append(node)
 
