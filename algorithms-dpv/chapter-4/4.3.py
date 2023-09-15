@@ -43,7 +43,7 @@ class Graph:
         return paths
 
 
-data = [
+data  = [
     [
         {
             "A": ["A", "B", "E"],
