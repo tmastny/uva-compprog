@@ -18,7 +18,7 @@ class Graph:
         minl[s] = 0
         queue = [(min, node) for node, min in minl.items()]
         heapq.heapify(queue)
-        while queue:
+        while queue: 
             minu, u = heapq.heappop(queue)
             if u in visited:
                 continue
