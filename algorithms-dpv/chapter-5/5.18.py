@@ -189,7 +189,7 @@ for freqs in data:
         print(f"message: {message}")
 
         bits = huffman.encode(message)
-        print(f"encoded message: {bits}")
+        print(f"encoded message: len: {len(bits)}, {bits}")
         
         decoded = huffman.decode(bits)
         print(f"decoded message: {decoded}")
